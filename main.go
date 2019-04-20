@@ -15,7 +15,7 @@ func setup() {
 }
 func main() {
 
-	setup()
+	//setup()
 
 	app := cli.NewApp()
 	app.Name = "Qmetry uploader"
