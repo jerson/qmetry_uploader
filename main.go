@@ -21,8 +21,7 @@ func main() {
 	app.Name = "Qmetry uploader"
 	app.Usage = "sube facilmente tus evidencias a Qmetry"
 
-	app.Flags = []cli.Flag{
-	}
+	app.Flags = []cli.Flag{}
 
 	app.Commands = []cli.Command{
 		{
@@ -84,10 +83,15 @@ func readContext(c *cli.Context) {
 	images := c.String("images")
 	if images != "" {
 		config.Vars.Dir.Images = images
+	} else {
+		config.Vars.Dir.Images = "./images"
 	}
+
 	output := c.String("output")
 	if output != "" {
 		config.Vars.Dir.Output = output
+	} else {
+		config.Vars.Dir.Output = "./output"
 	}
 
 }
