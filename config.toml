@@ -1,0 +1,6 @@
+
+debug=false
+
+[dir]
+images="./images"
+result="./results"
