@@ -102,7 +102,6 @@ func readCases(dir string) ([]Case, error) {
 		step := ""
 		fileParts := strings.Split(file.Name(), "_")
 		if len(fileParts) < 2 {
-			//fmt.Println(fmt.Errorf("using fallback dir for: %s", path))
 
 			dirParts := strings.Split(dir, "/")
 			currentDir := dirParts[len(dirParts)-1]

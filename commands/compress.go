@@ -16,13 +16,13 @@ import (
 
 func Compress() error {
 
-	scenearios, err := Report()
+	scenarios, err := Report()
 	if err != nil {
 		return err
 	}
 
 	caseGroup := map[string]Case{}
-	for _, scenario := range scenearios {
+	for _, scenario := range scenarios {
 		for _, caseItem := range scenario.Cases {
 			key := fmt.Sprintf("%s_%s (%d steps)", caseItem.Name, caseItem.Device, len(caseItem.Steps))
 			caseGroup[key] = caseItem
@@ -36,7 +36,7 @@ func Compress() error {
 	}
 	sort.Strings(caseOptions)
 
-	caseOptionsSelected := []string{}
+	var caseOptionsSelected []string
 	prompt := &survey.MultiSelect{
 		Message:  "Choose cases",
 		Options:  caseOptions,
@@ -48,8 +48,11 @@ func Compress() error {
 		return err
 	}
 
-	for _, caseOption := range caseOptionsSelected {
+	for i, caseOption := range caseOptionsSelected {
 		caseItem := caseGroup[caseOption]
+
+		fmt.Println(fmt.Sprintf("[%d/%d] processing: %s_%s (%d steps)",i,len(caseOptionsSelected), caseItem.Name, caseItem.Device, len(caseItem.Steps)))
+
 		var filePaths []string
 		for _, step := range caseItem.Steps {
 			filePaths = append(filePaths, step.Path)
@@ -62,6 +65,8 @@ func Compress() error {
 			fmt.Println(err)
 			continue
 		}
+		fmt.Println(fmt.Sprintf("output: %s\n",output))
+
 	}
 
 	return nil

@@ -11,11 +11,7 @@ import (
 )
 
 func setup() {
-
-	err := config.ReadDefault()
-	if err != nil {
-		panic(err)
-	}
+	_ = config.ReadDefault()
 }
 func main() {
 
@@ -26,46 +22,27 @@ func main() {
 	app.Usage = "sube facilmente tus evidencias a Qmetry"
 
 	app.Flags = []cli.Flag{
-		cli.StringFlag{
-			Name:  "config, c",
-			Usage: "Config file",
-			Value: "./config.toml",
-		},
-		cli.StringFlag{
-			Name:  "images, i",
-			Usage: "Images dir",
-		},
-		cli.StringFlag{
-			Name:  "output, o",
-			Usage: "Output dir",
-		},
-		cli.StringFlag{
-			Name:  "result, r",
-			Usage: "Result dir",
-		},
 	}
 
 	app.Commands = []cli.Command{
 		{
-			Name:    "sample",
-			Aliases: []string{"s"},
-			Flags: []cli.Flag{
-			},
-			Usage: "sample",
-			Action: func(c *cli.Context) error {
-				return nil
-			},
-		},
-		{
 			Name:    "compress",
 			Aliases: []string{"c"},
 			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "images, i",
+					Usage: "Images dir",
+				},
+				cli.StringFlag{
+					Name:  "output, o",
+					Usage: "Output dir",
+				},
 			},
 			Usage: "compress images",
 			Action: func(c *cli.Context) error {
 				readContext(c)
 
-				 err := commands.Compress()
+				err := commands.Compress()
 
 				return err
 			},
@@ -74,6 +51,14 @@ func main() {
 			Name:    "report",
 			Aliases: []string{"r"},
 			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "images, i",
+					Usage: "Images dir",
+				},
+				cli.StringFlag{
+					Name:  "output, o",
+					Usage: "Output dir",
+				},
 			},
 			Usage: "show report",
 			Action: func(c *cli.Context) error {
@@ -94,7 +79,7 @@ func main() {
 	}
 }
 
-func readContext(c *cli.Context){
+func readContext(c *cli.Context) {
 
 	images := c.String("images")
 	if images != "" {
@@ -103,10 +88,6 @@ func readContext(c *cli.Context){
 	output := c.String("output")
 	if output != "" {
 		config.Vars.Dir.Output = output
-	}
-	result := c.String("result")
-	if images != "" {
-		config.Vars.Dir.Result = result
 	}
 
 }

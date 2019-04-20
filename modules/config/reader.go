@@ -10,7 +10,6 @@ import (
 type Dir struct {
 	Images string `toml:"images" default:"./images"`
 	Output string `toml:"output" default:"./output"`
-	Result string `toml:"result" default:"./results"`
 }
 
 //Vars ...
