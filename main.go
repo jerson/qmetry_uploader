@@ -3,19 +3,18 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/urfave/cli"
 	"log"
 	"os"
 	"qmetry_uploader/commands"
 	"qmetry_uploader/modules/config"
+
+	"github.com/urfave/cli"
 )
 
 func setup() {
 	_ = config.ReadDefault()
 }
 func main() {
-
-	//setup()
 
 	app := cli.NewApp()
 	app.Name = "Qmetry uploader"
@@ -29,8 +28,8 @@ func main() {
 			Aliases: []string{"c"},
 			Flags: []cli.Flag{
 				cli.StringFlag{
-					Name:  "images, i",
-					Usage: "Images dir",
+					Name:  "input, i",
+					Usage: "Input dir",
 				},
 				cli.StringFlag{
 					Name:  "output, o",
@@ -51,8 +50,8 @@ func main() {
 			Aliases: []string{"r"},
 			Flags: []cli.Flag{
 				cli.StringFlag{
-					Name:  "images, i",
-					Usage: "Images dir",
+					Name:  "input, i",
+					Usage: "Input dir",
 				},
 				cli.StringFlag{
 					Name:  "output, o",
@@ -80,11 +79,11 @@ func main() {
 
 func readContext(c *cli.Context) {
 
-	images := c.String("images")
-	if images != "" {
-		config.Vars.Dir.Images = images
+	input := c.String("input")
+	if input != "" {
+		config.Vars.Dir.Input = input
 	} else {
-		config.Vars.Dir.Images = "./images"
+		config.Vars.Dir.Input = "./"
 	}
 
 	output := c.String("output")

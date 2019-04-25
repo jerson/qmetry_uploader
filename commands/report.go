@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// Scenario ...
 type Scenario struct {
 	DirName string
 	Name    string
@@ -15,22 +16,25 @@ type Scenario struct {
 	Cases   []Case
 }
 
+// Case ...
 type Case struct {
 	Name   string
 	Device string
 	Steps  []Step
 }
 
+// Step ...
 type Step struct {
 	FileName string
 	Name     string
 	Path     string
 }
 
+// Report ...
 func Report() ([]Scenario, error) {
 	var scenarios []Scenario
 
-	baseDir := config.Vars.Dir.Images
+	baseDir := config.Vars.Dir.Input
 	dirs, err := ioutil.ReadDir(baseDir)
 	if err != nil {
 		return nil, err
@@ -53,6 +57,21 @@ func Report() ([]Scenario, error) {
 			Path:    path,
 			Cases:   cases,
 		})
+	}
+
+	if len(scenarios) < 1 {
+		fmt.Println("fallback now using input as scenario")
+		cases, err := readCases(baseDir)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			scenarios = append(scenarios, Scenario{
+				Name:    "",
+				DirName: "",
+				Path:    baseDir,
+				Cases:   cases,
+			})
+		}
 	}
 
 	return scenarios, nil

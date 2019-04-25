@@ -2,13 +2,14 @@
 package config
 
 import (
-	"github.com/jinzhu/configor"
 	"path/filepath"
+
+	"github.com/jinzhu/configor"
 )
 
 // Dir ...
 type Dir struct {
-	Images string `toml:"images" default:"./images"`
+	Input  string `toml:"images" default:"./"`
 	Output string `toml:"output" default:"./output"`
 }
 

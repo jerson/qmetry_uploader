@@ -2,7 +2,6 @@ package commands
 
 import (
 	"fmt"
-	"gopkg.in/AlecAivazis/survey.v1"
 	"image"
 	"image/color"
 	"log"
@@ -11,9 +10,12 @@ import (
 	"qmetry_uploader/modules/config"
 	"sort"
 
+	"gopkg.in/AlecAivazis/survey.v1"
+
 	"github.com/disintegration/imaging"
 )
 
+// Compress ...
 func Compress() error {
 
 	scenarios, err := Report()
@@ -51,7 +53,7 @@ func Compress() error {
 	for i, caseOption := range caseOptionsSelected {
 		caseItem := caseGroup[caseOption]
 
-		fmt.Println(fmt.Sprintf("[%d/%d] processing: %s_%s (%d steps)",i,len(caseOptionsSelected), caseItem.Name, caseItem.Device, len(caseItem.Steps)))
+		fmt.Println(fmt.Sprintf("[%d/%d] processing: %s_%s (%d steps)", i, len(caseOptionsSelected), caseItem.Name, caseItem.Device, len(caseItem.Steps)))
 
 		var filePaths []string
 		for _, step := range caseItem.Steps {
@@ -65,19 +67,20 @@ func Compress() error {
 			fmt.Println(err)
 			continue
 		}
-		fmt.Println(fmt.Sprintf("output: %s\n",output))
+		fmt.Println(fmt.Sprintf("output: %s\n", output))
 
 	}
 
 	return nil
 }
 
+// ImageFixed ...
 type ImageFixed struct {
 	Image *image.NRGBA
 	Point image.Point
 }
 
-func mergeImages(paths []string, output string) (error) {
+func mergeImages(paths []string, output string) error {
 
 	resizeHeight := 600
 	x := 0
