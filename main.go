@@ -18,6 +18,7 @@ func main() {
 
 	app := cli.NewApp()
 	app.Name = "Qmetry uploader"
+	app.Version = "0.0.1"
 	app.Usage = "sube facilmente tus evidencias a Qmetry"
 
 	app.Flags = []cli.Flag{}
