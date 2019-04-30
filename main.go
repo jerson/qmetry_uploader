@@ -25,6 +25,26 @@ func main() {
 
 	app.Commands = []cli.Command{
 		{
+			Name:    "merge-images",
+			Aliases: []string{"m"},
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "input, i",
+					Usage: "Input dir",
+				},
+				cli.StringFlag{
+					Name:  "output, o",
+					Usage: "Output dir",
+				},
+			},
+			Usage: "merge images",
+			Action: func(c *cli.Context) error {
+				readContext(c)
+				err := commands.MergeImages()
+				return err
+			},
+		},
+		{
 			Name:    "compress",
 			Aliases: []string{"c"},
 			Flags: []cli.Flag{
@@ -40,9 +60,7 @@ func main() {
 			Usage: "compress images",
 			Action: func(c *cli.Context) error {
 				readContext(c)
-
 				err := commands.Compress()
-
 				return err
 			},
 		},
