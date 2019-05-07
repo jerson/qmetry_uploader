@@ -32,9 +32,14 @@ type Step struct {
 
 // Report ...
 func Report() ([]Scenario, error) {
+	baseDir := config.Vars.Dir.Input
+	return ReportDir(baseDir)
+}
+
+// ReportDir ...
+func ReportDir(baseDir string) ([]Scenario, error) {
 	var scenarios []Scenario
 
-	baseDir := config.Vars.Dir.Input
 	dirs, err := ioutil.ReadDir(baseDir)
 	if err != nil {
 		return nil, err

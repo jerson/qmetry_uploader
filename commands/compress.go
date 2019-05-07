@@ -17,8 +17,14 @@ import (
 
 // Compress ...
 func Compress() error {
+	baseDir := config.Vars.Dir.Input
+	return CompressDir(baseDir)
+}
 
-	scenarios, err := Report()
+// CompressDir ...
+func CompressDir(baseDir string) error {
+
+	scenarios, err := ReportDir(baseDir)
 	if err != nil {
 		return err
 	}

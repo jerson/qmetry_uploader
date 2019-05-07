@@ -88,6 +88,16 @@ func main() {
 				return err
 			},
 		},
+		{
+			Name:    "gui",
+			Aliases: []string{"g"},
+			Flags:   []cli.Flag{},
+			Usage:   "show GUI",
+			Action: func(c *cli.Context) error {
+
+				return commands.GUI()
+			},
+		},
 	}
 
 	err := app.Run(os.Args)
