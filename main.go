@@ -11,8 +11,6 @@ import (
 )
 
 func setup() {
-	//log.SetFormatter(&log.JSONFormatter{})
-	//log.SetOutput(os.Stdout)
 	log.SetLevel(log.DebugLevel)
 
 	//_ = config.ReadDefault()
@@ -38,14 +36,27 @@ func main() {
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "input, i",
+					Value: "./",
 					Usage: "Input dir",
 				},
 				cli.StringFlag{
 					Name:  "output, o",
+					Value: "./output",
 					Usage: "Output dir",
 				},
 			},
-			Usage: "merge images into merged file",
+			Category:"evidences",
+			Description: "merge images into one merged file",
+			Usage: "qmetry-uploader merge-images",
+			UsageText:`
+qmetry-uploader merge-images
+qmetry-uploader merge-images -o ./output
+qmetry-uploader merge-images --input=./images
+qmetry-uploader merge-images -i ./images
+qmetry-uploader merge-images --input=./images --output=./output
+qmetry-uploader merge-images -i ./images -o ./output
+
+`,
 			Action: func(c *cli.Context) error {
 				readContext(c)
 				err := commands.MergeImages()
@@ -58,14 +69,27 @@ func main() {
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "input, i",
+					Value: "./",
 					Usage: "Input dir",
 				},
 				cli.StringFlag{
 					Name:  "output, o",
+					Value: "./output",
 					Usage: "Output dir",
 				},
 			},
-			Usage: "compress images",
+			Category:"evidences",
+			Description: "compress images grouped by device and case",
+			Usage: "qmetry-uploader compress",
+			UsageText: `
+qmetry-uploader compress
+qmetry-uploader compress -o ./output
+qmetry-uploader compress --input=./images
+qmetry-uploader compress -i ./images
+qmetry-uploader compress --input=./images --output=./output
+qmetry-uploader compress -i ./images -o ./output
+
+`,
 			Action: func(c *cli.Context) error {
 				readContext(c)
 				err := commands.Compress()
@@ -78,14 +102,18 @@ func main() {
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "input, i",
+					Value: "./",
 					Usage: "Input dir",
 				},
-				cli.StringFlag{
-					Name:  "output, o",
-					Usage: "Output dir",
-				},
 			},
-			Usage: "show report",
+			Category:"debug",
+			Description: "show report for debug purposes",
+			Usage: "qmetry-uploader report",
+			UsageText: `
+qmetry-uploader report
+qmetry-uploader report --input=./images
+qmetry-uploader report -i ./images
+`,
 			Action: func(c *cli.Context) error {
 				readContext(c)
 
@@ -101,19 +129,15 @@ func main() {
 			Aliases: []string{"sa"},
 			Flags: []cli.Flag{
 				cli.StringFlag{
-
 					Name:  "adb, a",
+					Value: "adb",
 					Usage: "ADB path",
 				},
-				cli.StringFlag{
-					Name:  "name, n",
-					Usage: "Name",
-				},
 			},
-			Usage: `
-screenshot for android using adb
-ex:
-
+			Category:"screenshot",
+			Description: "screenshot for android using adb",
+			Usage: "qmetry-uploader screenshot-android J2 AMM-12112 01",
+			UsageText: `
 qmetry-uploader screenshot-android J2 AMM-12112 01
 qmetry-uploader screenshot-android J2 AMM-12112 02
 qmetry-uploader screenshot-android J2 AMM-12112 "sample case"
@@ -126,9 +150,6 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"
 				caseName := c.Args().Get(1)
 				description := c.Args().Get(2)
 				adb := c.String("adb")
-				if adb == "" {
-					adb = "adb"
-				}
 
 				options := commands.ScreenshotAndroidOptions{
 					ScreenshotOptions: commands.ScreenshotOptions{
@@ -147,7 +168,9 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"
 			Name:    "gui",
 			Aliases: []string{"g"},
 			Flags:   []cli.Flag{},
-			Usage:   "show GUI",
+			Category:"gui",
+			Description:   "show GUI",
+			Usage: "qmetry-uploader gui",
 			Action: func(c *cli.Context) error {
 
 				return commands.GUI()
