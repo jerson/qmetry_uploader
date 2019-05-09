@@ -5,7 +5,7 @@ default: build
 
 build: format vet
 	$(BUILD) -o qmetry_uploader main.go
-	upx -9 qmetry_uploader
+	upx qmetry_uploader
 
 test:
 	go test $$(go list ./... | grep -v /vendor/)

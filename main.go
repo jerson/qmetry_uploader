@@ -12,12 +12,12 @@ import (
 	"github.com/urfave/cli"
 
 	"qmetry_uploader/commands"
+	"qmetry_uploader/modules/config"
 )
 
 func setup() {
 	log.SetLevel(log.DebugLevel)
-
-	//_ = config.ReadDefault()
+	_ = config.ReadDefault()
 }
 func main() {
 
@@ -25,8 +25,8 @@ func main() {
 
 	app := cli.NewApp()
 	app.Name = "Qmetry uploader"
-	app.Version = "0.0.2"
-	app.Usage = "upload easily to Qmetry and more"
+	app.Version = config.Vars.Version
+	app.Usage = "Upload easily to Qmetry and more"
 
 	app.Flags = []cli.Flag{}
 
@@ -40,12 +40,12 @@ func main() {
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "input, i",
-					Value: ".",
+					Value: config.Vars.Dir.Input,
 					Usage: "Input dir",
 				},
 				cli.StringFlag{
 					Name:  "output, o",
-					Value: "./output",
+					Value: config.Vars.Dir.Output,
 					Usage: "Output dir",
 				},
 			},
@@ -76,12 +76,12 @@ qmetry-uploader merge-images -i ./images -o ./output`,
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "input, i",
-					Value: ".",
+					Value: config.Vars.Dir.Input,
 					Usage: "Input dir",
 				},
 				cli.StringFlag{
 					Name:  "output, o",
-					Value: "./output",
+					Value: config.Vars.Dir.Output,
 					Usage: "Output dir",
 				},
 			},
@@ -112,7 +112,7 @@ qmetry-uploader compress -i ./images -o ./output`,
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "input, i",
-					Value: ".",
+					Value: config.Vars.Dir.Input,
 					Usage: "Input dir",
 				},
 			},
@@ -144,7 +144,7 @@ qmetry-uploader report -i ./images`,
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "adb, a",
-					Value: "adb",
+					Value: config.Vars.Binary.ADB,
 					Usage: "ADB path",
 				},
 			},
@@ -162,42 +162,9 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 				description := c.Args().Get(2)
 				adb := c.String("adb")
 
-				if model == "" {
-					prompt := promptui.Prompt{
-						Label:    "Model (GB|GM|GA|iOS) ",
-						Default:  "",
-						Validate: requiredField,
-					}
-					result, err := prompt.Run()
-					if err != nil {
-						return err
-					}
-					model = result
-				}
-				if caseName == "" {
-					prompt := promptui.Prompt{
-						Label:    "Case (AMM-000) ",
-						Default:  "",
-						Validate: requiredField,
-					}
-					result, err := prompt.Run()
-					if err != nil {
-						return err
-					}
-					caseName = result
-				}
-				if description == "" {
-					prompt := promptui.Prompt{
-						Label:    "Description ",
-						Default:  "",
-						Validate: requiredField,
-					}
-					result, err := prompt.Run()
-					if err != nil {
-						return err
-					}
-					description = result
-				}
+				model = promptField("Model (GB|GM|GA|iOS)", model, "")
+				caseName = promptField("Case (AMM-000)", caseName, "")
+				description = promptField("Description", description, "")
 
 				options := commands.ScreenshotAndroidOptions{
 					ScreenshotOptions: commands.ScreenshotOptions{
@@ -218,21 +185,22 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "username, u",
+					Value: config.Vars.Nexus.Username,
 					Usage: "Nexus username",
 				},
 				cli.StringFlag{
 					Name:  "password, p",
+					Value: config.Vars.Nexus.Password,
 					Usage: "Nexus password",
 				},
 				cli.StringFlag{
 					Name:  "project, pr",
-					Value: "mi-banco",
+					Value: config.Vars.Nexus.Project,
 					Usage: "Nexus project",
 				},
 				cli.StringFlag{
-					Name: "server, s",
-					// project platform name
-					Value: "http://mb-nexus.westus.cloudapp.azure.com/repository/%s-%s/builds/%s",
+					Name:  "server, s",
+					Value: config.Vars.Nexus.Server,
 					Usage: "Nexus server template",
 				},
 			},
@@ -250,41 +218,10 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 				server := c.String("server")
 				project := c.String("project")
 
-				if project == "" {
-					prompt := promptui.Prompt{
-						Label:    "Project ",
-						Validate: requiredField,
-					}
-					result, err := prompt.Run()
-					if err != nil {
-						return err
-					}
-					project = result
-				}
-				if username == "" {
-					prompt := promptui.Prompt{
-						Label:    "Username ",
-						Validate: requiredField,
-					}
-					result, err := prompt.Run()
-					if err != nil {
-						return err
-					}
-					username = result
-				}
+				project = promptField("Project", project, "")
+				username = promptField("Username", username, "")
+				password = promptPasswordField("Password", password, "")
 
-				if password == "" {
-					prompt := promptui.Prompt{
-						Label:    "Password ",
-						Mask:     '*',
-						Validate: requiredField,
-					}
-					result, err := prompt.Run()
-					if err != nil {
-						return err
-					}
-					password = result
-				}
 				file := c.Args().Get(0)
 
 				options := commands.UploadNexusOptions{
@@ -330,9 +267,44 @@ func chooseDir(input string) {
 	})
 }
 
+func promptField(name string, value string, defaultValue string) string {
+	if value == "" {
+		prompt := promptui.Prompt{
+			Label:    name + " ",
+			Default:  defaultValue,
+			Validate: requiredField,
+		}
+		result, err := prompt.Run()
+		if err != nil {
+			log.Warn(err)
+			return value
+		}
+		value = result
+	}
+	return value
+}
+
+func promptPasswordField(name string, value string, defaultValue string) string {
+	if value == "" {
+		prompt := promptui.Prompt{
+			Label:    name + " ",
+			Mask:     '*',
+			Default:  defaultValue,
+			Validate: requiredField,
+		}
+		result, err := prompt.Run()
+		if err != nil {
+			log.Warn(err)
+			return value
+		}
+		value = result
+	}
+	return value
+}
+
 func requiredField(input string) error {
 	if len(input) < 1 {
-		return errors.New("Required field")
+		return errors.New("required field")
 	}
 	return nil
 }
