@@ -229,6 +229,10 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 				file := c.Args().Get(0)
 
 				file = promptFile("Choose file to upload", file, "*.apk,*.ipa,*.zip", "")
+				if file == "" {
+					return errors.New("missing file")
+				}
+
 				username = promptField("Username", username, "")
 				password = promptPasswordField("Password", password, "")
 				project = promptField("Project", project, "")
@@ -267,16 +271,16 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 	}
 }
 
-func chooseDir(title, input string) <-chan string {
-	output := make(chan string, 1)
+func chooseDir(output chan string, title, input string) {
 
 	go func() {
 		ui.InitLibrary()
 		dialog := ui.CreateFileSelectDialog(title, "", input, true, true)
 		dialog.OnClose(func() {
+			selected := dialog.Selected
 			path := dialog.FilePath
 			defer ui.DeinitLibrary()
-			if path == "" {
+			if selected && path == "" {
 				path = input
 			}
 
@@ -285,42 +289,40 @@ func chooseDir(title, input string) <-chan string {
 		})
 		ui.MainLoop()
 	}()
-	return output
 }
 
-func chooseFile(title, input, fileMasks string) <-chan string {
-	output := make(chan string, 1)
+func chooseFile(output chan string, title, input, fileMasks string) {
 
 	go func() {
 		ui.InitLibrary()
 		dialog := ui.CreateFileSelectDialog(title, fileMasks, input, false, true)
 		dialog.OnClose(func() {
+			selected := dialog.Selected
 			path := dialog.FilePath
 			defer ui.DeinitLibrary()
-			if path == "" {
+			if selected && path == "" {
 				path = input
 			}
 
 			output <- path
-
 		})
 		ui.MainLoop()
 	}()
-	return output
 }
 func promptFile(name, value, fileMasks, defaultValue string) string {
 	if value == "" {
-		output := chooseFile(name, defaultValue, fileMasks)
+		output := make(chan string)
+		chooseFile(output, name, defaultValue, fileMasks)
+		<-output
 		value = <-output
-	}
-	if value == "" {
-		panic("missing file")
 	}
 	return value
 }
 func promptDir(name, value, defaultValue string) string {
 	if value == "" {
-		output := chooseDir(name, defaultValue)
+		output := make(chan string)
+		chooseDir(output, name, defaultValue)
+		<-output
 		value = <-output
 	}
 	return value
