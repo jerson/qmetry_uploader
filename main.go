@@ -30,9 +30,6 @@ func main() {
 
 	app.Flags = []cli.Flag{}
 
-	app.CommandNotFound = func(c *cli.Context, name string) {
-		_ = commands.GUI()
-	}
 	app.Commands = []cli.Command{
 		{
 			Name:    "merge-images",
