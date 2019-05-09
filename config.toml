@@ -1,7 +1,13 @@
 
-debug=false
 
 [dir]
 input=""
 output="./output"
+
+[binaries]
+adb="adb"
+
+[nexus]
+username=""
+password=""
 
