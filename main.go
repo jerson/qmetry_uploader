@@ -171,6 +171,17 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 					Name:  "password, p",
 					Usage: "Nexus password",
 				},
+				cli.StringFlag{
+					Name:  "project, pr",
+					Value: "mi-banco",
+					Usage: "Nexus project",
+				},
+				cli.StringFlag{
+					Name: "server, s",
+					// project platform name
+					Value: "http://mb-nexus.westus.cloudapp.azure.com/repository/%s-%s/builds/%s",
+					Usage: "Nexus server template",
+				},
 			},
 			Category:    "nexus",
 			Description: "upload android or ios binaries to nexus",
@@ -183,6 +194,8 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 
 				username := c.String("username")
 				password := c.String("password")
+				server := c.String("server")
+				project := c.String("project")
 
 				if username == "" {
 					prompt := promptui.Prompt{
@@ -209,7 +222,17 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 					password = result
 				}
 				file := c.Args().Get(0)
-				return commands.UploadNexus(file)
+
+				options := commands.UploadNexusOptions{
+					UploadOptions: commands.UploadOptions{
+						File: file,
+					},
+					Username: username,
+					Password: password,
+					Project:  project,
+					Server:   server,
+				}
+				return commands.UploadNexus(options)
 
 			},
 		},
