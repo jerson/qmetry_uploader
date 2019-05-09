@@ -226,13 +226,13 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 				password := c.String("password")
 				server := c.String("server")
 				project := c.String("project")
+				file := c.Args().Get(0)
 
+				file = promptFile("Choose file to upload", file, "*.apk,*.ipa,*.zip", "")
 				username = promptField("Username", username, "")
 				password = promptPasswordField("Password", password, "")
 				project = promptField("Project", project, "")
 				server = promptPasswordField("Server", server, config.Vars.Nexus.Server)
-
-				file := c.Args().Get(0)
 
 				options := commands.UploadNexusOptions{
 					UploadOptions: commands.UploadOptions{
@@ -274,16 +274,13 @@ func chooseDir(title, input string) <-chan string {
 		ui.InitLibrary()
 		dialog := ui.CreateFileSelectDialog(title, "", input, true, true)
 		dialog.OnClose(func() {
-			selected := dialog.Selected
 			path := dialog.FilePath
 			defer ui.DeinitLibrary()
 			if path == "" {
 				path = input
 			}
 
-			if selected {
-				output <- path
-			}
+			output <- path
 
 		})
 		ui.MainLoop()
@@ -291,6 +288,36 @@ func chooseDir(title, input string) <-chan string {
 	return output
 }
 
+func chooseFile(title, input, fileMasks string) <-chan string {
+	output := make(chan string, 1)
+
+	go func() {
+		ui.InitLibrary()
+		dialog := ui.CreateFileSelectDialog(title, fileMasks, input, false, true)
+		dialog.OnClose(func() {
+			path := dialog.FilePath
+			defer ui.DeinitLibrary()
+			if path == "" {
+				path = input
+			}
+
+			output <- path
+
+		})
+		ui.MainLoop()
+	}()
+	return output
+}
+func promptFile(name, value, fileMasks, defaultValue string) string {
+	if value == "" {
+		output := chooseFile(name, defaultValue, fileMasks)
+		value = <-output
+	}
+	if value == "" {
+		panic("missing file")
+	}
+	return value
+}
 func promptDir(name, value, defaultValue string) string {
 	if value == "" {
 		output := chooseDir(name, defaultValue)

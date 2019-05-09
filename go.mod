@@ -3,7 +3,7 @@ module qmetry_uploader
 go 1.12
 
 require (
-	github.com/VladimirMarkelov/clui v1.1.1-0.20190508044756-17ae50e3533c
+	github.com/VladimirMarkelov/clui v1.1.0
 	github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf // indirect
 	github.com/atotto/clipboard v0.1.2 // indirect
 	github.com/disintegration/imaging v1.6.0
