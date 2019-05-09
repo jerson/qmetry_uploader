@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"path/filepath"
 	"qmetry_uploader/modules/config"
@@ -52,7 +53,7 @@ func ReportDir(baseDir string) ([]Scenario, error) {
 		path := fmt.Sprintf("%s/%s", baseDir, dir.Name())
 		cases, err := readCases(path)
 		if err != nil {
-			fmt.Println(err)
+			log.Error(err)
 			continue
 		}
 
@@ -65,10 +66,10 @@ func ReportDir(baseDir string) ([]Scenario, error) {
 	}
 
 	if len(scenarios) < 1 {
-		fmt.Println("fallback now using input as scenario")
+		log.Info("fallback now using input as scenario")
 		cases, err := readCases(baseDir)
 		if err != nil {
-			fmt.Println(err)
+			log.Error(err)
 		} else {
 			scenarios = append(scenarios, Scenario{
 				Name:    "",
@@ -96,7 +97,7 @@ func readCases(dir string) ([]Case, error) {
 		if file.IsDir() {
 			cases, err := readCases(path)
 			if err != nil {
-				fmt.Println(err)
+				log.Error(err)
 				continue
 			}
 
@@ -119,7 +120,7 @@ func readCases(dir string) ([]Case, error) {
 
 		extension := filepath.Ext(path)
 		if !contains([]string{".jpg", ".png"}, strings.ToLower(extension)) {
-			fmt.Println(fmt.Errorf("ignored file: %s", path))
+			log.Warnf("ignored file: %s", path)
 			continue
 		}
 
@@ -131,7 +132,7 @@ func readCases(dir string) ([]Case, error) {
 			currentDir := dirParts[len(dirParts)-1]
 			fileParts = strings.Split(currentDir, "_")
 			if len(fileParts) < 2 {
-				fmt.Println(fmt.Errorf("invariant name file: %s", path))
+				log.Errorf("invariant name file: %s", path)
 				continue
 			}
 			step = file.Name()

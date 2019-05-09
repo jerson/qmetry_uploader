@@ -2,8 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"os"
 	"qmetry_uploader/commands"
 	"qmetry_uploader/modules/config"
@@ -12,9 +11,15 @@ import (
 )
 
 func setup() {
-	_ = config.ReadDefault()
+	//log.SetFormatter(&log.JSONFormatter{})
+	//log.SetOutput(os.Stdout)
+	log.SetLevel(log.DebugLevel)
+
+	//_ = config.ReadDefault()
 }
 func main() {
+
+	setup()
 
 	app := cli.NewApp()
 	app.Name = "Qmetry uploader"
@@ -23,6 +28,9 @@ func main() {
 
 	app.Flags = []cli.Flag{}
 
+	app.CommandNotFound = func(c *cli.Context, name string) {
+		_ = commands.GUI()
+	}
 	app.Commands = []cli.Command{
 		{
 			Name:    "merge-images",
@@ -37,7 +45,7 @@ func main() {
 					Usage: "Output dir",
 				},
 			},
-			Usage: "merge images",
+			Usage: "merge images into merged file",
 			Action: func(c *cli.Context) error {
 				readContext(c)
 				err := commands.MergeImages()
@@ -89,6 +97,53 @@ func main() {
 			},
 		},
 		{
+			Name:    "screenshot-android",
+			Aliases: []string{"sa"},
+			Flags: []cli.Flag{
+				cli.StringFlag{
+
+					Name:  "adb, a",
+					Usage: "ADB path",
+				},
+				cli.StringFlag{
+					Name:  "name, n",
+					Usage: "Name",
+				},
+			},
+			Usage: `
+screenshot for android using adb
+ex:
+
+qmetry-uploader screenshot-android J2 AMM-12112 01
+qmetry-uploader screenshot-android J2 AMM-12112 02
+qmetry-uploader screenshot-android J2 AMM-12112 "sample case"
+
+`,
+			Action: func(c *cli.Context) error {
+				readContext(c)
+
+				model := c.Args().Get(0)
+				caseName := c.Args().Get(1)
+				description := c.Args().Get(2)
+				adb := c.String("adb")
+				if adb == "" {
+					adb = "adb"
+				}
+
+				options := commands.ScreenshotAndroidOptions{
+					ScreenshotOptions: commands.ScreenshotOptions{
+						Model:       model,
+						Case:        caseName,
+						Description: description,
+					},
+					ADB: adb,
+				}
+
+				return commands.ScreenshotAndroid(options)
+
+			},
+		},
+		{
 			Name:    "gui",
 			Aliases: []string{"g"},
 			Flags:   []cli.Flag{},
@@ -130,5 +185,5 @@ func printJSON(data interface{}) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Print(string(output))
+	log.Debug(string(output))
 }

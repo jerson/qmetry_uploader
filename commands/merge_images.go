@@ -3,6 +3,7 @@ package commands
 import (
 	"errors"
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -26,7 +27,7 @@ func MergeImages() error {
 		path := fmt.Sprintf("%s/%s", baseDir, file.Name())
 		extension := filepath.Ext(path)
 		if !contains([]string{".jpg", ".png"}, strings.ToLower(extension)) {
-			fmt.Println(fmt.Errorf("ignored file: %s", path))
+			log.Warnf("ignored file: %s", path)
 			continue
 		}
 		filePaths = append(filePaths, path)
@@ -43,7 +44,7 @@ func MergeImages() error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(fmt.Sprintf("output: %s\n", output))
+	log.Infof("output: %s\n", output)
 
 	return nil
 }

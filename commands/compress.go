@@ -2,9 +2,9 @@ package commands
 
 import (
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"image"
 	"image/color"
-	"log"
 	"math"
 	"os"
 	"qmetry_uploader/modules/config"
@@ -59,7 +59,7 @@ func CompressDir(baseDir string) error {
 	for i, caseOption := range caseOptionsSelected {
 		caseItem := caseGroup[caseOption]
 
-		fmt.Println(fmt.Sprintf("[%d/%d] processing: %s_%s (%d steps)", i, len(caseOptionsSelected), caseItem.Name, caseItem.Device, len(caseItem.Steps)))
+		log.Infof("[%d/%d] processing: %s_%s (%d steps)", i, len(caseOptionsSelected), caseItem.Name, caseItem.Device, len(caseItem.Steps))
 
 		var filePaths []string
 		for _, step := range caseItem.Steps {
@@ -70,10 +70,10 @@ func CompressDir(baseDir string) error {
 		output := fmt.Sprintf("%s/%s_%s.png", config.Vars.Dir.Output, caseItem.Device, caseItem.Name)
 		err := mergeImages(filePaths, output)
 		if err != nil {
-			fmt.Println(err)
+			log.Error(err)
 			continue
 		}
-		fmt.Println(fmt.Sprintf("output: %s\n", output))
+		log.Infof("output: %s\n", output)
 
 	}
 
