@@ -73,7 +73,7 @@ func UploadNexus(options UploadNexusOptions) error {
 	}
 	bodyText, err := ioutil.ReadAll(resp.Body)
 
-	log.Infof("success %s", string(bodyText))
+	log.Infof("uploaded %s", string(bodyText))
 
 	return nil
 }

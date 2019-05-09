@@ -123,6 +123,7 @@ qmetry-uploader report -i ./images`,
 			},
 		},
 		{
+			// Agregar que el case y device sirva para crear la carpeta
 			Name:    "screenshot-android",
 			Aliases: []string{"sa"},
 			Flags: []cli.Flag{
@@ -145,6 +146,43 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 				caseName := c.Args().Get(1)
 				description := c.Args().Get(2)
 				adb := c.String("adb")
+
+				if model == "" {
+					prompt := promptui.Prompt{
+						Label:    "Model (GB|GM|GA|iOS) ",
+						Default:  "",
+						Validate: requiredField,
+					}
+					result, err := prompt.Run()
+					if err != nil {
+						return err
+					}
+					model = result
+				}
+				if caseName == "" {
+					prompt := promptui.Prompt{
+						Label:    "Case (AMM-000) ",
+						Default:  "",
+						Validate: requiredField,
+					}
+					result, err := prompt.Run()
+					if err != nil {
+						return err
+					}
+					caseName = result
+				}
+				if description == "" {
+					prompt := promptui.Prompt{
+						Label:    "Description ",
+						Default:  "",
+						Validate: requiredField,
+					}
+					result, err := prompt.Run()
+					if err != nil {
+						return err
+					}
+					description = result
+				}
 
 				options := commands.ScreenshotAndroidOptions{
 					ScreenshotOptions: commands.ScreenshotOptions{
@@ -197,6 +235,17 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 				server := c.String("server")
 				project := c.String("project")
 
+				if project == "" {
+					prompt := promptui.Prompt{
+						Label:    "Project ",
+						Validate: requiredField,
+					}
+					result, err := prompt.Run()
+					if err != nil {
+						return err
+					}
+					project = result
+				}
 				if username == "" {
 					prompt := promptui.Prompt{
 						Label:    "Username ",
