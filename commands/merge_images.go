@@ -3,19 +3,24 @@ package commands
 import (
 	"errors"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"qmetry_uploader/modules/config"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 )
 
-// MergeImages ...
-func MergeImages() error {
+// MergeImagesOptions ...
+type MergeImagesOptions struct {
+	Input  string
+	Output string
+}
 
-	baseDir := config.Vars.Dir.Input
-	files, err := ioutil.ReadDir(baseDir)
+// MergeImages ...
+func MergeImages(options MergeImagesOptions) error {
+
+	files, err := ioutil.ReadDir(options.Input)
 	if err != nil {
 		return err
 	}
@@ -24,7 +29,7 @@ func MergeImages() error {
 		if file.IsDir() {
 			continue
 		}
-		path := fmt.Sprintf("%s/%s", baseDir, file.Name())
+		path := fmt.Sprintf("%s/%s", options.Input, file.Name())
 		extension := filepath.Ext(path)
 		if !contains([]string{".jpg", ".png"}, strings.ToLower(extension)) {
 			log.Warnf("ignored file: %s", path)
@@ -38,8 +43,8 @@ func MergeImages() error {
 		return errors.New("images not found")
 	}
 
-	_ = os.MkdirAll(config.Vars.Dir.Output, 0777)
-	output := fmt.Sprintf("%s/%s.png", config.Vars.Dir.Output, "merged")
+	_ = os.MkdirAll(options.Output, 0777)
+	output := fmt.Sprintf("%s/%s.png", options.Output, "merged")
 	err = mergeImages(filePaths, output)
 	if err != nil {
 		return err

@@ -10,11 +10,14 @@ import (
 	"strings"
 )
 
+// ScreenshotOptions ...
 type ScreenshotOptions struct {
 	Model       string
 	Case        string
 	Description string
 }
+
+// ScreenshotAndroidOptions ...
 type ScreenshotAndroidOptions struct {
 	ScreenshotOptions
 	ADB string

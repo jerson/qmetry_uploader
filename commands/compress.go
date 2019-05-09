@@ -2,29 +2,29 @@ package commands
 
 import (
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"image"
 	"image/color"
 	"math"
 	"os"
-	"qmetry_uploader/modules/config"
 	"sort"
+
+	log "github.com/sirupsen/logrus"
 
 	"gopkg.in/AlecAivazis/survey.v1"
 
 	"github.com/disintegration/imaging"
 )
 
-// Compress ...
-func Compress() error {
-	baseDir := config.Vars.Dir.Input
-	return CompressDir(baseDir)
+// CompressOptions ...
+type CompressOptions struct {
+	Input  string
+	Output string
 }
 
-// CompressDir ...
-func CompressDir(baseDir string) error {
+// Compress ...
+func Compress(options CompressOptions) error {
 
-	scenarios, err := ReportDir(baseDir)
+	scenarios, err := ReportDir(options.Input)
 	if err != nil {
 		return err
 	}
@@ -66,8 +66,8 @@ func CompressDir(baseDir string) error {
 			filePaths = append(filePaths, step.Path)
 		}
 
-		_ = os.MkdirAll(config.Vars.Dir.Output, 0777)
-		output := fmt.Sprintf("%s/%s_%s.png", config.Vars.Dir.Output, caseItem.Device, caseItem.Name)
+		_ = os.MkdirAll(options.Output, 0777)
+		output := fmt.Sprintf("%s/%s_%s.png", options.Output, caseItem.Device, caseItem.Name)
 		err := mergeImages(filePaths, output)
 		if err != nil {
 			log.Error(err)

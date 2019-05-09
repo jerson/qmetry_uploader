@@ -5,9 +5,13 @@ import (
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"path/filepath"
-	"qmetry_uploader/modules/config"
 	"strings"
 )
+
+// ReportOptions ...
+type ReportOptions struct {
+	Input string
+}
 
 // Scenario ...
 type Scenario struct {
@@ -32,9 +36,8 @@ type Step struct {
 }
 
 // Report ...
-func Report() ([]Scenario, error) {
-	baseDir := config.Vars.Dir.Input
-	return ReportDir(baseDir)
+func Report(options ReportOptions) ([]Scenario, error) {
+	return ReportDir(options.Input)
 }
 
 // ReportDir ...

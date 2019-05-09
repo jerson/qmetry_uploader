@@ -5,13 +5,13 @@ import (
 	"errors"
 	"os"
 
+	ui "github.com/VladimirMarkelov/clui"
 	log "github.com/sirupsen/logrus"
-
-	"qmetry_uploader/commands"
-	"qmetry_uploader/modules/config"
 
 	"github.com/manifoldco/promptui"
 	"github.com/urfave/cli"
+
+	"qmetry_uploader/commands"
 )
 
 func setup() {
@@ -60,8 +60,13 @@ qmetry-uploader merge-images -i ./images
 qmetry-uploader merge-images --input=./images --output=./output
 qmetry-uploader merge-images -i ./images -o ./output`,
 			Action: func(c *cli.Context) error {
-
-				err := commands.MergeImages()
+				input := c.String("input")
+				output := c.String("output")
+				options := commands.MergeImagesOptions{
+					Input:  input,
+					Output: output,
+				}
+				err := commands.MergeImages(options)
 				return err
 			},
 		},
@@ -91,8 +96,13 @@ qmetry-uploader compress -i ./images
 qmetry-uploader compress --input=./images --output=./output
 qmetry-uploader compress -i ./images -o ./output`,
 			Action: func(c *cli.Context) error {
-
-				err := commands.Compress()
+				input := c.String("input")
+				output := c.String("output")
+				options := commands.CompressOptions{
+					Input:  input,
+					Output: output,
+				}
+				err := commands.Compress(options)
 				return err
 			},
 		},
@@ -115,7 +125,12 @@ qmetry-uploader report --input=./images
 qmetry-uploader report -i ./images`,
 			Action: func(c *cli.Context) error {
 
-				data, err := commands.Report()
+				input := c.String("input")
+				options := commands.ReportOptions{
+					Input: input,
+				}
+
+				data, err := commands.Report(options)
 				if data != nil {
 					printJSON(data)
 				}
@@ -305,28 +320,21 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 	}
 }
 
+func chooseDir(input string) {
+	output := make(chan string)
+	dialog := ui.CreateFileSelectDialog("Choose dir", "", input, true, true)
+	dialog.OnClose(func() {
+		if dialog.Selected {
+			output <- dialog.FilePath
+		}
+	})
+}
+
 func requiredField(input string) error {
 	if len(input) < 1 {
 		return errors.New("Required field")
 	}
 	return nil
-}
-func readContext(c *cli.Context) {
-
-	input := c.String("input")
-	if input != "" {
-		config.Vars.Dir.Input = input
-	} else {
-		config.Vars.Dir.Input = "."
-	}
-
-	output := c.String("output")
-	if output != "" {
-		config.Vars.Dir.Output = output
-	} else {
-		config.Vars.Dir.Output = "./output"
-	}
-
 }
 
 func printJSON(data interface{}) {

@@ -10,9 +10,12 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// UploadOptions ...
 type UploadOptions struct {
 	File string
 }
+
+// UploadNexusOptions ...
 type UploadNexusOptions struct {
 	UploadOptions
 	Server   string
@@ -59,7 +62,7 @@ func UploadNexus(options UploadNexusOptions) error {
 
 	data, err := os.Open(options.File)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	client := &http.Client{}
 	req, err := http.NewRequest("PUT", url, data)
