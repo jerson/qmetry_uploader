@@ -36,7 +36,7 @@ func main() {
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "input, i",
-					Value: "./",
+					Value: ".",
 					Usage: "Input dir",
 				},
 				cli.StringFlag{
@@ -67,7 +67,7 @@ qmetry-uploader merge-images -i ./images -o ./output`,
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "input, i",
-					Value: "./",
+					Value: ".",
 					Usage: "Input dir",
 				},
 				cli.StringFlag{
@@ -98,7 +98,7 @@ qmetry-uploader compress -i ./images -o ./output`,
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "input, i",
-					Value: "./",
+					Value: ".",
 					Usage: "Input dir",
 				},
 			},
@@ -183,7 +183,7 @@ func readContext(c *cli.Context) {
 	if input != "" {
 		config.Vars.Dir.Input = input
 	} else {
-		config.Vars.Dir.Input = "./"
+		config.Vars.Dir.Input = "."
 	}
 
 	output := c.String("output")
