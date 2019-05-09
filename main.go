@@ -2,11 +2,15 @@ package main
 
 import (
 	"encoding/json"
-	log "github.com/sirupsen/logrus"
+	"errors"
 	"os"
+
+	log "github.com/sirupsen/logrus"
+
 	"qmetry_uploader/commands"
 	"qmetry_uploader/modules/config"
 
+	"github.com/manifoldco/promptui"
 	"github.com/urfave/cli"
 )
 
@@ -177,21 +181,35 @@ qmetry-uploader upload-nexus qa-10-10-2010.ipa
 qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 			Action: func(c *cli.Context) error {
 
-				model := c.Args().Get(0)
-				caseName := c.Args().Get(1)
-				description := c.Args().Get(2)
-				adb := c.String("adb")
+				username := c.String("username")
+				password := c.String("password")
 
-				options := commands.ScreenshotAndroidOptions{
-					ScreenshotOptions: commands.ScreenshotOptions{
-						Model:       model,
-						Case:        caseName,
-						Description: description,
-					},
-					ADB: adb,
+				if username == "" {
+					prompt := promptui.Prompt{
+						Label:    "Username ",
+						Validate: requiredField,
+					}
+					result, err := prompt.Run()
+					if err != nil {
+						return err
+					}
+					username = result
 				}
 
-				return commands.ScreenshotAndroid(options)
+				if password == "" {
+					prompt := promptui.Prompt{
+						Label:    "Password ",
+						Mask:     '*',
+						Validate: requiredField,
+					}
+					result, err := prompt.Run()
+					if err != nil {
+						return err
+					}
+					password = result
+				}
+				file := c.Args().Get(0)
+				return commands.UploadNexus(file)
 
 			},
 		},
@@ -215,6 +233,12 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 	}
 }
 
+func requiredField(input string) error {
+	if len(input) < 1 {
+		return errors.New("Required field")
+	}
+	return nil
+}
 func readContext(c *cli.Context) {
 
 	input := c.String("input")
