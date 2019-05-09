@@ -21,8 +21,8 @@ func main() {
 
 	app := cli.NewApp()
 	app.Name = "Qmetry uploader"
-	app.Version = "0.0.1"
-	app.Usage = "sube facilmente tus evidencias a Qmetry"
+	app.Version = "0.0.2"
+	app.Usage = "upload easily to Qmetry and more"
 
 	app.Flags = []cli.Flag{}
 
@@ -165,7 +165,7 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"
 			},
 		},
 		{
-			Name:    "gui",
+			Name:    "ui",
 			Aliases: []string{"g"},
 			Flags:   []cli.Flag{},
 			Category:"gui",
