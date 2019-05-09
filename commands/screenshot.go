@@ -65,7 +65,7 @@ func ScreenshotAndroid(options ScreenshotAndroidOptions) error {
 	errorString := string(stdError)
 	if errorString != "" {
 		log.Errorf(errorString)
-	}else{
+	} else {
 		log.Infof("output: %s\n", output)
 	}
 

@@ -45,10 +45,10 @@ func main() {
 					Usage: "Output dir",
 				},
 			},
-			Category:"evidences",
+			Category:    "evidences",
 			Description: "merge images into one merged file",
-			Usage: "qmetry-uploader merge-images",
-			UsageText:`
+			Usage:       "qmetry-uploader merge-images",
+			UsageText: `
 qmetry-uploader merge-images
 qmetry-uploader merge-images -o ./output
 qmetry-uploader merge-images --input=./images
@@ -56,7 +56,7 @@ qmetry-uploader merge-images -i ./images
 qmetry-uploader merge-images --input=./images --output=./output
 qmetry-uploader merge-images -i ./images -o ./output`,
 			Action: func(c *cli.Context) error {
-				readContext(c)
+
 				err := commands.MergeImages()
 				return err
 			},
@@ -76,9 +76,9 @@ qmetry-uploader merge-images -i ./images -o ./output`,
 					Usage: "Output dir",
 				},
 			},
-			Category:"evidences",
+			Category:    "evidences",
 			Description: "compress images grouped by device and case",
-			Usage: "qmetry-uploader compress",
+			Usage:       "qmetry-uploader compress",
 			UsageText: `
 qmetry-uploader compress
 qmetry-uploader compress -o ./output
@@ -87,7 +87,7 @@ qmetry-uploader compress -i ./images
 qmetry-uploader compress --input=./images --output=./output
 qmetry-uploader compress -i ./images -o ./output`,
 			Action: func(c *cli.Context) error {
-				readContext(c)
+
 				err := commands.Compress()
 				return err
 			},
@@ -102,15 +102,14 @@ qmetry-uploader compress -i ./images -o ./output`,
 					Usage: "Input dir",
 				},
 			},
-			Category:"debug",
+			Category:    "debug",
 			Description: "show report for debug purposes",
-			Usage: "qmetry-uploader report",
+			Usage:       "qmetry-uploader report",
 			UsageText: `
 qmetry-uploader report
 qmetry-uploader report --input=./images
 qmetry-uploader report -i ./images`,
 			Action: func(c *cli.Context) error {
-				readContext(c)
 
 				data, err := commands.Report()
 				if data != nil {
@@ -129,15 +128,14 @@ qmetry-uploader report -i ./images`,
 					Usage: "ADB path",
 				},
 			},
-			Category:"screenshot",
+			Category:    "screenshot",
 			Description: "screenshot for android using adb",
-			Usage: "qmetry-uploader screenshot-android J2 AMM-12112 01",
+			Usage:       "qmetry-uploader screenshot-android J2 AMM-12112 01",
 			UsageText: `
 qmetry-uploader screenshot-android J2 AMM-12112 01
 qmetry-uploader screenshot-android J2 AMM-12112 02
 qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 			Action: func(c *cli.Context) error {
-				readContext(c)
 
 				model := c.Args().Get(0)
 				caseName := c.Args().Get(1)
@@ -158,12 +156,52 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 			},
 		},
 		{
-			Name:    "ui",
-			Aliases: []string{"g"},
-			Flags:   []cli.Flag{},
-			Category:"gui",
-			Description:   "show GUI",
-			Usage: "qmetry-uploader gui",
+			Name:    "upload-nexus",
+			Aliases: []string{"un"},
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "username, u",
+					Usage: "Nexus username",
+				},
+				cli.StringFlag{
+					Name:  "password, p",
+					Usage: "Nexus password",
+				},
+			},
+			Category:    "nexus",
+			Description: "upload android or ios binaries to nexus",
+			Usage:       "qmetry-uploader upload-nexus qa-10-10-2010.apk",
+			UsageText: `
+qmetry-uploader upload-nexus qa-10-10-2010.apk
+qmetry-uploader upload-nexus qa-10-10-2010.ipa
+qmetry-uploader upload-nexus qa-10-10-2010.zip`,
+			Action: func(c *cli.Context) error {
+
+				model := c.Args().Get(0)
+				caseName := c.Args().Get(1)
+				description := c.Args().Get(2)
+				adb := c.String("adb")
+
+				options := commands.ScreenshotAndroidOptions{
+					ScreenshotOptions: commands.ScreenshotOptions{
+						Model:       model,
+						Case:        caseName,
+						Description: description,
+					},
+					ADB: adb,
+				}
+
+				return commands.ScreenshotAndroid(options)
+
+			},
+		},
+		{
+			Name:        "ui",
+			Aliases:     []string{"g"},
+			Flags:       []cli.Flag{},
+			Category:    "gui",
+			Description: "show GUI",
+			Usage:       "qmetry-uploader gui",
 			Action: func(c *cli.Context) error {
 
 				return commands.GUI()
