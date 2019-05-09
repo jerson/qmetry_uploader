@@ -54,9 +54,7 @@ qmetry-uploader merge-images -o ./output
 qmetry-uploader merge-images --input=./images
 qmetry-uploader merge-images -i ./images
 qmetry-uploader merge-images --input=./images --output=./output
-qmetry-uploader merge-images -i ./images -o ./output
-
-`,
+qmetry-uploader merge-images -i ./images -o ./output`,
 			Action: func(c *cli.Context) error {
 				readContext(c)
 				err := commands.MergeImages()
@@ -87,9 +85,7 @@ qmetry-uploader compress -o ./output
 qmetry-uploader compress --input=./images
 qmetry-uploader compress -i ./images
 qmetry-uploader compress --input=./images --output=./output
-qmetry-uploader compress -i ./images -o ./output
-
-`,
+qmetry-uploader compress -i ./images -o ./output`,
 			Action: func(c *cli.Context) error {
 				readContext(c)
 				err := commands.Compress()
@@ -112,8 +108,7 @@ qmetry-uploader compress -i ./images -o ./output
 			UsageText: `
 qmetry-uploader report
 qmetry-uploader report --input=./images
-qmetry-uploader report -i ./images
-`,
+qmetry-uploader report -i ./images`,
 			Action: func(c *cli.Context) error {
 				readContext(c)
 
@@ -140,9 +135,7 @@ qmetry-uploader report -i ./images
 			UsageText: `
 qmetry-uploader screenshot-android J2 AMM-12112 01
 qmetry-uploader screenshot-android J2 AMM-12112 02
-qmetry-uploader screenshot-android J2 AMM-12112 "sample case"
-
-`,
+qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 			Action: func(c *cli.Context) error {
 				readContext(c)
 
