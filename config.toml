@@ -2,6 +2,6 @@
 debug=false
 
 [dir]
-input="."
+input=""
 output="./output"
 

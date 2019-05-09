@@ -62,6 +62,10 @@ qmetry-uploader merge-images -i ./images -o ./output`,
 			Action: func(c *cli.Context) error {
 				input := c.String("input")
 				output := c.String("output")
+
+				input = promptDir("Input Dir", input, config.Vars.Dir.Input)
+				output = promptDir("Output Dir", output, config.Vars.Dir.Output)
+
 				options := commands.MergeImagesOptions{
 					Input:  input,
 					Output: output,
@@ -98,6 +102,10 @@ qmetry-uploader compress -i ./images -o ./output`,
 			Action: func(c *cli.Context) error {
 				input := c.String("input")
 				output := c.String("output")
+
+				input = promptDir("Input Dir", input, config.Vars.Dir.Input)
+				output = promptDir("Output Dir", output, config.Vars.Dir.Output)
+
 				options := commands.CompressOptions{
 					Input:  input,
 					Output: output,
@@ -126,6 +134,8 @@ qmetry-uploader report -i ./images`,
 			Action: func(c *cli.Context) error {
 
 				input := c.String("input")
+				input = promptDir("Input Dir", input, config.Vars.Dir.Input)
+
 				options := commands.ReportOptions{
 					Input: input,
 				}
@@ -152,6 +162,7 @@ qmetry-uploader report -i ./images`,
 			Description: "screenshot for android using adb",
 			Usage:       "qmetry-uploader screenshot-android J2 AMM-12112 01",
 			UsageText: `
+qmetry-uploader screenshot-android
 qmetry-uploader screenshot-android J2 AMM-12112 01
 qmetry-uploader screenshot-android J2 AMM-12112 02
 qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
@@ -165,6 +176,7 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 				model = promptField("Model (GB|GM|GA|iOS)", model, "")
 				caseName = promptField("Case (AMM-000)", caseName, "")
 				description = promptField("Description", description, "")
+				adb = promptField("adb path", adb, config.Vars.Binary.ADB)
 
 				options := commands.ScreenshotAndroidOptions{
 					ScreenshotOptions: commands.ScreenshotOptions{
@@ -218,9 +230,10 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 				server := c.String("server")
 				project := c.String("project")
 
-				project = promptField("Project", project, "")
 				username = promptField("Username", username, "")
 				password = promptPasswordField("Password", password, "")
+				project = promptField("Project", project, "")
+				server = promptPasswordField("Server", server, config.Vars.Nexus.Server)
 
 				file := c.Args().Get(0)
 
@@ -257,17 +270,39 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 	}
 }
 
-func chooseDir(input string) {
-	output := make(chan string)
-	dialog := ui.CreateFileSelectDialog("Choose dir", "", input, true, true)
-	dialog.OnClose(func() {
-		if dialog.Selected {
-			output <- dialog.FilePath
-		}
-	})
+func chooseDir(title, input string) <-chan string {
+	output := make(chan string, 1)
+
+	go func() {
+		ui.InitLibrary()
+		dialog := ui.CreateFileSelectDialog(title, "", input, true, true)
+		dialog.OnClose(func() {
+			selected := dialog.Selected
+			path := dialog.FilePath
+			defer ui.DeinitLibrary()
+			if path == "" {
+				path = input
+			}
+
+			if selected {
+				output <- path
+			}
+
+		})
+		ui.MainLoop()
+	}()
+	return output
 }
 
-func promptField(name string, value string, defaultValue string) string {
+func promptDir(name, value, defaultValue string) string {
+	if value == "" {
+		output := chooseDir(name, defaultValue)
+		value = <-output
+	}
+	return value
+}
+
+func promptField(name, value, defaultValue string) string {
 	if value == "" {
 		prompt := promptui.Prompt{
 			Label:    name + " ",
@@ -284,7 +319,7 @@ func promptField(name string, value string, defaultValue string) string {
 	return value
 }
 
-func promptPasswordField(name string, value string, defaultValue string) string {
+func promptPasswordField(name, value, defaultValue string) string {
 	if value == "" {
 		prompt := promptui.Prompt{
 			Label:    name + " ",

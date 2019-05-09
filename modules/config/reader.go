@@ -11,7 +11,7 @@ import (
 
 // Dir ...
 type Dir struct {
-	Input  string `toml:"input" default:"."`
+	Input  string `toml:"input" default:""`
 	Output string `toml:"output" default:"./output"`
 }
 
