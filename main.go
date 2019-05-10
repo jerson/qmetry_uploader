@@ -218,8 +218,16 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 						fmt.Println(string(output))
 						continue
 					} else if key == 'D' {
-						fmt.Println("Removed last")
-
+						if len(steps) < 1 {
+							fmt.Println("Nothing to remove")
+							continue
+						}
+						last := steps[len(steps)-1]
+						fmt.Println(fmt.Sprintf("Removed last: %s", last))
+						err := os.Remove(last)
+						if err != nil {
+							panic(err)
+						}
 						steps = steps[:len(steps)-1]
 
 						continue
@@ -228,7 +236,7 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 							ScreenshotOptions: commands.ScreenshotOptions{
 								Model:       model,
 								Case:        caseName,
-								Description: fmt.Sprint(currentStep),
+								Description: fmt.Sprint(fmt.Sprintf("%02d", currentStep)),
 							},
 							ADB: adb,
 						}
