@@ -13,6 +13,7 @@ import (
 // UploadOptions ...
 type UploadOptions struct {
 	File string
+	Name string
 }
 
 // UploadNexusOptions ...
@@ -42,7 +43,7 @@ type UploadNexusOptions struct {
 //echo "uploading: $1 => $PLATFORM";
 //curl -u "username:pass"  --upload-file $1 "$URL";
 //echo "URL: $URL";
-func UploadNexus(options UploadNexusOptions) error {
+func UploadNexus(options UploadNexusOptions) (string, error) {
 
 	extension := path.Ext(options.File)
 	platform := "common"
@@ -52,7 +53,7 @@ func UploadNexus(options UploadNexusOptions) error {
 		platform = "ios"
 	}
 
-	url := fmt.Sprintf(options.Server, options.Project, platform, options.File)
+	url := fmt.Sprintf(options.Server, options.Project, platform, options.Name)
 
 	log.WithFields(log.Fields{
 		"project":  options.Project,
@@ -62,21 +63,26 @@ func UploadNexus(options UploadNexusOptions) error {
 
 	data, err := os.Open(options.File)
 	if err != nil {
-		return err
+		return url, err
 	}
 	client := &http.Client{}
 	req, err := http.NewRequest("PUT", url, data)
 	if err != nil {
-		return err
+		return url, err
 	}
 	req.SetBasicAuth(options.Username, options.Password)
 	resp, err := client.Do(req)
 	if err != nil {
-		return err
+		return url, err
 	}
 	bodyText, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return url, err
+	}
+	if resp.StatusCode != 200 {
+		return url, fmt.Errorf("invalid response: %d", resp.StatusCode)
+	}
 
 	log.Infof("uploaded %s", string(bodyText))
-
-	return nil
+	return url, nil
 }

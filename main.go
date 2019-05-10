@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
@@ -341,6 +342,11 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 					Value: config.Vars.Nexus.Server,
 					Usage: "Nexus server template",
 				},
+				cli.StringFlag{
+					Name:  "name, n",
+					Value: "",
+					Usage: "Filename with extension",
+				},
 			},
 			Category:    "nexus",
 			Description: "upload android or ios binaries to nexus",
@@ -355,6 +361,7 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 				password := c.String("password")
 				server := c.String("server")
 				project := c.String("project")
+				name := c.String("name")
 				file := c.Args().Get(0)
 
 				file = prompt.File("Choose file to upload", file, "*.apk,*.ipa,*.zip", "")
@@ -362,6 +369,8 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 					return errors.New("missing file")
 				}
 
+				log.Infof("Using file: %s", file)
+				name = prompt.Field("Filename", name, "", filepath.Base(file))
 				username = prompt.Field("Username", username, "", "")
 				password = prompt.PasswordField("Password", password, "", "")
 				project = prompt.Field("Project", project, "", "")
@@ -374,14 +383,16 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 				options := commands.UploadNexusOptions{
 					UploadOptions: commands.UploadOptions{
 						File: file,
+						Name: name,
 					},
 					Username: username,
 					Password: password,
 					Project:  project,
 					Server:   server,
 				}
-				return commands.UploadNexus(options)
+				_, err := commands.UploadNexus(options)
 
+				return err
 			},
 		},
 		{
