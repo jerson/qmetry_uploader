@@ -6,7 +6,6 @@ import (
 	ui "github.com/VladimirMarkelov/clui"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/AlecAivazis/survey.v1"
-
 )
 
 func chooseDir(output chan string, title, input string) {
@@ -106,4 +105,3 @@ func requiredField(ans interface{}) error {
 	}
 	return nil
 }
-

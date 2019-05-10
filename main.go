@@ -241,6 +241,9 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 				if caseName == "" {
 					return errors.New("missing: case")
 				}
+				if description == "" {
+					return errors.New("missing: description")
+				}
 
 				options := commands.ScreenshotAndroidOptions{
 					ScreenshotOptions: commands.ScreenshotOptions{
@@ -304,6 +307,10 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 				password = prompt.PasswordField("Password", password, "", "")
 				project = prompt.Field("Project", project, "", "")
 				server = prompt.Field("Server", server, "", config.Vars.Nexus.Server)
+
+				if username == "" || password == "" || project == "" || server == "" {
+					return errors.New("missing fields")
+				}
 
 				options := commands.UploadNexusOptions{
 					UploadOptions: commands.UploadOptions{
