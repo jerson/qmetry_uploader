@@ -177,6 +177,10 @@ qmetry-uploader screenshot-session J2 AMM-12112`,
 				adb := c.String("adb")
 				platform := c.String("platform")
 
+				if platform != "android" {
+					return fmt.Errorf("not implemented for: %s", platform)
+				}
+
 				suggestion, err := utils.GetEvidenceSuggestion()
 				if err != nil {
 					log.Warn(err)
@@ -268,10 +272,6 @@ qmetry-uploader screenshot-session J2 AMM-12112`,
 
 						continue
 					case "C":
-						if platform != "android" {
-							fmt.Println(fmt.Sprintf("not implemented for: %s", platform))
-							continue
-						}
 
 						output := fmt.Sprintf("%s_%s", model, caseName)
 						err = os.MkdirAll(output, 0777)
@@ -337,6 +337,9 @@ qmetry-uploader screenshot J2 AMM-12112 "sample case"`,
 				description := c.Args().Get(2)
 				adb := c.String("adb")
 				platform := c.String("platform")
+				if platform != "android" {
+					return fmt.Errorf("not implemented for: %s", platform)
+				}
 
 				if caseName == "" && description == "" && model != "" {
 					description = model
@@ -363,10 +366,7 @@ qmetry-uploader screenshot J2 AMM-12112 "sample case"`,
 				if description == "" {
 					return errors.New("missing: description")
 				}
-				if platform != "android" {
-					return fmt.Errorf("not implemented for: %s", platform)
 
-				}
 				options := commands.ScreenshotAndroidOptions{
 					ScreenshotOptions: commands.ScreenshotOptions{
 						Model:       model,
