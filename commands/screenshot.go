@@ -18,6 +18,7 @@ type ScreenshotOptions struct {
 	Model       string
 	Case        string
 	Description string
+	OutputDir   string
 }
 
 // ScreenshotAndroidOptions ...
@@ -47,7 +48,7 @@ func ScreenshotAndroid(options ScreenshotAndroidOptions) (string, error) {
 
 	model := strings.Trim(options.Model, " ")
 	name := strings.Join([]string{model, caseName, description}, "_")
-	output := fmt.Sprintf("%s.png", name)
+	output := fmt.Sprintf("%s/%s.png", options.OutputDir, name)
 
 	cmd := exec.Command(options.ADB, "exec-out", "screencap", "-p")
 	outfile, err := os.Create(output)

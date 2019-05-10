@@ -6,7 +6,9 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
@@ -193,7 +195,19 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 
 				printHelp()
 
+				if runtime.GOOS == "linux" {
+					err = exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
+					if err != nil {
+						log.Warn(err)
+					}
+					err = exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
+					if err != nil {
+						log.Warn(err)
+					}
+				}
+
 				for {
+
 					k, _, err := reader.ReadRune()
 					if err != nil {
 						return err
@@ -208,8 +222,16 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 						}
 						fmt.Println("Output file: " + output)
 						return nil
-					} else if key == 'P' {
-						fmt.Println("Report:")
+					} else if key == 'H' {
+
+						printHelp()
+						continue
+					} else if key == 'Q' {
+
+						fmt.Println("Quit by user action")
+						return nil
+					} else if key == 'L' {
+						fmt.Println("List:")
 
 						output, err := json.MarshalIndent(steps, "", " ")
 						if err != nil {
@@ -229,14 +251,29 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 							panic(err)
 						}
 						steps = steps[:len(steps)-1]
+						currentStep--
 
 						continue
-					} else if key == 'S' {
+					} else if key == 'R' {
+
+						steps = []string{}
+						currentStep = 1
+						fmt.Println("Reseted data")
+
+						continue
+					} else if key == 'C' {
+
+						output := fmt.Sprintf("%s_%s", model, caseName)
+						err = os.MkdirAll(output, 0777)
+						if err != nil {
+							log.Warn(err)
+						}
 						options := commands.ScreenshotAndroidOptions{
 							ScreenshotOptions: commands.ScreenshotOptions{
 								Model:       model,
 								Case:        caseName,
 								Description: fmt.Sprint(fmt.Sprintf("%02d", currentStep)),
+								OutputDir:   output,
 							},
 							ADB: adb,
 						}
@@ -319,6 +356,7 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 						Model:       model,
 						Case:        caseName,
 						Description: description,
+						OutputDir:   ".",
 					},
 					ADB: adb,
 				}
@@ -430,10 +468,13 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 
 func printHelp() {
 	fmt.Println(" help:")
-	fmt.Println("\tS: take screenshot")
-	fmt.Println("\tM: merge images and return")
+	fmt.Println("\tC: capture screenshot")
+	fmt.Println("\tM: merge screenshots and close")
 	fmt.Println("\tD: delete last screenshot")
-	fmt.Println("\tP: print screenshots")
+	fmt.Println("\tL: list captured screenshots")
+	fmt.Println("\tR: reset all captured screenshots")
+	fmt.Println("\tQ: quit")
+	fmt.Println("\tH: print help")
 	fmt.Println("")
 	fmt.Println("\tNote: keys are case sensitive")
 	fmt.Println("")
