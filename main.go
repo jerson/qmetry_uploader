@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
@@ -149,26 +150,32 @@ qmetry-uploader report -i ./images`,
 			},
 		},
 		{
-			Name:    "screenshot-session-android",
-			Aliases: []string{"ssa"},
+			Name:    "screenshot-session",
+			Aliases: []string{"ss"},
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "adb, a",
 					Value: config.Vars.Binary.ADB,
 					Usage: "ADB path",
 				},
+				cli.StringFlag{
+					Name:  "platform, p",
+					Value: "android",
+					Usage: "Platform",
+				},
 			},
 			Category:    "screenshot",
-			Description: "screenshot session for android using adb",
-			Usage:       "qmetry-uploader screenshot-session-android",
+			Description: "start session for take many screenshots",
+			Usage:       "qmetry-uploader screenshot-session",
 			UsageText: `
-qmetry-uploader screenshot-session-android
-qmetry-uploader screenshot-session-android J2 AMM-12112`,
+qmetry-uploader screenshot-session
+qmetry-uploader screenshot-session J2 AMM-12112`,
 			Action: func(c *cli.Context) error {
 
 				model := c.Args().Get(0)
 				caseName := c.Args().Get(1)
 				adb := c.String("adb")
+				platform := c.String("platform")
 
 				suggestion, err := utils.GetEvidenceSuggestion()
 				if err != nil {
@@ -195,7 +202,7 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 
 				printHelp()
 
-				if runtime.GOOS == "linux" {
+				if runtime.GOOS == "linux" || runtime.GOOS == "darwin" {
 					err = exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
 					if err != nil {
 						log.Warn(err)
@@ -212,8 +219,10 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 					if err != nil {
 						return err
 					}
-					key := k
-					if key == 'M' {
+					key := strings.ToUpper(string(k))
+
+					switch key {
+					case "M":
 						fmt.Println("Merged images:")
 						output := fmt.Sprintf("%s_%s.png", model, caseName)
 						err = utils.MergeImages(steps, output)
@@ -222,15 +231,13 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 						}
 						fmt.Println("Output file: " + output)
 						return nil
-					} else if key == 'H' {
-
+					case "H":
 						printHelp()
 						continue
-					} else if key == 'Q' {
-
+					case "Q":
 						fmt.Println("Quit by user action")
 						return nil
-					} else if key == 'L' {
+					case "L":
 						fmt.Println("List:")
 
 						output, err := json.MarshalIndent(steps, "", " ")
@@ -239,7 +246,7 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 						}
 						fmt.Println(string(output))
 						continue
-					} else if key == 'D' {
+					case "D":
 						if len(steps) < 1 {
 							fmt.Println("Nothing to remove")
 							continue
@@ -254,14 +261,17 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 						currentStep--
 
 						continue
-					} else if key == 'R' {
-
+					case "R":
 						steps = []string{}
 						currentStep = 1
 						fmt.Println("Reseted data")
 
 						continue
-					} else if key == 'C' {
+					case "C":
+						if platform != "android" {
+							fmt.Println(fmt.Sprintf("not implemented for: %s", platform))
+							continue
+						}
 
 						output := fmt.Sprintf("%s_%s", model, caseName)
 						err = os.MkdirAll(output, 0777)
@@ -286,12 +296,9 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 						steps = append(steps, name)
 						currentStep++
 						continue
-					} else if key == '\n' {
-
+					case "\n":
 						continue
-
-					} else {
-
+					default:
 						printHelp()
 
 					}
@@ -301,29 +308,35 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 			},
 		},
 		{
-			Name:    "screenshot-android",
-			Aliases: []string{"sa"},
+			Name:    "screenshot",
+			Aliases: []string{"s"},
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "adb, a",
 					Value: config.Vars.Binary.ADB,
 					Usage: "ADB path",
 				},
+				cli.StringFlag{
+					Name:  "platform, p",
+					Value: "android",
+					Usage: "Platform",
+				},
 			},
 			Category:    "screenshot",
-			Description: "screenshot for android using adb",
-			Usage:       "qmetry-uploader screenshot-android J2 AMM-12112 01",
+			Description: "capture screenshot",
+			Usage:       "qmetry-uploader screenshot J2 AMM-12112 01",
 			UsageText: `
-qmetry-uploader screenshot-android
-qmetry-uploader screenshot-android J2 AMM-12112 01
-qmetry-uploader screenshot-android J2 AMM-12112 02
-qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
+qmetry-uploader screenshot
+qmetry-uploader screenshot J2 AMM-12112 01
+qmetry-uploader screenshot J2 AMM-12112 02
+qmetry-uploader screenshot J2 AMM-12112 "sample case"`,
 			Action: func(c *cli.Context) error {
 
 				model := c.Args().Get(0)
 				caseName := c.Args().Get(1)
 				description := c.Args().Get(2)
 				adb := c.String("adb")
+				platform := c.String("platform")
 
 				if caseName == "" && description == "" && model != "" {
 					description = model
@@ -350,7 +363,10 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 				if description == "" {
 					return errors.New("missing: description")
 				}
+				if platform != "android" {
+					return fmt.Errorf("not implemented for: %s", platform)
 
+				}
 				options := commands.ScreenshotAndroidOptions{
 					ScreenshotOptions: commands.ScreenshotOptions{
 						Model:       model,
