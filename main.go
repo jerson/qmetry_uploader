@@ -295,12 +295,22 @@ func screenshotSessionAction(c *cli.Context) error {
 
 	printHelp()
 
-	if runtime.GOOS == "linux" || runtime.GOOS == "darwin" {
+	if runtime.GOOS == "linux" {
 		err = exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
 		if err != nil {
 			log.Warn(err)
 		}
 		err = exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
+		if err != nil {
+			log.Warn(err)
+		}
+	}
+	if runtime.GOOS == "darwin" {
+		err = exec.Command("stty", "-f", "/dev/tty", "cbreak", "min", "1").Run()
+		if err != nil {
+			log.Warn(err)
+		}
+		err = exec.Command("stty", "-f", "/dev/tty", "-echo").Run()
 		if err != nil {
 			log.Warn(err)
 		}
