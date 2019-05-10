@@ -2,12 +2,14 @@ package commands
 
 import (
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
 	"os/exec"
-	"qmetry_uploader/modules/utils"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
+
+	"qmetry_uploader/modules/utils"
 )
 
 // ScreenshotOptions ...
@@ -68,6 +70,7 @@ func ScreenshotAndroid(options ScreenshotAndroidOptions) (string, error) {
 	errorString := string(stdError)
 	if errorString != "" {
 		log.Errorf(errorString)
+		defer os.Remove(output)
 	} else {
 		log.Infof("new screenshot: %s\n", output)
 	}
