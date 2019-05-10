@@ -5,14 +5,12 @@ import (
 	"errors"
 	"os"
 
-	ui "github.com/VladimirMarkelov/clui"
 	log "github.com/sirupsen/logrus"
-	"gopkg.in/AlecAivazis/survey.v1"
-
 	"github.com/urfave/cli"
 
 	"qmetry_uploader/commands"
 	"qmetry_uploader/modules/config"
+	"qmetry_uploader/modules/prompt"
 	"qmetry_uploader/modules/utils"
 )
 
@@ -61,8 +59,8 @@ qmetry-uploader merge-images -i ./images -o ./output`,
 				input := c.String("input")
 				output := c.String("output")
 
-				input = promptDir("Input Dir", input, config.Vars.Dir.Input)
-				output = promptDir("Output Dir", output, config.Vars.Dir.Output)
+				input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input)
+				output = prompt.Dir("Output Dir", output, config.Vars.Dir.Output)
 
 				options := commands.MergeImagesOptions{
 					Input:  input,
@@ -101,8 +99,8 @@ qmetry-uploader compress -i ./images -o ./output`,
 				input := c.String("input")
 				output := c.String("output")
 
-				input = promptDir("Input Dir", input, config.Vars.Dir.Input)
-				output = promptDir("Output Dir", output, config.Vars.Dir.Output)
+				input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input)
+				output = prompt.Dir("Output Dir", output, config.Vars.Dir.Output)
 
 				options := commands.CompressOptions{
 					Input:  input,
@@ -132,7 +130,7 @@ qmetry-uploader report -i ./images`,
 			Action: func(c *cli.Context) error {
 
 				input := c.String("input")
-				input = promptDir("Input Dir", input, config.Vars.Dir.Input)
+				input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input)
 
 				options := commands.ReportOptions{
 					Input: input,
@@ -172,9 +170,9 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 					log.Warn(err)
 				}
 
-				model = promptField("Model", model, "GB|GM|GA|iOS", suggestion.Model)
-				caseName = promptField("Case", caseName, "AMM-000", suggestion.Name)
-				adb = promptField("adb path", adb, "", config.Vars.Binary.ADB)
+				model = prompt.Field("Model", model, "GB|GM|GA|iOS", suggestion.Model)
+				caseName = prompt.Field("Case", caseName, "AMM-000", suggestion.Name)
+				adb = prompt.Field("adb path", adb, "", config.Vars.Binary.ADB)
 
 				if model == "" {
 					return errors.New("missing: model")
@@ -232,10 +230,10 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 					log.Warn(err)
 				}
 
-				model = promptField("Model", model, "GB|GM|GA|iOS", suggestion.Model)
-				caseName = promptField("Case", caseName, "AMM-000", suggestion.Name)
-				description = promptField("Description", description, "", suggestion.Description)
-				adb = promptField("adb path", adb, "", config.Vars.Binary.ADB)
+				model = prompt.Field("Model", model, "GB|GM|GA|iOS", suggestion.Model)
+				caseName = prompt.Field("Case", caseName, "AMM-000", suggestion.Name)
+				description = prompt.Field("Description", description, "", suggestion.Description)
+				adb = prompt.Field("adb path", adb, "", config.Vars.Binary.ADB)
 
 				if model == "" {
 					return errors.New("missing: model")
@@ -297,15 +295,15 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 				project := c.String("project")
 				file := c.Args().Get(0)
 
-				file = promptFile("Choose file to upload", file, "*.apk,*.ipa,*.zip", "")
+				file = prompt.File("Choose file to upload", file, "*.apk,*.ipa,*.zip", "")
 				if file == "" {
 					return errors.New("missing file")
 				}
 
-				username = promptField("Username", username, "", "")
-				password = promptPasswordField("Password", password, "", "")
-				project = promptField("Project", project, "", "")
-				server = promptField("Server", server, "", config.Vars.Nexus.Server)
+				username = prompt.Field("Username", username, "", "")
+				password = prompt.PasswordField("Password", password, "", "")
+				project = prompt.Field("Project", project, "", "")
+				server = prompt.Field("Server", server, "", config.Vars.Nexus.Server)
 
 				options := commands.UploadNexusOptions{
 					UploadOptions: commands.UploadOptions{
@@ -338,104 +336,6 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func chooseDir(output chan string, title, input string) {
-
-	go func() {
-		ui.InitLibrary()
-		dialog := ui.CreateFileSelectDialog(title, "", input, true, true)
-		dialog.OnClose(func() {
-			selected := dialog.Selected
-			path := dialog.FilePath
-			defer ui.DeinitLibrary()
-			if selected && path == "" {
-				path = input
-			}
-
-			output <- path
-
-		})
-		ui.MainLoop()
-	}()
-}
-
-func chooseFile(output chan string, title, input, fileMasks string) {
-
-	go func() {
-		ui.InitLibrary()
-		dialog := ui.CreateFileSelectDialog(title, fileMasks, input, false, true)
-		dialog.OnClose(func() {
-			selected := dialog.Selected
-			path := dialog.FilePath
-			defer ui.DeinitLibrary()
-			if selected && path == "" {
-				path = input
-			}
-
-			output <- path
-		})
-		ui.MainLoop()
-	}()
-}
-func promptFile(name, value, fileMasks, defaultValue string) string {
-	if value == "" {
-		output := make(chan string)
-		chooseFile(output, name, defaultValue, fileMasks)
-		<-output
-		value = <-output
-	}
-	return value
-}
-func promptDir(name, value, defaultValue string) string {
-	if value == "" {
-		output := make(chan string)
-		chooseDir(output, name, defaultValue)
-		<-output
-		value = <-output
-	}
-	return value
-}
-
-func promptField(name, value, help, defaultValue string) string {
-	if value == "" {
-		prompt := &survey.Input{
-			Message: name,
-			Default: defaultValue,
-			Help:    help,
-		}
-		err := survey.AskOne(prompt, &value, requiredField)
-		if err != nil {
-			log.Warn(err)
-			return value
-		}
-	}
-	return value
-}
-
-func promptPasswordField(name, value, help, defaultValue string) string {
-	if value == "" {
-		value = defaultValue
-		prompt := &survey.Password{
-			Message: name,
-			Help:    help,
-		}
-		err := survey.AskOne(prompt, &value, requiredField)
-		if err != nil {
-			log.Warn(err)
-			return value
-		}
-
-	}
-	return value
-}
-
-func requiredField(ans interface{}) error {
-	input := ans.(string)
-	if len(input) < 1 {
-		return errors.New("required field")
-	}
-	return nil
 }
 
 func printJSON(data interface{}) {

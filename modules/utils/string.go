@@ -12,6 +12,7 @@ func isMn(r rune) bool {
 	return unicode.Is(unicode.Mn, r) // Mn: nonspacing marks
 }
 
+// Slug ...
 func Slug(s string) (string, error) {
 	str := []byte(strings.ToLower(s))
 
