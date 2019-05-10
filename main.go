@@ -243,7 +243,8 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 
 						name, err := commands.ScreenshotAndroid(options)
 						if err != nil {
-							return err
+							fmt.Println(err)
+							continue
 						}
 						steps = append(steps, name)
 						currentStep++

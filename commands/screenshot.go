@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -69,12 +70,11 @@ func ScreenshotAndroid(options ScreenshotAndroidOptions) (string, error) {
 	stdError, _ := ioutil.ReadAll(cmdErr)
 	errorString := string(stdError)
 	if errorString != "" {
-		log.Errorf(errorString)
 		defer os.Remove(output)
-	} else {
-		log.Infof("new screenshot: %s\n", output)
+		return output, errors.New(errorString)
 	}
 
+	log.Infof("new screenshot: %s\n", output)
 	return output, nil
 }
 
