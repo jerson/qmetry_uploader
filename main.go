@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 
 	log "github.com/sirupsen/logrus"
@@ -181,16 +183,73 @@ qmetry-uploader screenshot-session-android J2 AMM-12112`,
 					return errors.New("missing: case")
 				}
 
-				options := commands.ScreenshotAndroidOptions{
-					ScreenshotOptions: commands.ScreenshotOptions{
-						Model:       model,
-						Case:        caseName,
-						Description: "1",
-					},
-					ADB: adb,
-				}
+				var steps []string
+				currentStep := 1
+				reader := bufio.NewReader(os.Stdin)
+				fmt.Println("")
+				fmt.Println(" Insert key for do things:")
+				fmt.Println(" ------------------------")
 
-				return commands.ScreenshotAndroid(options)
+				printHelp()
+
+				for {
+					k, _, err := reader.ReadRune()
+					if err != nil {
+						return err
+					}
+					key := k
+					if key == 'M' {
+						fmt.Println("Merged images:")
+						output := fmt.Sprintf("%s_%s.png", model, caseName)
+						err = utils.MergeImages(steps, output)
+						if err != nil {
+							return err
+						}
+						fmt.Println("Output file: " + output)
+						return nil
+					} else if key == 'P' {
+						fmt.Println("Report:")
+
+						output, err := json.MarshalIndent(steps, "", " ")
+						if err != nil {
+							panic(err)
+						}
+						fmt.Println(string(output))
+						continue
+					} else if key == 'D' {
+						fmt.Println("Removed last")
+
+						steps = steps[:len(steps)-1]
+
+						continue
+					} else if key == 'S' {
+						options := commands.ScreenshotAndroidOptions{
+							ScreenshotOptions: commands.ScreenshotOptions{
+								Model:       model,
+								Case:        caseName,
+								Description: fmt.Sprint(currentStep),
+							},
+							ADB: adb,
+						}
+
+						name, err := commands.ScreenshotAndroid(options)
+						if err != nil {
+							return err
+						}
+						steps = append(steps, name)
+						currentStep++
+						continue
+					} else if key == '\n' {
+
+						continue
+
+					} else {
+
+						printHelp()
+
+					}
+
+				}
 
 			},
 		},
@@ -253,8 +312,8 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 					},
 					ADB: adb,
 				}
-
-				return commands.ScreenshotAndroid(options)
+				_, err = commands.ScreenshotAndroid(options)
+				return err
 
 			},
 		},
@@ -345,6 +404,16 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 	}
 }
 
+func printHelp() {
+	fmt.Println(" help:")
+	fmt.Println("\tS: take screenshot")
+	fmt.Println("\tM: merge images and return")
+	fmt.Println("\tD: delete last screenshot")
+	fmt.Println("\tP: print screenshots")
+	fmt.Println("")
+	fmt.Println("\tNote: keys are case sensitive")
+	fmt.Println("")
+}
 func printJSON(data interface{}) {
 
 	output, err := json.MarshalIndent(data, "", " ")

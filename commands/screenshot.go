@@ -33,7 +33,7 @@ type ScreenshotAndroidOptions struct {
 // FILE=$SLUG.png
 // echo "capture: $FILE";
 // adb exec-out screencap -p > $FILE
-func ScreenshotAndroid(options ScreenshotAndroidOptions) error {
+func ScreenshotAndroid(options ScreenshotAndroidOptions) (string, error) {
 
 	caseName := strings.Trim(options.Case, " ")
 	description, err := utils.Slug(strings.Trim(options.Description, " "))
@@ -49,19 +49,19 @@ func ScreenshotAndroid(options ScreenshotAndroidOptions) error {
 	cmd := exec.Command(options.ADB, "exec-out", "screencap", "-p")
 	outfile, err := os.Create(output)
 	if err != nil {
-		return err
+		return output, err
 	}
 	defer outfile.Close()
 	cmd.Stdout = outfile
 
 	cmdErr, err := cmd.StderrPipe()
 	if err != nil {
-		return err
+		return output, err
 	}
 
 	err = cmd.Start()
 	if err != nil {
-		return err
+		return output, err
 	}
 
 	stdError, _ := ioutil.ReadAll(cmdErr)
@@ -69,10 +69,10 @@ func ScreenshotAndroid(options ScreenshotAndroidOptions) error {
 	if errorString != "" {
 		log.Errorf(errorString)
 	} else {
-		log.Infof("output: %s\n", output)
+		log.Infof("new screenshot: %s\n", output)
 	}
 
-	return nil
+	return output, nil
 }
 
 // ScreenshotSample ...

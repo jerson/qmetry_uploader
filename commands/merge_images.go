@@ -9,6 +9,8 @@ import (
 	"strings"
 
 	log "github.com/sirupsen/logrus"
+
+	"qmetry_uploader/modules/utils"
 )
 
 // MergeImagesOptions ...
@@ -45,7 +47,7 @@ func MergeImages(options MergeImagesOptions) error {
 
 	_ = os.MkdirAll(options.Output, 0777)
 	output := fmt.Sprintf("%s/%s.png", options.Output, "merged")
-	err = mergeImages(filePaths, output)
+	err = utils.MergeImages(filePaths, output)
 	if err != nil {
 		return err
 	}
