@@ -61,20 +61,7 @@ qmetry-uploader merge-images --input=./images
 qmetry-uploader merge-images -i ./images
 qmetry-uploader merge-images --input=./images --output=./output
 qmetry-uploader merge-images -i ./images -o ./output`,
-			Action: func(c *cli.Context) error {
-				input := c.String("input")
-				output := c.String("output")
-
-				input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input)
-				output = prompt.Dir("Output Dir", output, config.Vars.Dir.Output)
-
-				options := commands.MergeImagesOptions{
-					Input:  input,
-					Output: output,
-				}
-				err := commands.MergeImages(options)
-				return err
-			},
+			Action: mergeImagesAction,
 		},
 		{
 			Name:    "compress",
@@ -101,20 +88,7 @@ qmetry-uploader compress --input=./images
 qmetry-uploader compress -i ./images
 qmetry-uploader compress --input=./images --output=./output
 qmetry-uploader compress -i ./images -o ./output`,
-			Action: func(c *cli.Context) error {
-				input := c.String("input")
-				output := c.String("output")
-
-				input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input)
-				output = prompt.Dir("Output Dir", output, config.Vars.Dir.Output)
-
-				options := commands.CompressOptions{
-					Input:  input,
-					Output: output,
-				}
-				err := commands.Compress(options)
-				return err
-			},
+			Action: compressAction,
 		},
 		{
 			Name:    "report",
@@ -133,21 +107,7 @@ qmetry-uploader compress -i ./images -o ./output`,
 qmetry-uploader report
 qmetry-uploader report --input=./images
 qmetry-uploader report -i ./images`,
-			Action: func(c *cli.Context) error {
-
-				input := c.String("input")
-				input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input)
-
-				options := commands.ReportOptions{
-					Input: input,
-				}
-
-				data, err := commands.Report(options)
-				if data != nil {
-					printJSON(data)
-				}
-				return err
-			},
+			Action: reportAction,
 		},
 		{
 			Name:    "screenshot-session",
@@ -170,142 +130,7 @@ qmetry-uploader report -i ./images`,
 			UsageText: `
 qmetry-uploader screenshot-session
 qmetry-uploader screenshot-session J2 AMM-12112`,
-			Action: func(c *cli.Context) error {
-
-				model := c.Args().Get(0)
-				caseName := c.Args().Get(1)
-				adb := c.String("adb")
-				platform := c.String("platform")
-
-				if platform != "android" {
-					return fmt.Errorf("not implemented for: %s", platform)
-				}
-
-				suggestion, err := utils.GetEvidenceSuggestion()
-				if err != nil {
-					log.Warn(err)
-				}
-
-				model = prompt.Field("Model", model, "GB|GM|GA|iOS", suggestion.Model)
-				caseName = prompt.Field("Case", caseName, "AMM-000", suggestion.Name)
-				adb = prompt.Field("adb path", adb, "", config.Vars.Binary.ADB)
-
-				if model == "" {
-					return errors.New("missing: model")
-				}
-				if caseName == "" {
-					return errors.New("missing: case")
-				}
-
-				var steps []string
-				currentStep := 1
-				reader := bufio.NewReader(os.Stdin)
-				fmt.Println("")
-				fmt.Println(" Insert key for do things:")
-				fmt.Println(" ------------------------")
-
-				printHelp()
-
-				if runtime.GOOS == "linux" || runtime.GOOS == "darwin" {
-					err = exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
-					if err != nil {
-						log.Warn(err)
-					}
-					err = exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
-					if err != nil {
-						log.Warn(err)
-					}
-				}
-
-				for {
-
-					k, _, err := reader.ReadRune()
-					if err != nil {
-						return err
-					}
-					key := strings.ToUpper(string(k))
-
-					switch key {
-					case "M":
-						fmt.Println("Merged images:")
-						output := fmt.Sprintf("%s_%s.png", model, caseName)
-						err = utils.MergeImages(steps, output)
-						if err != nil {
-							return err
-						}
-						fmt.Println("Output file: " + output)
-						return nil
-					case "H":
-						printHelp()
-						continue
-					case "Q":
-						fmt.Println("Quit by user action")
-						return nil
-					case "L":
-						fmt.Println("List:")
-
-						output, err := json.MarshalIndent(steps, "", " ")
-						if err != nil {
-							panic(err)
-						}
-						fmt.Println(string(output))
-						continue
-					case "D":
-						if len(steps) < 1 {
-							fmt.Println("Nothing to remove")
-							continue
-						}
-						last := steps[len(steps)-1]
-						fmt.Println(fmt.Sprintf("Removed last: %s", last))
-						err := os.Remove(last)
-						if err != nil {
-							panic(err)
-						}
-						steps = steps[:len(steps)-1]
-						currentStep--
-
-						continue
-					case "R":
-						steps = []string{}
-						currentStep = 1
-						fmt.Println("Reseted data")
-
-						continue
-					case "C":
-
-						output := fmt.Sprintf("%s_%s", model, caseName)
-						err = os.MkdirAll(output, 0777)
-						if err != nil {
-							log.Warn(err)
-						}
-						options := commands.ScreenshotAndroidOptions{
-							ScreenshotOptions: commands.ScreenshotOptions{
-								Model:       model,
-								Case:        caseName,
-								Description: fmt.Sprint(fmt.Sprintf("%02d", currentStep)),
-								OutputDir:   output,
-							},
-							ADB: adb,
-						}
-
-						name, err := commands.ScreenshotAndroid(options)
-						if err != nil {
-							fmt.Println(err)
-							continue
-						}
-						steps = append(steps, name)
-						currentStep++
-						continue
-					case "\n":
-						continue
-					default:
-						printHelp()
-
-					}
-
-				}
-
-			},
+			Action: screenshotSessionAction,
 		},
 		{
 			Name:    "screenshot",
@@ -330,56 +155,7 @@ qmetry-uploader screenshot
 qmetry-uploader screenshot J2 AMM-12112 01
 qmetry-uploader screenshot J2 AMM-12112 02
 qmetry-uploader screenshot J2 AMM-12112 "sample case"`,
-			Action: func(c *cli.Context) error {
-
-				model := c.Args().Get(0)
-				caseName := c.Args().Get(1)
-				description := c.Args().Get(2)
-				adb := c.String("adb")
-				platform := c.String("platform")
-				if platform != "android" {
-					return fmt.Errorf("not implemented for: %s", platform)
-				}
-
-				if caseName == "" && description == "" && model != "" {
-					description = model
-					model = ""
-					caseName = ""
-				}
-
-				suggestion, err := utils.GetEvidenceSuggestion()
-				if err != nil {
-					log.Warn(err)
-				}
-
-				model = prompt.Field("Model", model, "GB|GM|GA|iOS", suggestion.Model)
-				caseName = prompt.Field("Case", caseName, "AMM-000", suggestion.Name)
-				description = prompt.Field("Description", description, "", suggestion.Description)
-				adb = prompt.Field("adb path", adb, "", config.Vars.Binary.ADB)
-
-				if model == "" {
-					return errors.New("missing: model")
-				}
-				if caseName == "" {
-					return errors.New("missing: case")
-				}
-				if description == "" {
-					return errors.New("missing: description")
-				}
-
-				options := commands.ScreenshotAndroidOptions{
-					ScreenshotOptions: commands.ScreenshotOptions{
-						Model:       model,
-						Case:        caseName,
-						Description: description,
-						OutputDir:   ".",
-					},
-					ADB: adb,
-				}
-				_, err = commands.ScreenshotAndroid(options)
-				return err
-
-			},
+			Action: screenshotAction,
 		},
 		{
 			Name:    "upload-nexus",
@@ -418,49 +194,7 @@ qmetry-uploader screenshot J2 AMM-12112 "sample case"`,
 qmetry-uploader upload-nexus qa-10-10-2010.apk
 qmetry-uploader upload-nexus qa-10-10-2010.ipa
 qmetry-uploader upload-nexus qa-10-10-2010.zip`,
-			Action: func(c *cli.Context) error {
-
-				username := c.String("username")
-				password := c.String("password")
-				server := c.String("server")
-				project := c.String("project")
-				name := c.String("name")
-				file := c.Args().Get(0)
-
-				file = prompt.File("Choose file to upload", file, "*.apk,*.ipa,*.zip", "")
-				if file == "" {
-					return errors.New("missing file")
-				}
-
-				log.Infof("Using file: %s", file)
-				name = prompt.Field("Filename", name, "", filepath.Base(file))
-				username = prompt.Field("Username", username, "", "")
-				password = prompt.PasswordField("Password", password, "", "")
-				project = prompt.Field("Project", project, "", "")
-				server = prompt.Field("Server", server, "", config.Vars.Nexus.Server)
-
-				if username == "" || password == "" || project == "" || server == "" {
-					return errors.New("missing fields")
-				}
-
-				options := commands.UploadNexusOptions{
-					UploadOptions: commands.UploadOptions{
-						File: file,
-						Name: name,
-					},
-					Username: username,
-					Password: password,
-					Project:  project,
-					Server:   server,
-				}
-				url, err := commands.UploadNexus(options)
-				if err != nil {
-					return err
-				}
-
-				log.Info("Opening browser...")
-				return utils.OpenBrowser(url)
-			},
+			Action: uploadNexusAction,
 		},
 		{
 			Name:        "ui",
@@ -469,10 +203,7 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 			Category:    "gui",
 			Description: "show GUI",
 			Usage:       "qmetry-uploader gui",
-			Action: func(c *cli.Context) error {
-
-				return commands.GUI()
-			},
+			Action:      guiAction,
 		},
 	}
 
@@ -482,6 +213,287 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 	}
 }
 
+func mergeImagesAction(c *cli.Context) error {
+	input := c.String("input")
+	output := c.String("output")
+
+	input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input)
+	output = prompt.Dir("Output Dir", output, config.Vars.Dir.Output)
+
+	options := commands.MergeImagesOptions{
+		Input:  input,
+		Output: output,
+	}
+	err := commands.MergeImages(options)
+	return err
+}
+
+func compressAction(c *cli.Context) error {
+	input := c.String("input")
+	output := c.String("output")
+
+	input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input)
+	output = prompt.Dir("Output Dir", output, config.Vars.Dir.Output)
+
+	options := commands.CompressOptions{
+		Input:  input,
+		Output: output,
+	}
+	err := commands.Compress(options)
+	return err
+}
+
+func reportAction(c *cli.Context) error {
+
+	input := c.String("input")
+	input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input)
+
+	options := commands.ReportOptions{
+		Input: input,
+	}
+
+	data, err := commands.Report(options)
+	if data != nil {
+		printJSON(data)
+	}
+	return err
+}
+
+func screenshotSessionAction(c *cli.Context) error {
+
+	model := c.Args().Get(0)
+	caseName := c.Args().Get(1)
+	adb := c.String("adb")
+	platform := c.String("platform")
+
+	if platform != "android" {
+		return fmt.Errorf("not implemented for: %s", platform)
+	}
+
+	suggestion, err := utils.GetEvidenceSuggestion()
+	if err != nil {
+		log.Warn(err)
+	}
+
+	model = prompt.Field("Model", model, "GB|GM|GA|iOS", suggestion.Model)
+	caseName = prompt.Field("Case", caseName, "AMM-000", suggestion.Name)
+	adb = prompt.Field("adb path", adb, "", config.Vars.Binary.ADB)
+
+	if model == "" {
+		return errors.New("missing: model")
+	}
+	if caseName == "" {
+		return errors.New("missing: case")
+	}
+
+	var steps []string
+	currentStep := 1
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("")
+	fmt.Println(" Insert key for do things:")
+	fmt.Println(" ------------------------")
+
+	printHelp()
+
+	if runtime.GOOS == "linux" || runtime.GOOS == "darwin" {
+		err = exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
+		if err != nil {
+			log.Warn(err)
+		}
+		err = exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
+		if err != nil {
+			log.Warn(err)
+		}
+	}
+
+	for {
+
+		k, _, err := reader.ReadRune()
+		if err != nil {
+			return err
+		}
+		key := strings.ToUpper(string(k))
+
+		switch key {
+		case "M":
+			fmt.Println("Merged images:")
+			output := fmt.Sprintf("%s_%s.png", model, caseName)
+			err = utils.MergeImages(steps, output)
+			if err != nil {
+				return err
+			}
+			fmt.Println("Output file: " + output)
+			return nil
+		case "H":
+			printHelp()
+			continue
+		case "Q":
+			fmt.Println("Quit by user action")
+			return nil
+		case "L":
+			fmt.Println("List:")
+
+			output, err := json.MarshalIndent(steps, "", " ")
+			if err != nil {
+				panic(err)
+			}
+			fmt.Println(string(output))
+			continue
+		case "D":
+			if len(steps) < 1 {
+				fmt.Println("Nothing to remove")
+				continue
+			}
+			last := steps[len(steps)-1]
+			fmt.Println(fmt.Sprintf("Removed last: %s", last))
+			err := os.Remove(last)
+			if err != nil {
+				panic(err)
+			}
+			steps = steps[:len(steps)-1]
+			currentStep--
+
+			continue
+		case "R":
+			steps = []string{}
+			currentStep = 1
+			fmt.Println("Reseted data")
+
+			continue
+		case "C":
+
+			output := fmt.Sprintf("%s_%s", model, caseName)
+			err = os.MkdirAll(output, 0777)
+			if err != nil {
+				log.Warn(err)
+			}
+			options := commands.ScreenshotAndroidOptions{
+				ScreenshotOptions: commands.ScreenshotOptions{
+					Model:       model,
+					Case:        caseName,
+					Description: fmt.Sprint(fmt.Sprintf("%02d", currentStep)),
+					OutputDir:   output,
+				},
+				ADB: adb,
+			}
+
+			name, err := commands.ScreenshotAndroid(options)
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+			steps = append(steps, name)
+			currentStep++
+			continue
+		case "\n":
+			continue
+		default:
+			printHelp()
+
+		}
+
+	}
+
+}
+
+func screenshotAction(c *cli.Context) error {
+
+	model := c.Args().Get(0)
+	caseName := c.Args().Get(1)
+	description := c.Args().Get(2)
+	adb := c.String("adb")
+	platform := c.String("platform")
+	if platform != "android" {
+		return fmt.Errorf("not implemented for: %s", platform)
+	}
+
+	if caseName == "" && description == "" && model != "" {
+		description = model
+		model = ""
+		caseName = ""
+	}
+
+	suggestion, err := utils.GetEvidenceSuggestion()
+	if err != nil {
+		log.Warn(err)
+	}
+
+	model = prompt.Field("Model", model, "GB|GM|GA|iOS", suggestion.Model)
+	caseName = prompt.Field("Case", caseName, "AMM-000", suggestion.Name)
+	description = prompt.Field("Description", description, "", suggestion.Description)
+	adb = prompt.Field("adb path", adb, "", config.Vars.Binary.ADB)
+
+	if model == "" {
+		return errors.New("missing: model")
+	}
+	if caseName == "" {
+		return errors.New("missing: case")
+	}
+	if description == "" {
+		return errors.New("missing: description")
+	}
+
+	options := commands.ScreenshotAndroidOptions{
+		ScreenshotOptions: commands.ScreenshotOptions{
+			Model:       model,
+			Case:        caseName,
+			Description: description,
+			OutputDir:   ".",
+		},
+		ADB: adb,
+	}
+	_, err = commands.ScreenshotAndroid(options)
+	return err
+
+}
+
+func uploadNexusAction(c *cli.Context) error {
+
+	username := c.String("username")
+	password := c.String("password")
+	server := c.String("server")
+	project := c.String("project")
+	name := c.String("name")
+	file := c.Args().Get(0)
+
+	file = prompt.File("Choose file to upload", file, "*.apk,*.ipa,*.zip", "")
+	if file == "" {
+		return errors.New("missing file")
+	}
+
+	log.Infof("Using file: %s", file)
+	name = prompt.Field("Filename", name, "", filepath.Base(file))
+	username = prompt.Field("Username", username, "", "")
+	password = prompt.PasswordField("Password", password, "", "")
+	project = prompt.Field("Project", project, "", "")
+	server = prompt.Field("Server", server, "", config.Vars.Nexus.Server)
+
+	if username == "" || password == "" || project == "" || server == "" {
+		return errors.New("missing fields")
+	}
+
+	options := commands.UploadNexusOptions{
+		UploadOptions: commands.UploadOptions{
+			File: file,
+			Name: name,
+		},
+		Username: username,
+		Password: password,
+		Project:  project,
+		Server:   server,
+	}
+	url, err := commands.UploadNexus(options)
+	if err != nil {
+		return err
+	}
+
+	log.Info("Opening browser...")
+	return utils.OpenBrowser(url)
+}
+func guiAction(c *cli.Context) error {
+
+	return commands.GUI()
+}
 func printHelp() {
 	fmt.Println(" help:")
 	fmt.Println("\tC: capture screenshot")
