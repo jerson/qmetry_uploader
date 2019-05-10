@@ -9,7 +9,6 @@ require (
 	github.com/disintegration/imaging v1.6.0
 	github.com/huandu/xstrings v1.2.0 // indirect
 	github.com/jinzhu/configor v1.0.0
-	github.com/manifoldco/promptui v0.3.2
 	github.com/mattn/go-runewidth v0.0.4 // indirect
 	github.com/nicksnyder/go-i18n v1.10.0 // indirect
 	github.com/nsf/termbox-go v0.0.0-20190325093121-288510b9734e // indirect

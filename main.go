@@ -7,12 +7,13 @@ import (
 
 	ui "github.com/VladimirMarkelov/clui"
 	log "github.com/sirupsen/logrus"
+	"gopkg.in/AlecAivazis/survey.v1"
 
-	"github.com/manifoldco/promptui"
 	"github.com/urfave/cli"
 
 	"qmetry_uploader/commands"
 	"qmetry_uploader/modules/config"
+	"qmetry_uploader/modules/utils"
 )
 
 func setup() {
@@ -145,7 +146,57 @@ qmetry-uploader report -i ./images`,
 			},
 		},
 		{
-			// Agregar que el case y device sirva para crear la carpeta
+			Name:    "screenshot-session-android",
+			Aliases: []string{"ssa"},
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "adb, a",
+					Value: config.Vars.Binary.ADB,
+					Usage: "ADB path",
+				},
+			},
+			Category:    "screenshot",
+			Description: "screenshot session for android using adb",
+			Usage:       "qmetry-uploader screenshot-session-android",
+			UsageText: `
+qmetry-uploader screenshot-session-android
+qmetry-uploader screenshot-session-android J2 AMM-12112`,
+			Action: func(c *cli.Context) error {
+
+				model := c.Args().Get(0)
+				caseName := c.Args().Get(1)
+				adb := c.String("adb")
+
+				suggestion, err := utils.GetEvidenceSuggestion()
+				if err != nil {
+					log.Warn(err)
+				}
+
+				model = promptField("Model", model, "GB|GM|GA|iOS", suggestion.Model)
+				caseName = promptField("Case", caseName, "AMM-000", suggestion.Name)
+				adb = promptField("adb path", adb, "", config.Vars.Binary.ADB)
+
+				if model == "" {
+					return errors.New("missing: model")
+				}
+				if caseName == "" {
+					return errors.New("missing: case")
+				}
+
+				options := commands.ScreenshotAndroidOptions{
+					ScreenshotOptions: commands.ScreenshotOptions{
+						Model:       model,
+						Case:        caseName,
+						Description: "1",
+					},
+					ADB: adb,
+				}
+
+				return commands.ScreenshotAndroid(options)
+
+			},
+		},
+		{
 			Name:    "screenshot-android",
 			Aliases: []string{"sa"},
 			Flags: []cli.Flag{
@@ -170,10 +221,28 @@ qmetry-uploader screenshot-android J2 AMM-12112 "sample case"`,
 				description := c.Args().Get(2)
 				adb := c.String("adb")
 
-				model = promptField("Model (GB|GM|GA|iOS)", model, "")
-				caseName = promptField("Case (AMM-000)", caseName, "")
-				description = promptField("Description", description, "")
-				adb = promptField("adb path", adb, config.Vars.Binary.ADB)
+				if caseName == "" && description == "" && model != "" {
+					description = model
+					model = ""
+					caseName = ""
+				}
+
+				suggestion, err := utils.GetEvidenceSuggestion()
+				if err != nil {
+					log.Warn(err)
+				}
+
+				model = promptField("Model", model, "GB|GM|GA|iOS", suggestion.Model)
+				caseName = promptField("Case", caseName, "AMM-000", suggestion.Name)
+				description = promptField("Description", description, "", suggestion.Description)
+				adb = promptField("adb path", adb, "", config.Vars.Binary.ADB)
+
+				if model == "" {
+					return errors.New("missing: model")
+				}
+				if caseName == "" {
+					return errors.New("missing: case")
+				}
 
 				options := commands.ScreenshotAndroidOptions{
 					ScreenshotOptions: commands.ScreenshotOptions{
@@ -233,10 +302,10 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 					return errors.New("missing file")
 				}
 
-				username = promptField("Username", username, "")
-				password = promptPasswordField("Password", password, "")
-				project = promptField("Project", project, "")
-				server = promptPasswordField("Server", server, config.Vars.Nexus.Server)
+				username = promptField("Username", username, "", "")
+				password = promptPasswordField("Password", password, "", "")
+				project = promptField("Project", project, "", "")
+				server = promptField("Server", server, "", config.Vars.Nexus.Server)
 
 				options := commands.UploadNexusOptions{
 					UploadOptions: commands.UploadOptions{
@@ -328,42 +397,41 @@ func promptDir(name, value, defaultValue string) string {
 	return value
 }
 
-func promptField(name, value, defaultValue string) string {
+func promptField(name, value, help, defaultValue string) string {
 	if value == "" {
-		prompt := promptui.Prompt{
-			Label:    name + " ",
-			Default:  defaultValue,
-			Validate: requiredField,
+		prompt := &survey.Input{
+			Message: name,
+			Default: defaultValue,
+			Help:    help,
 		}
-		result, err := prompt.Run()
+		err := survey.AskOne(prompt, &value, requiredField)
 		if err != nil {
 			log.Warn(err)
 			return value
 		}
-		value = result
 	}
 	return value
 }
 
-func promptPasswordField(name, value, defaultValue string) string {
+func promptPasswordField(name, value, help, defaultValue string) string {
 	if value == "" {
-		prompt := promptui.Prompt{
-			Label:    name + " ",
-			Mask:     '*',
-			Default:  defaultValue,
-			Validate: requiredField,
+		value = defaultValue
+		prompt := &survey.Password{
+			Message: name,
+			Help:    help,
 		}
-		result, err := prompt.Run()
+		err := survey.AskOne(prompt, &value, requiredField)
 		if err != nil {
 			log.Warn(err)
 			return value
 		}
-		value = result
+
 	}
 	return value
 }
 
-func requiredField(input string) error {
+func requiredField(ans interface{}) error {
+	input := ans.(string)
 	if len(input) < 1 {
 		return errors.New("required field")
 	}
