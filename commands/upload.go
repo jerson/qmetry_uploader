@@ -79,7 +79,7 @@ func UploadNexus(options UploadNexusOptions) (string, error) {
 	if err != nil {
 		return url, err
 	}
-	if resp.StatusCode != 200 {
+	if resp.StatusCode > 300 && resp.StatusCode < 200 {
 		return url, fmt.Errorf("invalid response: %d", resp.StatusCode)
 	}
 

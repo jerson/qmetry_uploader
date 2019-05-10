@@ -390,9 +390,13 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 					Project:  project,
 					Server:   server,
 				}
-				_, err := commands.UploadNexus(options)
+				url, err := commands.UploadNexus(options)
+				if err != nil {
+					return err
+				}
 
-				return err
+				log.Info("Opening browser...")
+				return utils.OpenBrowser(url)
 			},
 		},
 		{
