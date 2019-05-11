@@ -6,9 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"runtime"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
@@ -17,6 +15,7 @@ import (
 	"qmetry_uploader/commands"
 	"qmetry_uploader/modules/config"
 	"qmetry_uploader/modules/prompt"
+	"qmetry_uploader/modules/terminal"
 	"qmetry_uploader/modules/utils"
 )
 
@@ -295,25 +294,14 @@ func screenshotSessionAction(c *cli.Context) error {
 
 	printHelp()
 
-	if runtime.GOOS == "linux" {
-		err = exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
-		if err != nil {
-			log.Warn(err)
-		}
-		err = exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
-		if err != nil {
-			log.Warn(err)
-		}
+	err = terminal.InputWithoutBreakLine()
+	if err != nil {
+		log.Warn(err)
 	}
-	if runtime.GOOS == "darwin" {
-		err = exec.Command("stty", "-f", "/dev/tty", "cbreak", "min", "1").Run()
-		if err != nil {
-			log.Warn(err)
-		}
-		err = exec.Command("stty", "-f", "/dev/tty", "-echo").Run()
-		if err != nil {
-			log.Warn(err)
-		}
+
+	err = terminal.HideInput()
+	if err != nil {
+		log.Warn(err)
 	}
 
 	for {
