@@ -11,8 +11,9 @@ import (
 
 // Dir ...
 type Dir struct {
-	Input  string `toml:"input" default:""`
-	Output string `toml:"output" default:"./output"`
+	Automator string `toml:"automator" default:".qmetry-automator"`
+	Input     string `toml:"input" default:""`
+	Output    string `toml:"output" default:"./output"`
 }
 
 // Nexus ...

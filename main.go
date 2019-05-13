@@ -6,7 +6,9 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"os/user"
 	"path/filepath"
+	"qmetry_uploader/modules/osx"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
@@ -17,11 +19,13 @@ import (
 	"qmetry_uploader/modules/prompt"
 	"qmetry_uploader/modules/terminal"
 	"qmetry_uploader/modules/utils"
+
 )
 
 func setup() {
 	log.SetLevel(log.DebugLevel)
 	_ = config.ReadDefault()
+	_ = osx.LoadAssets()
 }
 func main() {
 

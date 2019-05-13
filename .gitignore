@@ -5,3 +5,6 @@ vendor/
 .idea/
 .vscode/
 qmetry_uploader*
+.DS_Store
+*.DS_Store
+.DS_Store*

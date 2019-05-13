@@ -25,7 +25,7 @@ type UploadNexusOptions struct {
 	Username string
 }
 
-// UploadNexus
+// UploadNexus ...
 //
 // initial script for bash
 //#!/bin/bash

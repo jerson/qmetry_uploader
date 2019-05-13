@@ -114,8 +114,15 @@ func ScreenshotIOS(options ScreenshotIOSOptions) (string, error) {
 
 	output := GetNameByOptions(options.ScreenshotOptions)
 
+	usr, err := user.Current()
+	if err != nil {
+		return output, err
+	}
+
+	osx.GetAutomatorFile("take-screenshot.workflow")
+
 	cmd := exec.Command(options.Automator, "./automator/take-screenshot.workflow")
-	err := cmd.Run()
+	err = cmd.Run()
 	if err != nil {
 		return output, err
 	}
@@ -140,11 +147,6 @@ func ScreenshotIOS(options ScreenshotIOSOptions) (string, error) {
 
 	stdOutput, _ := ioutil.ReadAll(cmdOut)
 	stdError, _ := ioutil.ReadAll(cmdErr)
-
-	usr, err := user.Current()
-	if err != nil {
-		return output, err
-	}
 
 	currentScreenshot := fmt.Sprintf("%s/Desktop/%s", usr.HomeDir, strings.TrimSpace(strings.Trim(string(stdOutput), "\n")))
 	errorString := string(stdError)
