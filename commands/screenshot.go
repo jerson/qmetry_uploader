@@ -27,6 +27,21 @@ type ScreenshotAndroidOptions struct {
 	ADB string
 }
 
+// GetNameByOptions ...
+func GetNameByOptions(options ScreenshotAndroidOptions) string {
+	caseName := strings.Trim(options.Case, " ")
+	description, err := utils.Slug(strings.Trim(options.Description, " "))
+	if err != nil {
+		description = strings.Trim(options.Description, " ")
+
+	}
+
+	model := strings.Trim(options.Model, " ")
+	name := strings.Join([]string{model, caseName, description}, "_")
+	return fmt.Sprintf("%s/%s.png", options.OutputDir, name)
+
+}
+
 // ScreenshotAndroid
 //
 // initial script for bash
@@ -39,16 +54,7 @@ type ScreenshotAndroidOptions struct {
 // adb exec-out screencap -p > $FILE
 func ScreenshotAndroid(options ScreenshotAndroidOptions) (string, error) {
 
-	caseName := strings.Trim(options.Case, " ")
-	description, err := utils.Slug(strings.Trim(options.Description, " "))
-	if err != nil {
-		description = strings.Trim(options.Description, " ")
-
-	}
-
-	model := strings.Trim(options.Model, " ")
-	name := strings.Join([]string{model, caseName, description}, "_")
-	output := fmt.Sprintf("%s/%s.png", options.OutputDir, name)
+	output := GetNameByOptions(options)
 
 	cmd := exec.Command(options.ADB, "exec-out", "screencap", "-p")
 	outfile, err := os.Create(output)
@@ -82,16 +88,7 @@ func ScreenshotAndroid(options ScreenshotAndroidOptions) (string, error) {
 // ScreenshotSample ...
 func ScreenshotSample(options ScreenshotAndroidOptions) error {
 
-	caseName := strings.Trim(options.Case, " ")
-	description, err := utils.Slug(strings.Trim(options.Description, " "))
-	if err != nil {
-		description = strings.Trim(options.Description, " ")
-
-	}
-
-	model := strings.Trim(options.Model, " ")
-	name := strings.Join([]string{model, caseName, description}, "_")
-	output := fmt.Sprintf("%s.png", name)
+	output := GetNameByOptions(options)
 
 	cmd := exec.Command(options.ADB, "exec-out", "screencap", "-p", ">", output)
 	cmdOut, err := cmd.StdoutPipe()
