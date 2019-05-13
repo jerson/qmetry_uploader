@@ -1,6 +1,7 @@
 images/
 results/
 output/
+vendor/
 .idea/
 .vscode/
 qmetry_uploader*

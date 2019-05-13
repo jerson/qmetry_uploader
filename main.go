@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
@@ -115,12 +116,17 @@ qmetry-uploader report -i ./images`,
 				cli.StringFlag{
 					Name:  "adb, a",
 					Value: config.Vars.Binary.ADB,
-					Usage: "ADB path",
+					Usage: "ADB path used when platform=android",
+				},
+				cli.StringFlag{
+					Name:  "automator, au",
+					Value: config.Vars.Binary.Automator,
+					Usage: "Automator used when platform=ios",
 				},
 				cli.StringFlag{
 					Name:  "platform, p",
 					Value: "android",
-					Usage: "Platform",
+					Usage: "Platform: ios,android",
 				},
 			},
 			Category:    "screenshot",
@@ -138,12 +144,17 @@ qmetry-uploader screenshot-session J2 AMM-12112`,
 				cli.StringFlag{
 					Name:  "adb, a",
 					Value: config.Vars.Binary.ADB,
-					Usage: "ADB path",
+					Usage: "ADB path used when platform=android",
+				},
+				cli.StringFlag{
+					Name:  "automator, au",
+					Value: config.Vars.Binary.Automator,
+					Usage: "Automator used when platform=ios",
 				},
 				cli.StringFlag{
 					Name:  "platform, p",
 					Value: "android",
-					Usage: "Platform",
+					Usage: "Platform: ios,android",
 				},
 			},
 			Category:    "screenshot",
@@ -279,8 +290,9 @@ func screenshotSessionAction(c *cli.Context) error {
 	caseName := c.Args().Get(1)
 	adb := c.String("adb")
 	platform := c.String("platform")
+	automator := c.String("automator")
 
-	if platform != "android" {
+	if !(platform == "android" || platform == "ios") {
 		return fmt.Errorf("not implemented for: %s", platform)
 	}
 
@@ -292,6 +304,7 @@ func screenshotSessionAction(c *cli.Context) error {
 	model = prompt.Field("Model", model, "GB|GM|GA|iOS", suggestion.Model)
 	caseName = prompt.Field("Case", caseName, "AMM-000", suggestion.Name)
 	adb = prompt.Field("adb path", adb, "", config.Vars.Binary.ADB)
+	automator = prompt.Field("automator path", automator, "", config.Vars.Binary.Automator)
 
 	if model == "" {
 		return errors.New("missing: model")
@@ -302,6 +315,24 @@ func screenshotSessionAction(c *cli.Context) error {
 
 	var steps []string
 	currentStep := 1
+
+	commonOptions := commands.ScreenshotOptions{
+		Model:       model,
+		Case:        caseName,
+		Description: "",
+		OutputDir:   "",
+	}
+	if platform == "ios" {
+		options := commands.ScreenshotIOSOptions{
+			ScreenshotOptions: commonOptions,
+			Automator:         automator,
+		}
+		log.Warn("preparing for screenshot, wait.... dont touch nothing please!!")
+		commands.ScreenshotIOSPrepare(options)
+		time.Sleep(2 * time.Second)
+		log.Info("Ready for screenshots")
+	}
+
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("")
 	fmt.Println(" Insert key for do things:")
@@ -380,17 +411,24 @@ func screenshotSessionAction(c *cli.Context) error {
 			if err != nil {
 				log.Warn(err)
 			}
-			options := commands.ScreenshotAndroidOptions{
-				ScreenshotOptions: commands.ScreenshotOptions{
-					Model:       model,
-					Case:        caseName,
-					Description: fmt.Sprint(fmt.Sprintf("%02d", currentStep)),
-					OutputDir:   output,
-				},
-				ADB: adb,
-			}
 
-			name, err := commands.ScreenshotAndroid(options)
+			commonOptions.OutputDir = output
+			commonOptions.Description = fmt.Sprint(fmt.Sprintf("%02d", currentStep))
+
+			var name string
+			if platform == "android" {
+				options := commands.ScreenshotAndroidOptions{
+					ScreenshotOptions: commonOptions,
+					ADB:               adb,
+				}
+				name, err = commands.ScreenshotAndroid(options)
+			} else if platform == "ios" {
+				options := commands.ScreenshotIOSOptions{
+					ScreenshotOptions: commonOptions,
+					Automator:         automator,
+				}
+				name, err = commands.ScreenshotIOS(options)
+			}
 			if err != nil {
 				fmt.Println(err)
 				continue
@@ -415,8 +453,10 @@ func screenshotAction(c *cli.Context) error {
 	caseName := c.Args().Get(1)
 	description := c.Args().Get(2)
 	adb := c.String("adb")
+	automator := c.String("automator")
 	platform := c.String("platform")
-	if platform != "android" {
+
+	if !(platform == "android" || platform == "ios") {
 		return fmt.Errorf("not implemented for: %s", platform)
 	}
 
@@ -435,6 +475,7 @@ func screenshotAction(c *cli.Context) error {
 	caseName = prompt.Field("Case", caseName, "AMM-000", suggestion.Name)
 	description = prompt.Field("Description", description, "", suggestion.Description)
 	adb = prompt.Field("adb path", adb, "", config.Vars.Binary.ADB)
+	automator = prompt.Field("automator path", automator, "", config.Vars.Binary.Automator)
 
 	if model == "" {
 		return errors.New("missing: model")
@@ -446,16 +487,26 @@ func screenshotAction(c *cli.Context) error {
 		return errors.New("missing: description")
 	}
 
-	options := commands.ScreenshotAndroidOptions{
-		ScreenshotOptions: commands.ScreenshotOptions{
-			Model:       model,
-			Case:        caseName,
-			Description: description,
-			OutputDir:   ".",
-		},
-		ADB: adb,
+	commonOptions := commands.ScreenshotOptions{
+		Model:       model,
+		Case:        caseName,
+		Description: description,
+		OutputDir:   ".",
 	}
-	_, err = commands.ScreenshotAndroid(options)
+	if platform == "android" {
+		options := commands.ScreenshotAndroidOptions{
+			ScreenshotOptions: commonOptions,
+			ADB:               adb,
+		}
+		_, err = commands.ScreenshotAndroid(options)
+	} else if platform == "ios" {
+		options := commands.ScreenshotIOSOptions{
+			ScreenshotOptions: commonOptions,
+			Automator:         automator,
+		}
+		commands.ScreenshotIOSPrepare(options)
+		_, err = commands.ScreenshotIOS(options)
+	}
 	return err
 
 }

@@ -26,7 +26,9 @@ type Nexus struct {
 
 // Binary ...
 type Binary struct {
-	ADB string `toml:"adb" default:"adb"`
+	ADB       string `toml:"adb" default:"adb"`
+	XCode     string `toml:"xcode" default:"Xcode"`
+	Automator string `toml:"automator" default:"/usr/bin/automator"`
 }
 
 //Vars ...

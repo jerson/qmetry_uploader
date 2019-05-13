@@ -6,6 +6,7 @@ output="./output"
 
 [binaries]
 adb="adb"
+automator="/usr/bin/automator"
 
 [nexus]
 username=""
