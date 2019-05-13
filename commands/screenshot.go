@@ -96,10 +96,21 @@ func ScreenshotAndroid(options ScreenshotAndroidOptions) (string, error) {
 
 // ScreenshotIOSPrepare ...
 func ScreenshotIOSPrepare(options ScreenshotIOSOptions) error {
-	osx.OpenApp("Xcode")
+	err :=osx.LoadAssets()
+	if err != nil {
+		return err
+	}
+	err = osx.OpenApp("Xcode")
+	if err != nil {
+		return err
+	}
 	defer osx.OpenApp("Terminal")
-	cmd := exec.Command(options.Automator, "./automator/prepare-screenshot.workflow")
-	err := cmd.Run()
+	prepareScreenShotScript, err := osx.GetAutomatorFile("assets/automator/prepare-screenshot.workflow")
+	if err != nil {
+		return err
+	}
+	cmd := exec.Command(options.Automator, prepareScreenShotScript)
+	err = cmd.Run()
 	if err != nil {
 		defer osx.OpenApp("System Preferences")
 		log.Error("Open: System Preferences > Security & Privacy > Privacy > Accesibility > [enable] Terminal")
@@ -119,14 +130,20 @@ func ScreenshotIOS(options ScreenshotIOSOptions) (string, error) {
 		return output, err
 	}
 
-	osx.GetAutomatorFile("take-screenshot.workflow")
+	takeScreenShotScript, err := osx.GetAutomatorFile("assets/automator/take-screenshot.workflow")
+	if err != nil {
+		return output, err
+	}
 
-	cmd := exec.Command(options.Automator, "./automator/take-screenshot.workflow")
+	cmd := exec.Command(options.Automator, takeScreenShotScript)
 	err = cmd.Run()
 	if err != nil {
 		return output, err
 	}
-	osx.OpenApp("Terminal")
+	err = osx.OpenApp("Terminal")
+	if err != nil {
+		return output, err
+	}
 	log.Debug("looking for screenshot...")
 	time.Sleep(2 * time.Second)
 

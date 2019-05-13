@@ -15,7 +15,7 @@ func Unzip(data []byte, dest string) ([]string, error) {
 
 	var filenames []string
 	buf := bytes.NewReader(data)
-	r, err := zip.NewReader(buf,int64(len(data) ))
+	r, err := zip.NewReader(buf, int64(len(data)))
 	if err != nil {
 		return filenames, err
 	}

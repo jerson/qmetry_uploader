@@ -2,10 +2,11 @@ package osx
 
 import (
 	"fmt"
-	"github.com/gobuffalo/packr/v2"
 	"os"
 	"os/exec"
 	"os/user"
+
+	"qmetry_uploader/modules/assets"
 	"qmetry_uploader/modules/config"
 	"qmetry_uploader/modules/utils"
 )
@@ -44,8 +45,8 @@ func GetAutomatorFile(name string) (string, error) {
 
 // LoadAssets ...
 func LoadAssets() error {
-	box := packr.New("assets", "./assets")
-	bytes, err := box.Find("automator.zip")
+	box := assets.Load()
+	bytes, err := box.Find("assets/automator.zip")
 	if err != nil {
 		return err
 	}
@@ -54,10 +55,7 @@ func LoadAssets() error {
 	if err != nil {
 		return err
 	}
-	err = os.Mkdir(dir, 0777)
-	if err != nil {
-		return err
-	}
+	_ = os.Mkdir(dir, 0777)
 	_, err = utils.Unzip(bytes, dir)
 	return nil
 }

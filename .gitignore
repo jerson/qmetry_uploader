@@ -4,6 +4,9 @@ output/
 vendor/
 .idea/
 .vscode/
+packr/
+*-packr.go
+automator.zip
 qmetry_uploader*
 .DS_Store
 *.DS_Store

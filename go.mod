@@ -8,7 +8,6 @@ require (
 	github.com/atotto/clipboard v0.1.2 // indirect
 	github.com/disintegration/imaging v1.6.0
 	github.com/gcla/gowid v1.0.0
-	github.com/gobuffalo/packr v1.25.0
 	github.com/gobuffalo/packr/v2 v2.2.0
 	github.com/huandu/xstrings v1.2.0 // indirect
 	github.com/jinzhu/configor v1.0.0
