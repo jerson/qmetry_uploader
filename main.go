@@ -8,7 +8,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
@@ -329,7 +328,6 @@ func screenshotSessionAction(c *cli.Context) error {
 		}
 		log.Warn("preparing for screenshot, wait.... dont touch nothing please!!")
 		commands.ScreenshotIOSPrepare(options)
-		time.Sleep(2 * time.Second)
 		log.Info("Ready for screenshots")
 	}
 
