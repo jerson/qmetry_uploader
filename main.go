@@ -334,7 +334,10 @@ func screenshotSessionAction(c *cli.Context) error {
 			Automator:         automator,
 		}
 		log.Warn("preparing for screenshot, wait.... dont touch nothing please!!")
-		commands.ScreenshotIOSPrepare(options)
+		err :=commands.ScreenshotIOSPrepare(options)
+		if err != nil {
+			return err
+		}
 		log.Info("Ready for screenshots")
 	}
 
@@ -509,7 +512,10 @@ func screenshotAction(c *cli.Context) error {
 			ScreenshotOptions: commonOptions,
 			Automator:         automator,
 		}
-		commands.ScreenshotIOSPrepare(options)
+		err :=commands.ScreenshotIOSPrepare(options)
+		if err != nil {
+			return err
+		}
 		_, err = commands.ScreenshotIOS(options)
 	}
 	return err
