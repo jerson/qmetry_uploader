@@ -46,8 +46,8 @@ func main() {
 				},
 				cli.StringFlag{
 					Name:  "output, o",
-					Value: config.Vars.Dir.Output,
-					Usage: "Output dir",
+					Value: "",
+					Usage: "Output file",
 				},
 			},
 			Category:    "evidences",
@@ -55,11 +55,11 @@ func main() {
 			Usage:       "qmetry-uploader merge-images",
 			UsageText: `
 qmetry-uploader merge-images
-qmetry-uploader merge-images -o ./output
+qmetry-uploader merge-images -o ./output.png
 qmetry-uploader merge-images --input=./images
 qmetry-uploader merge-images -i ./images
-qmetry-uploader merge-images --input=./images --output=./output
-qmetry-uploader merge-images -i ./images -o ./output`,
+qmetry-uploader merge-images --input=./images --output=./output.png
+qmetry-uploader merge-images -i ./images -o ./output.png`,
 			Action: mergeImagesAction,
 		},
 		{
@@ -217,14 +217,29 @@ func mergeImagesAction(c *cli.Context) error {
 	output := c.String("output")
 
 	input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input)
-	output = prompt.Dir("Output Dir", output, config.Vars.Dir.Output)
+
+	suggestion, err := utils.GetEvidenceSuggestion(input)
+	if err != nil {
+		log.Warn(err)
+	}
+	var names []string
+	if suggestion.Model != "" {
+		names = append(names, suggestion.Model)
+	}
+	if suggestion.Name != "" {
+		names = append(names, suggestion.Name)
+	}
+	if len(names) < 1 {
+		names = append(names, "merged")
+	}
+
+	output = prompt.Field("Output File", output, "", fmt.Sprintf("%s.png", strings.Join(names, "_")))
 
 	options := commands.MergeImagesOptions{
-		Input:  input,
-		Output: output,
+		Input:      input,
+		OutputFile: output,
 	}
-	err := commands.MergeImages(options)
-	return err
+	return commands.MergeImages(options)
 }
 
 func compressAction(c *cli.Context) error {
@@ -269,7 +284,7 @@ func screenshotSessionAction(c *cli.Context) error {
 		return fmt.Errorf("not implemented for: %s", platform)
 	}
 
-	suggestion, err := utils.GetEvidenceSuggestion()
+	suggestion, err := utils.GetEvidenceSuggestion(".")
 	if err != nil {
 		log.Warn(err)
 	}
@@ -411,7 +426,7 @@ func screenshotAction(c *cli.Context) error {
 		caseName = ""
 	}
 
-	suggestion, err := utils.GetEvidenceSuggestion()
+	suggestion, err := utils.GetEvidenceSuggestion(".")
 	if err != nil {
 		log.Warn(err)
 	}

@@ -13,10 +13,10 @@ type EvidenceSuggestion struct {
 }
 
 // GetEvidenceSuggestion ...
-func GetEvidenceSuggestion() (EvidenceSuggestion, error) {
+func GetEvidenceSuggestion(ref string) (EvidenceSuggestion, error) {
 
 	suggestion := EvidenceSuggestion{}
-	path, err := filepath.Abs(".")
+	path, err := filepath.Abs(ref)
 	if err != nil {
 		return suggestion, err
 	}

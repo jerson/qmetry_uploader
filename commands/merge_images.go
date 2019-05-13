@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"os"
 	"path/filepath"
 	"strings"
 
@@ -15,8 +14,8 @@ import (
 
 // MergeImagesOptions ...
 type MergeImagesOptions struct {
-	Input  string
-	Output string
+	Input      string
+	OutputFile string
 }
 
 // MergeImages ...
@@ -45,13 +44,11 @@ func MergeImages(options MergeImagesOptions) error {
 		return errors.New("images not found")
 	}
 
-	_ = os.MkdirAll(options.Output, 0777)
-	output := fmt.Sprintf("%s/%s.png", options.Output, "merged")
-	err = utils.MergeImages(filePaths, output)
+	err = utils.MergeImages(filePaths, options.OutputFile)
 	if err != nil {
 		return err
 	}
-	log.Infof("output: %s\n", output)
+	log.Infof("output: %s\n", options.OutputFile)
 
 	return nil
 }
