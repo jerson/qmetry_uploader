@@ -1,36 +1,38 @@
 package commands
 
 import (
-	"fyne.io/fyne/app"
-	"fyne.io/fyne/widget"
+	"github.com/gcla/gowid"
+	"github.com/gcla/gowid/widgets/pile"
+	"github.com/gcla/gowid/widgets/text"
+	"github.com/gcla/gowid/widgets/vpadding"
 )
 
 // GUI ...
 func GUI() error {
-	app := app.New()
 
-	w := app.NewWindow("Qmetry uploader")
-	w.SetContent(widget.NewVBox(
-		widget.NewLabel("Hello Fyne!"),
-		widget.NewButton("Quit", func() {
-			app.Quit()
+	helloworld := text.NewFromContentExt(
+		text.NewContent([]text.ContentSegment{
+			text.StringContent("Hello World"),
 		}),
-		widget.NewScrollContainer(widget.NewVBox(
-			widget.NewLabel("Hello Fyne!"),
-			widget.NewLabel("Hello Fyne!"),
-			widget.NewLabel("Hello Fyne!"),
-			widget.NewLabel("Hello Fyne!"),
-			widget.NewLabel("Hello Fyne!"),
-			widget.NewLabel("Hello Fyne!"),
-			widget.NewLabel("Hello Fyne!"),
-			widget.NewLabel("Hello Fyne!"),
-			widget.NewLabel("Hello Fyne!"),
-			widget.NewLabel("Hello Fyne!"),
-			widget.NewLabel("Hello Fyne!"),
-			widget.NewLabel("Hello Fyne!"),
-		)),
-	))
+		text.Options{
+			Align: gowid.HAlignMiddle{},
+		},
+	)
 
-	w.ShowAndRun()
+	f := gowid.RenderFlow{}
+
+	view := vpadding.New(
+		pile.New([]gowid.IContainerWidget{
+			&gowid.ContainerWidget{IWidget: helloworld, D: f},
+		}),
+		gowid.VAlignTop{},
+		f,
+	)
+
+	app, _ := gowid.NewApp(gowid.AppArgs{
+		View: view,
+	})
+
+	app.SimpleMainLoop()
 	return nil
 }
