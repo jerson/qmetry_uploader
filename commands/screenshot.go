@@ -97,13 +97,15 @@ func ScreenshotAndroid(options ScreenshotAndroidOptions) (string, error) {
 // ScreenshotIOSPrepare ...
 func ScreenshotIOSPrepare(options ScreenshotIOSOptions) error {
 	osx.OpenApp("Xcode")
-	cmd := exec.Command(options.Automator, "./prepare-screenshot.workflow")
-	cmd.Stderr = os.Stderr
+	defer osx.OpenApp("Terminal")
+	cmd := exec.Command(options.Automator, "./automator/prepare-screenshot.workflow")
 	err := cmd.Run()
 	if err != nil {
+		defer osx.OpenApp("System Preferences")
+		log.Error("Open: System Preferences > Security & Privacy > Privacy > Accesibility > [enable] Terminal")
 		return err
 	}
-	osx.OpenApp("Terminal")
+
 	return nil
 }
 
@@ -112,7 +114,7 @@ func ScreenshotIOS(options ScreenshotIOSOptions) (string, error) {
 
 	output := GetNameByOptions(options.ScreenshotOptions)
 
-	cmd := exec.Command(options.Automator, "./take-screenshot.workflow")
+	cmd := exec.Command(options.Automator, "./automator/take-screenshot.workflow")
 	err := cmd.Run()
 	if err != nil {
 		return output, err
