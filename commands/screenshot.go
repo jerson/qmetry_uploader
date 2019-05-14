@@ -98,10 +98,6 @@ func ScreenShotAndroid(options ScreenShotAndroidOptions) (string, error) {
 func ScreenShotIOSPrepare(options ScreenShotIOSOptions) error {
 
 	log.Warn("preparing for screenshot, wait.... dont touch nothing please!!")
-	err := osx.OpenApp("Xcode")
-	if err != nil {
-		return err
-	}
 	defer osx.OpenApp("Terminal")
 	prepareScreenShotScript, err := osx.GetAutomatorFile("prepare-screenshot.workflow")
 	if err != nil {

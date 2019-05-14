@@ -3,8 +3,6 @@ package actions
 import (
 	"errors"
 	"fmt"
-	"time"
-
 	"github.com/urfave/cli"
 
 	log "github.com/sirupsen/logrus"
@@ -73,11 +71,6 @@ func ScreenShot(c *cli.Context) error {
 			ScreenShotOptions: commonOptions,
 			Automator:         automator,
 		}
-		err := commands.ScreenShotIOSPrepare(options)
-		if err != nil {
-			return err
-		}
-		time.Sleep(2 * time.Second)
 		_, err = commands.ScreenShotIOS(options)
 	}
 	return err

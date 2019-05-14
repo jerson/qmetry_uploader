@@ -21,7 +21,7 @@
 					<true/>
 					<key>Types</key>
 					<array>
-						<string>*</string>
+						<string>com.apple.applescript.object</string>
 					</array>
 				</dict>
 				<key>AMActionVersion</key>
@@ -32,23 +32,7 @@
 				</array>
 				<key>AMParameterProperties</key>
 				<dict>
-					<key>playbackSpeed</key>
-					<dict/>
-					<key>playbackSpeed_MAX</key>
-					<dict/>
-					<key>playbackSpeed_MIN</key>
-					<dict/>
-					<key>timeoutCount</key>
-					<dict/>
-					<key>timeoutCount_MAX</key>
-					<dict/>
-					<key>timeoutCount_MIN</key>
-					<dict/>
-					<key>timeoutIsError</key>
-					<dict/>
-					<key>timeoutPerEvent</key>
-					<dict/>
-					<key>userEvents</key>
+					<key>source</key>
 					<dict/>
 				</dict>
 				<key>AMProvides</key>
@@ -57,556 +41,20 @@
 					<string>List</string>
 					<key>Types</key>
 					<array>
-						<string>*</string>
+						<string>com.apple.applescript.object</string>
 					</array>
 				</dict>
-				<key>AMRequiredResources</key>
-				<array/>
 				<key>ActionBundlePath</key>
-				<string>/System/Library/Automator/Watch Me Do.action</string>
+				<string>/System/Library/Automator/Run AppleScript.action</string>
 				<key>ActionName</key>
-				<string>Watch Me Do</string>
+				<string>Run AppleScript</string>
 				<key>ActionParameters</key>
 				<dict>
-					<key>playbackSpeed</key>
-					<real>0.0</real>
-					<key>playbackSpeed_MAX</key>
-					<real>1</real>
-					<key>playbackSpeed_MIN</key>
-					<real>-1</real>
-					<key>timeoutCount</key>
-					<real>2</real>
-					<key>timeoutCount_MAX</key>
-					<real>5</real>
-					<key>timeoutCount_MIN</key>
-					<real>0.0</real>
-					<key>timeoutIsError</key>
-					<true/>
-					<key>timeoutPerEvent</key>
-					<true/>
-					<key>userEvents</key>
-					<data>
-					YnBsaXN0MDDUAAEAAgADAAQABQAGBksGTFgk
-					dmVyc2lvblgkb2JqZWN0c1kkYXJjaGl2ZXJU
-					JHRvcBIAAYagrxEBKQAHAAgAEAAgACEAIgAj
-					ACQAJQAqAC4AOwA8AD0APgA/AEUASABYAFkA
-					WgBbAFwAXQBeAF8AYABhAGIAYwBpAG0AcACK
-					AIsAjACNAI4AjwCQAJEAkgCTAJQAlQCWAJ4A
-					nwCgAKEAogCjAKsArACtALUAtgC3ALgAuQDB
-					AMIAwwDLAM4A6gDrAOwA7QDuAPYA/gD/AQcB
-					CAEQAREBEgEaARsBHAEdASEBJQEpASoBLwEy
-					AT4BRAFHAVcBWAFZAVwBdgF3AXgBeQGBAYkB
-					kQGZAaEBpAHAAcEBwgHKAdIB2gHiAeMB6wHs
-					Ae0B8AHxAfMB9wIEAgUCBgIHAgwCDwIbAiEC
-					JAI4AjkCOgI7AjwCPQI+AkECVwJYAmACYQJi
-					AmMCZAJsAnQCdQJ9An4ChgKJAqMCpAKsAq0C
-					rgKvArACuALAAsECyQLKAtIC1QLWAtkC5QLr
-					Au4DAgMDAwQDBQMIAx4DHwMnAy8DNwM/A0cD
-					SgNkA2UDbQN1A30DhQONA5ADkQOeA6IDpgOn
-					A6gDrQOwA7wDxAPHA9sD3APdA94D4QP3A/gE
-					AAQIBBAEGAQgBCMEPQQ+BEYETgRWBF4EZgRp
-					BH8EgASIBIkEigSLBIwElAScBKQEpQStBLAE
-					zATNBM4EzwTXBN8E4AToBOkE8QTyBPME+wT8
-					BP0FAAUBBQQFEAUYBRsFLwUwBTEFMgU1BUsF
-					TAVUBVwFZAVsBXQFdwWRBZIFmgWiBaoFsgW6
-					Bb0F0wXUBdwF5AXsBfQF/AX/BhsGHAYdBh4G
-					JgYuBjYGPgY/BkcGSlUkbnVsbNIACQAKAAsA
-					D1pOUy5vYmplY3RzViRjbGFzc6MADAANAA6A
-					AoB3gL+AddgAEQAKABIAEwAUABUAFgAXABgA
-					GQAaABsAHAAdAB4AH1h1aUV2ZW50c18QEXNj
-					cmVlbkNhcHR1cmVEYXRhV3RpbWVvdXRVZGVs
-					YXlbcHJvY2Vzc05hbWVfEA91c2VyRGVzY3Jp
-					cHRpb25aYWN0aW9uTmFtZYAIgHaAAIAHgAaA
-					BIAFgANdTW91c2UgQ2xpY2tlZFREb2NrbxAa
-					AEMAbABpAGMAawAgIBwAWABjAG8AZABlIB0A
-					IABpAG4AIAB0AGgAZQAgAEQAbwBjAGsALiM/
-					9minIAAAACNACAAAAAAAANIACQAKACYAD6IA
-					JwAogAmAVoB10gArAAoALAAtWnByb3BlcnRp
-					ZXOACoBV0wAvAAkACgAwADUAOldOUy5rZXlz
-					pAAxADIAMwA0gAuADIANgA6kADYANwAdADmA
-					D4BSgASAVIAdXWNoaWxkcmVuU3RhY2tbY2dF
-					dmVudERhdGFbcHJvY2Vzc05hbWVfEBdkZXNj
-					cmlwdGlvbkZvcm1hdFN0cmluZ9IACQAKAEAA
-					RKMAQQBCAEOAEIAfgD+AUdIAKwAKAEYAR4AR
-					gB7TAC8ACQAKAEkAUAA6pgBKAEsATABNAE4A
-					T4ASgBOAFIAVgBaAF6YAUQBSAFMAHQBVAFaA
-					GIAZgBqABIAbgByAHV8QF0FYRW5oYW5jZWRV
-					c2VySW50ZXJmYWNlXxASQ0ZCdW5kbGVJZGVu
-					dGlmaWVyXxARQVhSb2xlRGVzY3JpcHRpb25X
-					QVhUaXRsZV8QF2tVSUVsZW1lbnRDaGlsZHJl
-					bkNvdW50VkFYUm9sZQheY29tLmFwcGxlLmRv
-					Y2tbYXBwbGljYXRpb24QAV1BWEFwcGxpY2F0
-					aW9u0gBkAGUAZgBnWiRjbGFzc25hbWVYJGNs
-					YXNzZXNcTlNEaWN0aW9uYXJ5ogBmAGhYTlNP
-					YmplY3TSAGQAZQBqAGtfEB1VSVJBY2Nlc3Np
-					YmlsaXR5RWxlbWVudFJlY29yZKIAbABoXxAd
-					VUlSQWNjZXNzaWJpbGl0eUVsZW1lbnRSZWNv
-					cmTSACsACgBuAEeAIIAe0wAvAAkACgBxAH0A
-					OqsAcgBPAHQAdQB2AHcAeABOAHoAewB8gCGA
-					F4AigCOAJIAlgCaAFoAngCiAKasAfgB/AIAA
-					gQCCAIMAUQCFAIYAhgCIgCqAK4AsgC2AMoAz
-					gBiAPIA9gD2APoAdXUFYT3JpZW50YXRpb25Z
-					QVhFbmFibGVkVkFYU2l6ZV8QEUFYUm9sZURl
-					c2NyaXB0aW9uV0FYRnJhbWVZQVhGb2N1c2Vk
-					XxAPa1VJRWxlbWVudEluZGV4XxATa1VJRWxl
-					bWVudFJvbGVJbmRleFpBWFBvc2l0aW9uXxAX
-					QVhIb3Jpem9udGFsT3JpZW50YXRpb25WQVhM
-					aXN0CdMALwAJAAoAlwCaADqiAJgAmYAugC+i
-					AJsAnIAwgDGAHVV3aWR0aFZoZWlnaHQjQJpI
-					AAAAAAAjQFIAAAAAAABUbGlzdNMALwAJAAoA
-					pACnADqiAKUApoA0gDWiAKgAqYA2gDuAHVZv
-					cmlnaW5Uc2l6ZdMALwAJAAoArgCxADqiAK8A
-					sIA3gDiiALIAs4A5gDqAHVF4UXkjQF3AAAAA
-					AAAjQI+AAAAAAADTAC8ACQAKALoAvQA6ogCY
-					AJmALoAvogCbAJyAMIAxgB0QHRAA0wAvAAkA
-					CgDEAMcAOqIArwCwgDeAOKIAsgCzgDmAOoAd
-					0gArAAoAzABHgECAHtMALwAJAAoAzwDcADqs
-					ANAAdwBOAHUATwBNAHwAegDYANkA2gB7gEGA
-					JYAWgCOAF4AVgCmAJ4BCgEOARIAorACAAN4A
-					hgDgAOEA4gDjAOQA5QCAAOcA5IAsgEWAPYBK
-					gEuATIBNgE6AT4AsgFCAToAdXxAWQVhJc0Fw
-					cGxpY2F0aW9uUnVubmluZ18QEUFYUm9sZURl
-					c2NyaXB0aW9uWkFYU2VsZWN0ZWRZQVhTdWJy
-					b2xl0wAvAAkACgDvAPIAOqIApQCmgDSANaIA
-					8wD0gEaASIAd0wAvAAkACgD3APoAOqIArwCw
-					gDeAOKIA+wCzgEeAOoAdI0CWCAAAAAAA0wAv
-					AAkACgEAAQMAOqIAmACZgC6AL6IBBACcgEmA
-					MYAdI0BOAAAAAAAA0wAvAAkACgEJAQwAOqIA
-					mACZgC6AL6IBBACcgEmAMYAdWkFYRG9ja0l0
-					ZW1VWGNvZGXTAC8ACQAKARMBFgA6ogCvALCA
-					N4A4ogD7ALOAR4A6gB0QFl8QFWFwcGxpY2F0
-					aW9uIGRvY2sgaXRlbV8QFUFYQXBwbGljYXRp
-					b25Eb2NrSXRlbdIAZABlAR4BH15OU011dGFi
-					bGVBcnJheaMBHgEgAGhXTlNBcnJhedIBIgAK
-					ASMBJFdOUy5kYXRhTxDcAAAAAgABQDUAAAAD
-					AAFANgAAAAAAAUA3AAAAAQACwDhEtQngRILX
-					YAACwDlEtQngRILXYAABADocQHZ1AAARZgAB
-					QDsAAAAAAAFAMwAAACUAAUA0AADcHwABAKkc
-					QHZ1AAARZgABQGoAAAQ4AAFAawAABDgAAUAH
-					AAAAAAABQAAAAAktAAFAAQAAAAEAAUACAAAA
-					/wABQAMAAAAAAAFABAAAAAAAAUAFAAAAAAAB
-					QAYAAAAAAAFAWQAAAE8AAUBaAAAAuwABQFsA
-					AAAlAAFAXAAAACUAAUBsAAAAAYBT0gBkAGUB
-					JgEnXU5TTXV0YWJsZURhdGGjASYBKABoVk5T
-					RGF0YV8QLCVAIG9uIFVJIEVsZW1lbnQgXFUy
-					MDFDWGNvZGVcVTIwMUQgaW4gbGlzdCAx0gBk
-					AGUBKwEsXVVJUk1vdXNlRXZlbnSjAS0BLgBo
-					XVVJUk1vdXNlRXZlbnRYVUlSRXZlbnTSACsA
-					CgEwAC2AV4BV0wAvAAkACgEzATgAOqQAMQAy
-					ADMANIALgAyADYAOpAE5AToAHQE8gFiAc4AE
-					gHSAHdIACQAKAT8ARKMBQAFBAUKAWYBdgGeA
-					UdIAKwAKAUUAR4BagB7TAC8ACQAKAUgBTwA6
-					pgFJAEsBSwBNAE4AT4BbgBOAXIAVgBaAF6YA
-					UQBSAFMAHQBVAFaAGIAZgBqABIAbgByAHV8Q
-					F0FYRW5oYW5jZWRVc2VySW50ZXJmYWNlXxAR
-					QVhSb2xlRGVzY3JpcHRpb27SACsACgFaAEeA
-					XoAe0wAvAAkACgFdAWkAOqsBXgBPAHQAdQFi
-					AHcAeABOAHoAewB8gF+AF4AigCOAYIAlgCaA
-					FoAngCiAKasBagB/AIABbQCCAW8AUQCFAIYA
-					hgF0gGGAK4AsgGKAMoBjgBiAPIA9gD2AZoAd
-					XUFYT3JpZW50YXRpb25fEBFBWFJvbGVEZXNj
-					cmlwdGlvbl8QF0FYSG9yaXpvbnRhbE9yaWVu
-					dGF0aW9u0wAvAAkACgF6AX0AOqIAmACZgC6A
-					L6IAmwCcgDCAMYAd0wAvAAkACgGCAYUAOqIA
-					pQCmgDSANaIBhgGHgGSAZYAd0wAvAAkACgGK
-					AY0AOqIArwCwgDeAOKIAsgCzgDmAOoAd0wAv
-					AAkACgGSAZUAOqIAmACZgC6AL6IAmwCcgDCA
-					MYAd0wAvAAkACgGaAZ0AOqIArwCwgDeAOKIA
-					sgCzgDmAOoAd0gArAAoBogBHgGiAHtMALwAJ
-					AAoBpQGyADqsAaYAdwBOAHUATwBNAHwAegGu
-					ANkA2gB7gGmAJYAWgCOAF4AVgCmAJ4BqgEOA
-					RIAorACAAbQAhgG2AbcA4gG5AOQBuwCAAb0A
-					5IAsgGuAPYBugG+ATIBwgE6AcYAsgHKAToAd
-					XxAWQVhJc0FwcGxpY2F0aW9uUnVubmluZ18Q
-					EUFYUm9sZURlc2NyaXB0aW9u0wAvAAkACgHD
-					AcYAOqIApQCmgDSANaIBxwHIgGyAbYAd0wAv
-					AAkACgHLAc4AOqIArwCwgDeAOKIA+wCzgEeA
-					OoAd0wAvAAkACgHTAdYAOqIAmACZgC6AL6IB
-					BACcgEmAMYAd0wAvAAkACgHbAd4AOqIAmACZ
-					gC6AL6IBBACcgEmAMYAdWkFYRG9ja0l0ZW3T
-					AC8ACQAKAeQB5wA6ogCvALCAN4A4ogD7ALOA
-					R4A6gB1fEBVhcHBsaWNhdGlvbiBkb2NrIGl0
-					ZW1fEBVBWEFwcGxpY2F0aW9uRG9ja0l0ZW3S
-					ASIACgHuASRPENwAAAACAAFANQAAAAMAAUA2
-					AAAAAAABQDcAAAACAALAOES1CeBEgtdgAALA
-					OUS1CeBEgtdgAAEAOiH5XyUAABFmAAFAOwAA
-					AAAAAUAzAAAAJQABQDQAANwfAAEAqSH5XyUA
-					ABFmAAFAagAABDgAAUBrAAAEOAABQAcAAAAA
-					AAFAAAAACS0AAUABAAAAAQABQAIAAAAAAAFA
-					AwAAAAAAAUAEAAAAAAABQAUAAAAAAAFABgAA
-					AAAAAUBZAAAATwABQFoAAAC7AAFAWwAAACUA
-					AUBcAAAAJQABQGwAAAAAgFNfECwlQCBvbiBV
-					SSBFbGVtZW50IFxVMjAxQ1hjb2RlXFUyMDFE
-					IGluIGxpc3QgMdIAZABlASAB8qIBIABo0gBk
-					AGUB9AH1XkFNVUlSVXNlckV2ZW50ogH2AGhe
-					QU1VSVJVc2VyRXZlbnTYABEACgH4ABMAFAH5
-					AfoB+wH8ABkAGgH/AgAA4gICAB9fEBFzY3Jl
-					ZW5DYXB0dXJlRGF0YVtwcm9jZXNzTmFtZV8Q
-					D3VzZXJEZXNjcmlwdGlvblphY3Rpb25OYW1l
-					gHuAdoAAgHqAeYBMgHiAA28QGABDAGwAaQBj
-					AGsAIAB0AGgAZQAgIBwAVwBpAG4AZABvAHcg
-					HQAgAG0AZQBuAHUALiM/8vGZ9JmAqyNAGAAA
-					AAAAANIACQAKAggAD6ICCQIKgHyApYB10gAr
-					AAoCDQAtgH2AVdMALwAJAAoCEAIVADqkADEA
-					MgAzADSAC4AMgA2ADqQCFgIXAOICGYB+gKOA
-					TICkgB3SAAkACgIcAESjAh0CHgIfgH+Ah4CV
-					gFHSACsACgIiAEeAgIAe0wAvAAkACgIlAi4A
-					OqgATwBLAigATQIqAE4CLAItgBeAE4CBgBWA
-					goAWgIOAhKgAVgIwAFEA4gBTAjQAUQCAgByA
-					hYAYgEyAGoCGgBiALIAdWEFYSGlkZGVuXxAR
-					QVhSb2xlRGVzY3JpcHRpb25fEBdBWEVuaGFu
-					Y2VkVXNlckludGVyZmFjZVtBWEZyb250bW9z
-					dF8QEmNvbS5hcHBsZS5kdC5YY29kZRAC0gAr
-					AAoCPwBHgIiAHtMALwAJAAoCQgJMADqpAHUA
-					TwB0AkYAdwB6AE4AewB8gCOAF4AigImAJYAn
-					gBaAKIApqQJNAk4AgAJQAlEAVQJTAIYCVYCK
-					gI2ALICOgI+AG4CTgD2AlIAdXxARQVhSb2xl
-					RGVzY3JpcHRpb27TAC8ACQAKAlkCXAA6ogCY
-					AJmALoAvogJdAl6Ai4CMgB0jQJ4AAAAAAAAj
-					QDYAAAAAAABZQVhNZW51QmFyWG1lbnUgYmFy
-					0wAvAAkACgJlAmgAOqIApQCmgDSANaICaQJq
-					gJCAkoAd0wAvAAkACgJtAnAAOqIArwCwgDeA
-					OKICcQJxgJGAkYAdIwAAAAAAAAAA0wAvAAkA
-					CgJ2AnkAOqIAmACZgC6AL6ICXQJegIuAjIAd
-					EA3TAC8ACQAKAn8CggA6ogCvALCAN4A4ogJx
-					AnGAkYCRgB3SACsACgKHAEeAloAe0wAvAAkA
-					CgKKApYAOqsAdQBPAHQATQDZApAAdwB6AE4A
-					ewB8gCOAF4AigBWAQ4CXgCWAJ4AWgCiAKasC
-					lwKYAIACmgBRApwCnQKeAFUCngKhgJiAmoAs
-					gJuAGICcgJ2AoYAbgKGAooAdXxARQVhSb2xl
-					RGVzY3JpcHRpb27TAC8ACQAKAqUCqAA6ogCY
-					AJmALoAvogKpAl6AmYCMgB0jQFGAAAAAAABd
-					QVhNZW51QmFySXRlbVZXaW5kb3ddbWVudSBi
-					YXIgaXRlbdMALwAJAAoCsQK0ADqiAKUApoA0
-					gDWiArUCtoCegKCAHdMALwAJAAoCuQK8ADqi
-					AK8AsIA3gDiiAr0CcYCfgJGAHSNAhMgAAAAA
-					ANMALwAJAAoCwgLFADqiAJgAmYAugC+iAqkC
-					XoCZgIyAHRAL0wAvAAkACgLLAs4AOqIArwCw
-					gDeAOKICvQJxgJ+AkYAd0gEiAAoC0wEkTxDc
-					AAAAAgABQDUAAAADAAFANgAAAAAAAUA3AAAA
-					AQACwDhEK3zAQSigAAACwDlEK3zAQSigAAAB
-					ADpoi4tvAAARZgABQDsAAAAAAAFAMwAAAAMA
-					AUA0AAKbSwABAKloi4tvAAARZgABQGoAAAAW
-					AAFAawAABDgAAUAHAAAAAAABQAAAAAkuAAFA
-					AQAAAAEAAUACAAAA/wABQAMAAAAAAAFABAAA
-					AAAAAUAFAAAAAAABQAYAAAAAAAFAWQAAAPMA
-					AUBaAAAAigABQFsAAAADAAFAXAAAAAMAAUBs
-					AAAAAYBTXxA0JUAgb24gbWVudSBiYXIgaXRl
-					bSBcVTIwMUNXaW5kb3dcVTIwMUQgaW4gbWVu
-					dSBiYXIgMdIAKwAKAtcALYCmgFXTAC8ACQAK
-					AtoC3wA6pAAxADIAMwA0gAuADIANgA6kAuAC
-					4QDiAuOAp4C9gEyAvoAd0gAJAAoC5gBEowLn
-					AugC6YCogK2AtYBR0gArAAoC7ABHgKmAHtMA
-					LwAJAAoC7wL4ADqoAE8ASwIoAE0C9ABOAvYC
-					94AXgBOAgYAVgKqAFoCrgKyoAFYCMABRAOIA
-					UwI0AFEAgIAcgIWAGIBMgBqAhoAYgCyAHV8Q
-					EUFYUm9sZURlc2NyaXB0aW9uXxAXQVhFbmhh
-					bmNlZFVzZXJJbnRlcmZhY2VbQVhGcm9udG1v
-					c3TSACsACgMGAEeAroAe0wAvAAkACgMJAxMA
-					OqkAdQBPAHQDDQB3AHoATgB7AHyAI4AXgCKA
-					r4AlgCeAFoAogCmpAxQCTgCAAlADGABVAlMA
-					hgMcgLCAjYAsgI6AsYAbgJOAPYC0gB1fEBFB
-					WFJvbGVEZXNjcmlwdGlvbtMALwAJAAoDIAMj
-					ADqiAJgAmYAugC+iAl0CXoCLgIyAHdMALwAJ
-					AAoDKAMrADqiAKUApoA0gDWiAywDLYCygLOA
-					HdMALwAJAAoDMAMzADqiAK8AsIA3gDiiAnEC
-					cYCRgJGAHdMALwAJAAoDOAM7ADqiAJgAmYAu
-					gC+iAl0CXoCLgIyAHdMALwAJAAoDQANDADqi
-					AK8AsIA3gDiiAnECcYCRgJGAHdIAKwAKA0gA
-					R4C2gB7TAC8ACQAKA0sDVwA6qwB1AE8AdABN
-					ANkDUQB3AHoATgB7AHyAI4AXgCKAFYBDgLeA
-					JYAngBaAKIApqwNYApgAgAKaAIACnANeAp4A
-					VQKeA2KAuICagCyAm4AsgJyAuYChgBuAoYC8
-					gB1fEBFBWFJvbGVEZXNjcmlwdGlvbtMALwAJ
-					AAoDZgNpADqiAJgAmYAugC+iAqkCXoCZgIyA
-					HdMALwAJAAoDbgNxADqiAKUApoA0gDWiA3ID
-					c4C6gLuAHdMALwAJAAoDdgN5ADqiAK8AsIA3
-					gDiiAr0CcYCfgJGAHdMALwAJAAoDfgOBADqi
-					AJgAmYAugC+iAqkCXoCZgIyAHdMALwAJAAoD
-					hgOJADqiAK8AsIA3gDiiAr0CcYCfgJGAHdIB
-					IgAKA44BJE8Q3AAAAAIAAUA1AAAAAwABQDYA
-					AAAAAAFANwAAAAIAAsA4RCt8wEEooAAAAsA5
-					RCt8wEEooAAAAQA6bziF6QAAEWYAAUA7AAAA
-					AAABQDMAAAADAAFANAACm0sAAQCpbziF6QAA
-					EWYAAUBqAAAAFgABQGsAAAQ4AAFABwAAAAAA
-					AUAAAAAJLgABQAEAAAABAAFAAgAAAAAAAUAD
-					AAAAAAABQAQAAAAAAAFABQAAAAAAAUAGAAAA
-					AAABQFkAAADzAAFAWgAAAIoAAUBbAAAAAwAB
-					QFwAAAADAAFAbAAAAACAU18QNCVAIG9uIG1l
-					bnUgYmFyIGl0ZW0gXFUyMDFDV2luZG93XFUy
-					MDFEIGluIG1lbnUgYmFyIDHYABEACgOSABMA
-					FAOTA5QDlQOWABkAGgOZA5oA4gOcAB9fEBFz
-					Y3JlZW5DYXB0dXJlRGF0YVtwcm9jZXNzTmFt
-					ZV8QD3VzZXJEZXNjcmlwdGlvblphY3Rpb25O
-					YW1lgMSAdoAAgMOAwoBMgMCAA9IACgOfA6AD
-					oVlOUy5zdHJpbmeAwV8QFkRldmljZXMgYW5k
-					IFNpbXVsYXRvcnPSAGQAZQOjA6RfEA9OU011
-					dGFibGVTdHJpbmejA6MDpQBoWE5TU3RyaW5n
-					Iz/376rcps5PI0AAAAAAAAAA0gAJAAoDqQAP
-					ogOqA6uAxYD8gHXSACsACgOuAC2AxoBV0wAv
-					AAkACgOxA7YAOqQAMQAyADMANIALgAyADYAO
-					pAO3A7gA4gO6gMeA+oBMgPuAHdIACQAKA70A
-					RKUDvgO/A8ADwQPCgMiAzYDVgN2A6oBR0gAr
-					AAoDxQBHgMmAHtMALwAJAAoDyAPRADqoAE8A
-					SwIoAE0DzQBOA88D0IAXgBOAgYAVgMqAFoDL
-					gMyoAFYCMABRAOIAUwI0AFEAgIAcgIWAGIBM
-					gBqAhoAYgCyAHV8QEUFYUm9sZURlc2NyaXB0
-					aW9uXxAXQVhFbmhhbmNlZFVzZXJJbnRlcmZh
-					Y2VbQVhGcm9udG1vc3TSACsACgPfAEeAzoAe
-					0wAvAAkACgPiA+wAOqkAdQBPAHQD5gB3AHoA
-					TgB7AHyAI4AXgCKAz4AlgCeAFoAogCmpA+0C
-					TgCAAlAD8QBVAlMAhgP1gNCAjYAsgI6A0YAb
-					gJOAPYDUgB1fEBFBWFJvbGVEZXNjcmlwdGlv
-					btMALwAJAAoD+QP8ADqiAJgAmYAugC+iAl0C
-					XoCLgIyAHdMALwAJAAoEAQQEADqiAKUApoA0
-					gDWiBAUEBoDSgNOAHdMALwAJAAoECQQMADqi
-					AK8AsIA3gDiiAnECcYCRgJGAHdMALwAJAAoE
-					EQQUADqiAJgAmYAugC+iAl0CXoCLgIyAHdMA
-					LwAJAAoEGQQcADqiAK8AsIA3gDiiAnECcYCR
-					gJGAHdIAKwAKBCEAR4DWgB7TAC8ACQAKBCQE
-					MAA6qwB1AE8AdABNANkEKgB3AHoATgB7AHyA
-					I4AXgCKAFYBDgNeAJYAngBaAKIApqwQxApgA
-					gAKaAIACnAQ3Ap4AVQKeBDuA2ICagCyAm4As
-					gJyA2YChgBuAoYDcgB1fEBFBWFJvbGVEZXNj
-					cmlwdGlvbtMALwAJAAoEPwRCADqiAJgAmYAu
-					gC+iAqkCXoCZgIyAHdMALwAJAAoERwRKADqi
-					AKUApoA0gDWiBEsETIDagNuAHdMALwAJAAoE
-					TwRSADqiAK8AsIA3gDiiAr0CcYCfgJGAHdMA
-					LwAJAAoEVwRaADqiAJgAmYAugC+iAqkCXoCZ
-					gIyAHdMALwAJAAoEXwRiADqiAK8AsIA3gDii
-					Ar0CcYCfgJGAHdIAKwAKBGcAR4DegB7TAC8A
-					CQAKBGoEdAA6qQB1AE8AdARuAHcAegBOAHsA
-					fIAjgBeAIoDfgCWAJ4AWgCiAKakEdQR2AIAE
-					eAR5AIYEewCGBH2A4IDjgCyA5IDlgD2A6IA9
-					gOmAHV8QEUFYUm9sZURlc2NyaXB0aW9u0wAv
-					AAkACgSBBIQAOqIAmACZgC6AL6IEhQSGgOGA
-					4oAdI0BwAAAAAAAAI0By8AAAAAAAVkFYTWVu
-					dVRtZW510wAvAAkACgSNBJAAOqIApQCmgDSA
-					NaIEkQSSgOaA54Ad0wAvAAkACgSVBJgAOqIA
-					rwCwgDeAOKICvQJegJ+AjIAd0wAvAAkACgSd
-					BKAAOqIAmACZgC6AL6IEhQSGgOGA4oAdEBXT
-					AC8ACQAKBKYEqQA6ogCvALCAN4A4ogK9Al6A
-					n4CMgB3SACsACgSuAEeA64Ae0wAvAAkACgSx
-					BL4AOqwAdAB3AHUATwS2AE0AfAS5BLoA2QB6
-					AHuAIoAlgCOAF4DsgBWAKYDtgO6AQ4AngCis
-					AIAEwATBBMIAVQTEBMUExgTHAIACUwJTgCyA
-					74D0gPWAG4D2gPeA+ID5gCyAk4CTgB1fEBZB
-					WE1lbnVJdGVtQ21kTW9kaWZpZXJzXxARQVhN
-					ZW51SXRlbUNtZENoYXJfEBFBWFJvbGVEZXNj
-					cmlwdGlvbtMALwAJAAoE0ATTADqiAKUApoA0
-					gDWiBNQE1YDwgPKAHdMALwAJAAoE2ATbADqi
-					AK8AsIA3gDiiAr0E3YCfgPGAHSNAa6AAAAAA
-					ANMALwAJAAoE4QTkADqiAJgAmYAugC+iBIUE
-					5oDhgPOAHSNAMwAAAAAAANMALwAJAAoE6gTt
-					ADqiAJgAmYAugC+iBIUE5oDhgPOAHVpBWE1l
-					bnVJdGVtXxAWRGV2aWNlcyBhbmQgU2ltdWxh
-					dG9yc9MALwAJAAoE9AT3ADqiAK8AsIA3gDii
-					Ar0E3YCfgPGAHVEyWW1lbnUgaXRlbdIBIgAK
-					BP4BJE8Q3AAAAAIAAUA1AAAAAwABQDYAAAAA
-					AAFANwAAAAEAAsA4REAbwENjRQAAAsA5Qs7e
-					AENNRQAAAQA6yGPc9QAAEWYAAUA7AAAAAAAB
-					QDMAAAKLAAFANAACm0sAAQCpyGPc9QAAEWYA
-					AUBqAAABLwABQGsAAAQ4AAFABwAAAAAAAUAA
-					AAAJLwABQAEAAAABAAFAAgAAAP8AAUADAAAA
-					AAABQAQAAAAAAAFABQAAAAAAAUAGAAAAAAAB
-					QFkAAABvAAFAWgAAAEUAAUBbAAACiwABQFwA
-					AAKLAAFAbAAAAAGAU18QPCVAIG9uIG1lbnUg
-					aXRlbSBcVTIwMUNEZXZpY2VzIGFuZCBTaW11
-					bGF0b3JzXFUyMDFEIGluIG1lbnUgMdIAKwAK
-					BQIALYD9gFXTAC8ACQAKBQUFCgA6pAAxADIA
-					MwA0gAuADIANgA6kBQsFDADiBQ6A/oEBJ4BM
-					gQEogB3SAAkACgURAESlBRIFEwUUBRUFFoD/
-					gQEEgQEMgQEUgQEcgFHSACsACgUZAEeBAQCA
-					HtMALwAJAAoFHAUlADqoAE8ASwIoAE0FIQBO
-					BSMFJIAXgBOAgYAVgQEBgBaBAQKBAQOoAFYC
-					MABRAOIAUwI0AFEAgIAcgIWAGIBMgBqAhoAY
-					gCyAHV8QEUFYUm9sZURlc2NyaXB0aW9uXxAX
-					QVhFbmhhbmNlZFVzZXJJbnRlcmZhY2VbQVhG
-					cm9udG1vc3TSACsACgUzAEeBAQWAHtMALwAJ
-					AAoFNgVAADqpAHUATwB0BToAdwB6AE4AewB8
-					gCOAF4AigQEGgCWAJ4AWgCiAKakFQQJOAIAC
-					UAVFAFUCUwCGBUmBAQeAjYAsgI6BAQiAG4CT
-					gD2BAQuAHV8QEUFYUm9sZURlc2NyaXB0aW9u
-					0wAvAAkACgVNBVAAOqIAmACZgC6AL6ICXQJe
-					gIuAjIAd0wAvAAkACgVVBVgAOqIApQCmgDSA
-					NaIFWQVagQEJgQEKgB3TAC8ACQAKBV0FYAA6
-					ogCvALCAN4A4ogJxAnGAkYCRgB3TAC8ACQAK
-					BWUFaAA6ogCYAJmALoAvogJdAl6Ai4CMgB3T
-					AC8ACQAKBW0FcAA6ogCvALCAN4A4ogJxAnGA
-					kYCRgB3SACsACgV1AEeBAQ2AHtMALwAJAAoF
-					eAWEADqrAHUATwB0AE0A2QV+AHcAegBOAHsA
-					fIAjgBeAIoAVgEOBAQ6AJYAngBaAKIApqwWF
-					ApgAgAKaAIACnAWLAp4AVQKeBY+BAQ+AmoAs
-					gJuALICcgQEQgKGAG4ChgQETgB1fEBFBWFJv
-					bGVEZXNjcmlwdGlvbtMALwAJAAoFkwWWADqi
-					AJgAmYAugC+iAqkCXoCZgIyAHdMALwAJAAoF
-					mwWeADqiAKUApoA0gDWiBZ8FoIEBEYEBEoAd
-					0wAvAAkACgWjBaYAOqIArwCwgDeAOKICvQJx
-					gJ+AkYAd0wAvAAkACgWrBa4AOqIAmACZgC6A
-					L6ICqQJegJmAjIAd0wAvAAkACgWzBbYAOqIA
-					rwCwgDeAOKICvQJxgJ+AkYAd0gArAAoFuwBH
-					gQEVgB7TAC8ACQAKBb4FyAA6qQB1AE8AdAXC
-					AHcAegBOAHsAfIAjgBeAIoEBFoAlgCeAFoAo
-					gCmpBckEdgCABHgFzQCGBHsAhgXRgQEXgOOA
-					LIDkgQEYgD2A6IA9gQEbgB1fEBFBWFJvbGVE
-					ZXNjcmlwdGlvbtMALwAJAAoF1QXYADqiAJgA
-					mYAugC+iBIUEhoDhgOKAHdMALwAJAAoF3QXg
-					ADqiAKUApoA0gDWiBeEF4oEBGYEBGoAd0wAv
-					AAkACgXlBegAOqIArwCwgDeAOKICvQJegJ+A
-					jIAd0wAvAAkACgXtBfAAOqIAmACZgC6AL6IE
-					hQSGgOGA4oAd0wAvAAkACgX1BfgAOqIArwCw
-					gDeAOKICvQJegJ+AjIAd0gArAAoF/QBHgQEd
-					gB7TAC8ACQAKBgAGDQA6rAB0AHcAdQBPBgUA
-					TQB8BggGCQDZAHoAe4AigCWAI4AXgQEegBWA
-					KYEBH4EBIIBDgCeAKKwAgAYPBhAEwgBVBhMG
-					FATGBMcAgAJTAlOALIEBIYEBJID1gBuBASWB
-					ASaA+ID5gCyAk4CTgB1fEBZBWE1lbnVJdGVt
-					Q21kTW9kaWZpZXJzXxARQVhNZW51SXRlbUNt
-					ZENoYXJfEBFBWFJvbGVEZXNjcmlwdGlvbtMA
-					LwAJAAoGHwYiADqiAKUApoA0gDWiBiMGJIEB
-					IoEBI4Ad0wAvAAkACgYnBioAOqIArwCwgDeA
-					OKICvQTdgJ+A8YAd0wAvAAkACgYvBjIAOqIA
-					mACZgC6AL6IEhQTmgOGA84Ad0wAvAAkACgY3
-					BjoAOqIAmACZgC6AL6IEhQTmgOGA84AdXxAW
-					RGV2aWNlcyBhbmQgU2ltdWxhdG9yc9MALwAJ
-					AAoGQAZDADqiAK8AsIA3gDiiAr0E3YCfgPGA
-					HdIBIgAKBkgBJE8Q3AAAAAIAAUA1AAAAAwAB
-					QDYAAAAAAAFANwAAAAIAAsA4REAbwENjRQAA
-					AsA5Qs7eAENNRQAAAQA6zxC2AwAAEWYAAUA7
-					AAAAAAABQDMAAAKLAAFANAACm0sAAQCpzxC2
-					AwAAEWYAAUBqAAABLwABQGsAAAQ4AAFABwAA
-					AAAAAUAAAAAJLwABQAEAAAABAAFAAgAAAAAA
-					AUADAAAAAAABQAQAAAAAAAFABQAAAAAAAUAG
-					AAAAAAABQFkAAABvAAFAWgAAAEUAAUBbAAAC
-					iwABQFwAAAKLAAFAbAAAAACAU18QPCVAIG9u
-					IG1lbnUgaXRlbSBcVTIwMUNEZXZpY2VzIGFu
-					ZCBTaW11bGF0b3JzXFUyMDFEIGluIG1lbnUg
-					MV8QD05TS2V5ZWRBcmNoaXZlctEGTQZOVHJv
-					b3SAAQAIABkAIgArADUAOgA/ApUCmwKkAq8C
-					tgK9Ar8CwQLDAsUC5gLvAwMDCwMRAx0DLwM6
-					AzwDPgNAA0IDRANGA0gDSgNYA10DlAOdA6YD
-					rwO0A7YDuAO6A8MDzgPQA9ID3wPnA/AD8gP0
-					A/YD+AQBBAMEBQQHBAkECwQZBCUEMQRLBFQE
-					WwRdBF8EYQRjBGwEbgRwBH0EigSMBI4EkASS
-					BJQElgSjBKUEpwSpBKsErQSvBLEEywTgBPQE
-					/AUWBR0FHgUtBTkFOwVJBVIFXQVmBXMFeAWB
-					BYoFqgWvBc8F2AXaBdwF6QYABgIGBAYGBggG
-					CgYMBg4GEAYSBhQGFgYtBi8GMQYzBjUGNwY5
-					BjsGPQY/BkEGQwZFBlMGXQZkBngGgAaKBpwG
-					sga9BtcG3gbfBuwG8QbzBvUG+gb8Bv4HAAcG
-					Bw0HFgcfByQHMQc2BzgHOgc/B0EHQwdFB0wH
-					UQdeB2MHZQdnB2wHbgdwB3IHdAd2B38HiAeV
-					B5oHnAeeB6MHpQenB6kHqwetB7oHvwfBB8MH
-					yAfKB8wHzgfXB9kH2wfoCAEIAwgFCAcICQgL
-					CA0IDwgRCBMIFQgXCBkIMgg0CDYIOAg6CDwI
-					PghACEIIRAhGCEgISghMCGUIeQiECI4Imwig
-					CKIIpAipCKsIrQivCLwIwQjDCMUIygjMCM4I
-					0AjZCOYI6wjtCO8I9Aj2CPgI+gkDCRAJFQkX
-					CRkJHgkgCSIJJAkvCTUJQglHCUkJSwlQCVIJ
-					VAlWCVgJcAmICZEJoAmnCa8JuAnACp8KoQqq
-					CrgKvwrGCvUK/gsMCxMLIQsqCzMLNQs3C0QL
-					TQtPC1ELUwtVC14LYAtiC2QLZgtoC3ELeAt6
-					C3wLfguAC4kLiwuNC5oLpwupC6sLrQuvC7EL
-					swvAC8ILxAvGC8gLygvMC84L6Av8DAUMBwwJ
-					DBYMLQwvDDEMMww1DDcMOQw7DD0MPwxBDEMM
-					WgxcDF4MYAxiDGQMZgxoDGoMbAxuDHAMcgyA
-					DJQMrgy7DMAMwgzEDMkMywzNDM8M3AzhDOMM
-					5QzqDOwM7gzwDP0NAg0EDQYNCw0NDQ8NEQ0e
-					DSMNJQ0nDSwNLg0wDTINPw1EDUYNSA1NDU8N
-					UQ1TDVwNXg1gDW0Nhg2IDYoNjA2ODZANkg2U
-					DZYNmA2aDZwNng23DbkNuw29Db8NwQ3DDcUN
-					xw3JDcsNzQ3PDdEN6g3+DgsOEA4SDhQOGQ4b
-					Dh0OHw4sDjEOMw41DjoOPA4+DkAOTQ5SDlQO
-					Vg5bDl0OXw5hDm4Ocw51DncOfA5+DoAOgg6N
-					DpoOnw6hDqMOqA6qDqwOrg7GDt4O5w/GD8gP
-					9xAAEAUQDhAdECIQMRBSEGYQchCEEI8QkRCT
-					EJUQlxCZEJsQnRCfENIQ2xDkEO0Q8hD0EPYQ
-					+BEBEQMRBRESERsRHREfESERIxEsES4RMBEy
-					ETQRNhE/EUYRSBFKEUwRThFXEVkRWxFoEXkR
-					exF9EX8RgRGDEYURhxGJEZoRnBGeEaARohGk
-					EaYRqBGqEawRtRHJEeMR7xIEEgYSDxIREhMS
-					IBIzEjUSNxI5EjsSPRI/EkESQxJFElgSWhJc
-					El4SYBJiEmQSZhJoEmoSbBKAEo0SkhKUEpYS
-					mxKdEp8SoRKqErMSvRLGEtMS2BLaEtwS4RLj
-					EuUS5xL0EvkS+xL9EwITBBMGEwgTERMeEyMT
-					JRMnEywTLhMwEzITNBNBE0YTSBNKE08TURNT
-					E1UTXhNgE2ITbxOGE4gTihOME44TkBOSE5QT
-					lhOYE5oTnBOzE7UTtxO5E7sTvRO/E8ETwxPF
-					E8cTyRPLE98T7BPxE/MT9RP6E/wT/hQAFAkU
-					FxQeFCwUORQ+FEAUQhRHFEkUSxRNFFoUXxRh
-					FGMUaBRqFGwUbhR3FIQUiRSLFI0UkhSUFJYU
-					mBSaFKcUrBSuFLAUtRS3FLkUuxTEFaMVpRXc
-					FeUV5xXpFfYV/xYBFgMWBRYHFhAWEhYUFhYW
-					GBYaFiMWKhYsFi4WMBYyFjsWPRY/FkwWXRZf
-					FmEWYxZlFmcWaRZrFm0WfhaAFoIWhBaGFogW
-					ihaMFo4WkBakFr4WyhbTFtUW1xbkFvcW+Rb7
-					Fv0W/xcBFwMXBRcHFwkXHBceFyAXIhckFyYX
-					KBcqFywXLhcwF0QXURdWF1gXWhdfF2EXYxdl
-					F3IXdxd5F3sXgBeCF4QXhheTF5gXmhecF6EX
-					oxelF6cXtBe5F7sXvRfCF8QXxhfIF9UX2hfc
-					F94X4xflF+cX6RfyF/QX9hgDGBoYHBgeGCAY
-					IhgkGCYYKBgqGCwYLhgwGEcYSRhLGE0YTxhR
-					GFMYVRhXGFkYWxhdGF8YcxiAGIUYhxiJGI4Y
-					kBiSGJQYoRimGKgYqhivGLEYsxi1GMIYxxjJ
-					GMsY0BjSGNQY1hjjGOgY6hjsGPEY8xj1GPcZ
-					BBkJGQsZDRkSGRQZFhkYGSEaABoCGjkaWhpu
-					GnoajBqXGpkamxqdGp8aoRqjGqUapxqwGroa
-					vBrVGt4a8Br3GwAbCRsSGxsbIBsiGyQbJhsv
-					GzEbMxtAG0kbSxtNG08bURtaG1wbXhtgG2Ib
-					ZBttG3gbeht8G34bgBuCG4QbjRuPG5Ebnhuv
-					G7Ebsxu1G7cbuRu7G70bvxvQG9Ib1BvWG9gb
-					2hvcG94b4BviG/YcEBwcHCUcJxwpHDYcSRxL
-					HE0cTxxRHFMcVRxXHFkcWxxuHHAcchx0HHYc
-					eBx6HHwcfhyAHIIclhyjHKgcqhysHLEcsxy1
-					HLccxBzJHMsczRzSHNQc1hzYHOUc6hzsHO4c
-					8xz1HPcc+R0GHQsdDR0PHRQdFh0YHRodJx0s
-					HS4dMB01HTcdOR07HUQdRh1IHVUdbB1uHXAd
-					ch10HXYdeB16HXwdfh2AHYIdmR2bHZ0dnx2h
-					HaMdpR2nHakdqx2tHa8dsR3FHdId1x3ZHdsd
-					4B3iHeQd5h3zHfgd+h38HgEeAx4FHgceFB4Z
-					HhseHR4iHiQeJh4oHjUeOh48Hj4eQx5FHkce
-					SR5WHlseXR5fHmQeZh5oHmoecx51HncehB6X
-					Hpkemx6dHp8eoR6jHqUepx6pHrwevh7AHsIe
-					xB7GHsgeyh7MHs4e0B7kHvEe9h74Hvoe/x8B
-					HwMfBR8OHxcfHh8jHzAfNR83HzkfPh9AH0If
-					RB9RH1YfWB9aH18fYR9jH2Ufch93H3kfex+A
-					H4IfhB+GH4gflR+aH5wfnh+jH6Ufpx+pH7If
-					tB+2H8Mf3B/eH+Af4h/kH+Yf6B/qH+wf7h/w
-					H/If9CANIA8gESATIBUgFyAZIBsgHSAfICEg
-					IyAlICcgQCBUIGggdSB6IHwgfiCDIIUghyCJ
-					IJYgmyCdIJ8gpCCmIKggqiCzIMAgxSDHIMkg
-					ziDQINIg1CDdIOog7yDxIPMg+CD6IPwg/iEJ
-					ISIhLyE0ITYhOCE9IT8hQSFDIUUhTyFYIjci
-					OSJ4IoEigyKFIpIimyKdIp8ioSKjIqwiriKx
-					IrMitiK4IsEizCLOItEi1CLXItoi3CLlIugi
-					6iL3IwgjCiMMIw4jECMTIxUjGCMbIywjLiMw
-					IzIjNCM2IzgjOiM8Iz4jUiNsI3gjgSOEI4Yj
-					kyOmI6gjqiOsI68jsSOzI7UjtyO5I8wjzyPR
-					I9Mj1SPYI9oj3CPeI+Ej4yP3JAQkCSQLJA0k
-					EiQUJBYkGCQlJCokLCQuJDMkNiQ5JDskSCRN
-					JE8kUSRWJFgkWiRcJGkkbiRwJHIkdyR5JHsk
-					fSSKJI8kkSSTJJgkmiScJJ4kpySqJKwkuSTQ
-					JNIk1CTWJNgk2iTdJN8k4STjJOUk5yT+JQEl
-					AyUFJQclCSULJQ4lECUSJRQlFyUZJS0lOiU/
-					JUElQyVIJUolTCVOJVslYCViJWQlaSVsJW8l
-					cSV+JYMlhSWHJYwljiWQJZIlnyWkJaYlqCWt
-					Ja8lsSWzJcAlxSXHJcklziXQJdIl1CXdJeAl
-					4iXvJgImBCYGJggmCyYNJg8mESYTJhUmKCYr
-					Ji0mLyYxJjQmNiY4JjomPSY/JlMmYCZlJmcm
-					aSZuJnAmciZ0JoEmhiaIJoomjyaSJpUmlyak
-					JqkmqyatJrImtCa2JrgmxSbKJswmzibTJtUm
-					1ybZJuYm6ybtJu8m9Cb2Jvgm+icDJwYnCCcV
-					Jy4nMCcyJzQnNic5JzsnPSdAJ0MnRSdHJ0kn
-					YidkJ2cnaidsJ24ncSd0J3YneCd6J3wnfieA
-					J5knrSfBJ84n0yfVJ9cn3CffJ+In5CfxJ/Yn
-					+Cf6J/8oASgDKAUoEigXKBkoGyggKCIoJCgm
-					KDMoOCg6KDwoQShDKEUoRyhgKG0ocih0KHYo
-					eyh9KH8ogSiKKWkpaymqKbwpwSnGAAAAAAAA
-					AgIAAAAAAAAGTwAAAAAAAAAAAAAAAAAAKcg=
-					</data>
+					<key>source</key>
+					<string>on run {input, parameters}	tell application "Xcode"		activate	end tell	tell application "System Events"		keystroke 2 using {shift down, command down}	end tell	return inputend run</string>
 				</dict>
 				<key>BundleIdentifier</key>
-				<string>com.apple.Automator.WatchMeDo</string>
+				<string>com.apple.Automator.RunScript</string>
 				<key>CFBundleVersion</key>
 				<string>1.0.2</string>
 				<key>CanShowSelectedItemsWhenRun</key>
@@ -618,19 +66,17 @@
 					<string>AMCategoryUtilities</string>
 				</array>
 				<key>Class Name</key>
-				<string>AMWatchMeDoAction</string>
+				<string>RunScriptAction</string>
 				<key>InputUUID</key>
-				<string>F28273A6-26E8-4CD8-871F-19AC85AC9F89</string>
+				<string>490BB6B6-5130-47C2-9A36-31B67C041739</string>
 				<key>Keywords</key>
 				<array>
-					<string>Events</string>
-					<string>Play</string>
-					<string>Record</string>
+					<string>Run</string>
 				</array>
 				<key>OutputUUID</key>
-				<string>F689D6CC-FCEE-47E5-B733-367CA74B14E5</string>
+				<string>01F6734C-6DA8-4747-8005-C53D719D3AAF</string>
 				<key>UUID</key>
-				<string>C9032300-8761-4589-A9DE-38A722B40EFE</string>
+				<string>6F8F4B6A-5C44-4D36-A84A-5B6B68185875</string>
 				<key>UnlocalizedApplications</key>
 				<array>
 					<string>Automator</string>
@@ -640,128 +86,30 @@
 					<key>0</key>
 					<dict>
 						<key>default value</key>
-						<real>10</real>
+						<string>on run {input, parameters}
+	
+	(* Your script goes here *)
+	
+	return input
+end run</string>
 						<key>name</key>
-						<string>timeoutCount_MAX</string>
+						<string>source</string>
 						<key>required</key>
 						<string>0</string>
 						<key>type</key>
 						<string>0</string>
 						<key>uuid</key>
 						<string>0</string>
-					</dict>
-					<key>1</key>
-					<dict>
-						<key>default value</key>
-						<real>-1</real>
-						<key>name</key>
-						<string>playbackSpeed_MIN</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>1</string>
-					</dict>
-					<key>2</key>
-					<dict>
-						<key>default value</key>
-						<true/>
-						<key>name</key>
-						<string>timeoutPerEvent</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>2</string>
-					</dict>
-					<key>3</key>
-					<dict>
-						<key>default value</key>
-						<data>
-						</data>
-						<key>name</key>
-						<string>userEvents</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>3</string>
-					</dict>
-					<key>4</key>
-					<dict>
-						<key>default value</key>
-						<real>1</real>
-						<key>name</key>
-						<string>playbackSpeed_MAX</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>4</string>
-					</dict>
-					<key>5</key>
-					<dict>
-						<key>default value</key>
-						<real>0.0</real>
-						<key>name</key>
-						<string>timeoutCount_MIN</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>5</string>
-					</dict>
-					<key>6</key>
-					<dict>
-						<key>default value</key>
-						<real>0.0</real>
-						<key>name</key>
-						<string>playbackSpeed</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>6</string>
-					</dict>
-					<key>7</key>
-					<dict>
-						<key>default value</key>
-						<real>2</real>
-						<key>name</key>
-						<string>timeoutCount</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>7</string>
-					</dict>
-					<key>8</key>
-					<dict>
-						<key>default value</key>
-						<true/>
-						<key>name</key>
-						<string>timeoutIsError</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>8</string>
 					</dict>
 				</dict>
+				<key>conversionLabel</key>
+				<integer>0</integer>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:276.000000</string>
+				<string>309.000000:247.000000</string>
 				<key>nibPath</key>
-				<string>/System/Library/Automator/Watch Me Do.action/Contents/Resources/Base.lproj/main.nib</string>
+				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
 			<key>isViewVisible</key>
 			<true/>
