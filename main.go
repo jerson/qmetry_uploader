@@ -407,16 +407,24 @@ func screenshotSessionAction(c *cli.Context) error {
 				continue
 			}
 			last := steps[len(steps)-1]
-			fmt.Println(fmt.Sprintf("Removed last: %s", last))
 			err := os.Remove(last)
 			if err != nil {
 				panic(err)
 			}
+			fmt.Println(fmt.Sprintf("Removed last: %s", last))
 			steps = steps[:len(steps)-1]
 			currentStep--
 
 			continue
 		case "R":
+
+			for _, step := range steps {
+				err := os.Remove(step)
+				if err != nil {
+					log.Warn(err)
+				}
+				fmt.Println(fmt.Sprintf("Removed: %s", step))
+			}
 			steps = []string{}
 			currentStep = 1
 			fmt.Println("Reseted data")
