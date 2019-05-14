@@ -136,10 +136,9 @@ func ScreenshotIOS(options ScreenshotIOSOptions) (string, error) {
 	}
 
 	cmd := exec.Command(options.Automator, takeScreenShotScript)
-	cmd.Stderr = os.Stderr
 	err = cmd.Run()
 	if err != nil {
-		log.Error("Please connect device")
+		log.Error("Please connect your device")
 		return output, err
 	}
 	err = osx.OpenApp("Terminal")
