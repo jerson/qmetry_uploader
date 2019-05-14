@@ -7,10 +7,10 @@ import (
 
 // RestoreInput ...
 func RestoreInput() error {
-		err := exec.Command("stty", "sane").Run()
-		if err != nil {
-			return err
-		}
+	err := exec.Command("stty", "sane").Run()
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -30,7 +30,6 @@ func HideInput() error {
 	}
 	return nil
 }
-
 
 // InputWithoutBreakLine ...
 func InputWithoutBreakLine() error {

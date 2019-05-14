@@ -165,12 +165,12 @@ func ScreenshotIOS(options ScreenshotIOSOptions) (string, error) {
 
 	stdOutput, _ := ioutil.ReadAll(cmdOut)
 	stdError, _ := ioutil.ReadAll(cmdErr)
-	name :=  strings.TrimSpace(strings.Trim(string(stdOutput), "\n"))
+	name := strings.TrimSpace(strings.Trim(string(stdOutput), "\n"))
 	if name == "" {
 		return output, errors.New("file not found")
 	}
 
-	currentScreenshot := fmt.Sprintf("%s/Desktop/%s", usr.HomeDir,name)
+	currentScreenshot := fmt.Sprintf("%s/Desktop/%s", usr.HomeDir, name)
 	errorString := string(stdError)
 	if errorString != "" {
 		defer os.Remove(currentScreenshot)
