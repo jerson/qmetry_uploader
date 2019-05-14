@@ -191,6 +191,7 @@ func ScreenShotSession(c *cli.Context) error {
 			currentStep++
 			continue
 		case "\n":
+		case "\r":
 			continue
 		default:
 			printHelp()

@@ -90,7 +90,7 @@ func ScreenShotAndroid(options ScreenShotAndroidOptions) (string, error) {
 		return output, errors.New(errorString)
 	}
 
-	log.Infof("new screenshot: %s\n", output)
+	log.Infof("new screenshot: %s", output)
 	return output, nil
 }
 
@@ -202,6 +202,6 @@ func ScreenShotIOS(options ScreenShotIOSOptions) (string, error) {
 		return output, err
 	}
 
-	log.Infof("new screenshot: %s\n", output)
+	log.Infof("new screenshot: %s", output)
 	return output, nil
 }

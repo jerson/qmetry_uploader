@@ -70,7 +70,7 @@ func Compress(options CompressOptions) error {
 			log.Error(err)
 			continue
 		}
-		log.Infof("output: %s\n", output)
+		log.Infof("output: %s", output)
 
 	}
 
