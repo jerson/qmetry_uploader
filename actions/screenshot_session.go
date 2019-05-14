@@ -207,7 +207,7 @@ func printHelp() {
 	fmt.Println("\tD: delete last screenshot")
 	fmt.Println("\tL: list captured screenshots")
 	fmt.Println("\tR: reset all captured screenshots")
-	fmt.Println("\tA: add custom screenshot from filesystem")
+	fmt.Println("\tA: add custom screenshot from filesystem (beta)")
 	fmt.Println("\tQ: quit")
 	fmt.Println("\tH: print help")
 	fmt.Println("")
