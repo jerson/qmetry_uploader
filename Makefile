@@ -3,7 +3,7 @@ BUILD?=go build -ldflags="-w -s"
 
 default: build
 
-build-all: generate format vet
+build-all: format vet
 	GOOS=windows GOARCH=amd64 $(BUILD) -o qmetry_uploader_win.exe main.go
 	GOOS=linux GOARCH=amd64 $(BUILD) -o qmetry_uploader_linux main.go
 	GOOS=darwin GOARCH=amd64 $(BUILD) -o qmetry_uploader_osx main.go
@@ -11,7 +11,7 @@ build-all: generate format vet
 	upx qmetry_uploader_win.exe
 	upx qmetry_uploader_linux
 
-build: generate format vet
+build: format vet
 	$(BUILD) -o qmetry_uploader main.go
 	upx qmetry_uploader
 
