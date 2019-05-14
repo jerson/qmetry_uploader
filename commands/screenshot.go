@@ -16,28 +16,28 @@ import (
 	"qmetry_uploader/modules/utils"
 )
 
-// ScreenshotOptions ...
-type ScreenshotOptions struct {
+// ScreenShotOptions ...
+type ScreenShotOptions struct {
 	Model       string
 	Case        string
 	Description string
 	OutputDir   string
 }
 
-// ScreenshotAndroidOptions ...
-type ScreenshotAndroidOptions struct {
-	ScreenshotOptions
+// ScreenShotAndroidOptions ...
+type ScreenShotAndroidOptions struct {
+	ScreenShotOptions
 	ADB string
 }
 
-// ScreenshotIOSOptions ...
-type ScreenshotIOSOptions struct {
-	ScreenshotOptions
+// ScreenShotIOSOptions ...
+type ScreenShotIOSOptions struct {
+	ScreenShotOptions
 	Automator string
 }
 
 // GetNameByOptions ...
-func GetNameByOptions(options ScreenshotOptions) string {
+func GetNameByOptions(options ScreenShotOptions) string {
 	caseName := strings.Trim(options.Case, " ")
 	description, err := utils.Slug(strings.Trim(options.Description, " "))
 	if err != nil {
@@ -51,7 +51,7 @@ func GetNameByOptions(options ScreenshotOptions) string {
 
 }
 
-// ScreenshotAndroid ...
+// ScreenShotAndroid ...
 //
 // initial script for bash
 // MODEL="$(echo $1 | awk '{$1=$1};1')"
@@ -61,9 +61,9 @@ func GetNameByOptions(options ScreenshotOptions) string {
 // FILE=$SLUG.png
 // echo "capture: $FILE";
 // adb exec-out screencap -p > $FILE
-func ScreenshotAndroid(options ScreenshotAndroidOptions) (string, error) {
+func ScreenShotAndroid(options ScreenShotAndroidOptions) (string, error) {
 
-	output := GetNameByOptions(options.ScreenshotOptions)
+	output := GetNameByOptions(options.ScreenShotOptions)
 
 	cmd := exec.Command(options.ADB, "exec-out", "screencap", "-p")
 	outfile, err := os.Create(output)
@@ -94,8 +94,8 @@ func ScreenshotAndroid(options ScreenshotAndroidOptions) (string, error) {
 	return output, nil
 }
 
-// ScreenshotIOSPrepare ...
-func ScreenshotIOSPrepare(options ScreenshotIOSOptions) error {
+// ScreenShotIOSPrepare ...
+func ScreenShotIOSPrepare(options ScreenShotIOSOptions) error {
 
 	log.Warn("preparing for screenshot, wait.... dont touch nothing please!!")
 	err := osx.OpenApp("Xcode")
@@ -120,35 +120,16 @@ func ScreenshotIOSPrepare(options ScreenshotIOSOptions) error {
 	return nil
 }
 
-// ScreenshotIOS ...
-func ScreenshotIOS(options ScreenshotIOSOptions) (string, error) {
-
-	output := GetNameByOptions(options.ScreenshotOptions)
+// GetLastFileFrom ...
+func GetLastFileFrom(dir, grep string) (string, error) {
+	output := ""
 
 	usr, err := user.Current()
 	if err != nil {
 		return output, err
 	}
 
-	takeScreenShotScript, err := osx.GetAutomatorFile("take-screenshot.workflow")
-	if err != nil {
-		return output, err
-	}
-
-	cmd := exec.Command(options.Automator, takeScreenShotScript)
-	err = cmd.Run()
-	if err != nil {
-		log.Error("Please connect your device")
-		return output, err
-	}
-	err = osx.OpenApp("Terminal")
-	if err != nil {
-		return output, err
-	}
-	log.Debug("looking for screenshot...")
-	time.Sleep(4 * time.Second)
-
-	cmd = exec.Command("bash", "-c", `ls -t ~/Desktop | grep ".png" | head -1`)
+	cmd := exec.Command("bash", "-c", fmt.Sprintf(`ls -t %s | grep "%s" | head -1`, dir, grep))
 	cmdOut, err := cmd.StdoutPipe()
 	if err != nil {
 		return output, err
@@ -170,16 +151,55 @@ func ScreenshotIOS(options ScreenshotIOSOptions) (string, error) {
 		return output, errors.New("file not found")
 	}
 
-	currentScreenshot := fmt.Sprintf("%s/Desktop/%s", usr.HomeDir, name)
+	output = fmt.Sprintf("%s/Desktop/%s", usr.HomeDir, name)
 	errorString := string(stdError)
 	if errorString != "" {
-		defer os.Remove(currentScreenshot)
 		return output, errors.New(errorString)
 	}
 
-	err = os.Rename(currentScreenshot, output)
+	return output, nil
+}
+
+// ScreenShotIOS ...
+func ScreenShotIOS(options ScreenShotIOSOptions) (string, error) {
+
+	currentLastFile, _ := GetLastFileFrom("~/Desktop", ".png")
+	output := GetNameByOptions(options.ScreenShotOptions)
+
+	takeScreenShotScript, err := osx.GetAutomatorFile("take-screenshot.workflow")
 	if err != nil {
-		defer os.Remove(currentScreenshot)
+		return output, err
+	}
+
+	cmd := exec.Command(options.Automator, takeScreenShotScript)
+	err = cmd.Run()
+	if err != nil {
+		log.Error("Please connect your device")
+		return output, err
+	}
+	err = osx.OpenApp("Terminal")
+	if err != nil {
+		return output, err
+	}
+	log.Debug("looking for screenshot...")
+	i := 0
+	currentScreenShot := ""
+	for {
+		lastFile, _ := GetLastFileFrom("~/Desktop", ".png")
+		if lastFile != currentLastFile {
+			currentScreenShot = lastFile
+			break
+		}
+		time.Sleep(time.Duration(i) * time.Second)
+		i++
+		if i > 10 {
+			return output, errors.New("screenshot not found")
+		}
+	}
+
+	err = os.Rename(currentScreenShot, output)
+	if err != nil {
+		defer os.Remove(currentScreenShot)
 		return output, err
 	}
 

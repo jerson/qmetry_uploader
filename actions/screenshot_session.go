@@ -19,8 +19,8 @@ import (
 	"qmetry_uploader/modules/utils"
 )
 
-// ScreenshotSession ...
-func ScreenshotSession(c *cli.Context) error {
+// ScreenShotSession ...
+func ScreenShotSession(c *cli.Context) error {
 
 	model := c.Args().Get(0)
 	caseName := c.Args().Get(1)
@@ -52,18 +52,18 @@ func ScreenshotSession(c *cli.Context) error {
 	var steps []string
 	currentStep := 1
 
-	commonOptions := commands.ScreenshotOptions{
+	commonOptions := commands.ScreenShotOptions{
 		Model:       model,
 		Case:        caseName,
 		Description: "",
 		OutputDir:   "",
 	}
 	if platform == "ios" {
-		options := commands.ScreenshotIOSOptions{
-			ScreenshotOptions: commonOptions,
+		options := commands.ScreenShotIOSOptions{
+			ScreenShotOptions: commonOptions,
 			Automator:         automator,
 		}
-		err := commands.ScreenshotIOSPrepare(options)
+		err := commands.ScreenShotIOSPrepare(options)
 		if err != nil {
 			return err
 		}
@@ -171,17 +171,17 @@ func ScreenshotSession(c *cli.Context) error {
 
 			var name string
 			if platform == "android" {
-				options := commands.ScreenshotAndroidOptions{
-					ScreenshotOptions: commonOptions,
+				options := commands.ScreenShotAndroidOptions{
+					ScreenShotOptions: commonOptions,
 					ADB:               adb,
 				}
-				name, err = commands.ScreenshotAndroid(options)
+				name, err = commands.ScreenShotAndroid(options)
 			} else if platform == "ios" {
-				options := commands.ScreenshotIOSOptions{
-					ScreenshotOptions: commonOptions,
+				options := commands.ScreenShotIOSOptions{
+					ScreenShotOptions: commonOptions,
 					Automator:         automator,
 				}
-				name, err = commands.ScreenshotIOS(options)
+				name, err = commands.ScreenShotIOS(options)
 			}
 			if err != nil {
 				fmt.Println(err)

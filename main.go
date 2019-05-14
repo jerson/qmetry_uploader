@@ -143,7 +143,7 @@ qmetry-uploader report -i ./images`,
 			UsageText: `
 qmetry-uploader screenshot-session
 qmetry-uploader screenshot-session J2 AMM-12112`,
-			Action: actions.ScreenshotSession,
+			Action: actions.ScreenShotSession,
 		},
 		{
 			Name:    "screenshot",
@@ -173,7 +173,7 @@ qmetry-uploader screenshot
 qmetry-uploader screenshot J2 AMM-12112 01
 qmetry-uploader screenshot J2 AMM-12112 02
 qmetry-uploader screenshot J2 AMM-12112 "sample case"`,
-			Action: actions.Screenshot,
+			Action: actions.ScreenShot,
 		},
 		{
 			Name:    "upload-nexus",

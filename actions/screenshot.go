@@ -15,8 +15,8 @@ import (
 	"qmetry_uploader/modules/utils"
 )
 
-// Screenshot ...
-func Screenshot(c *cli.Context) error {
+// ScreenShot ...
+func ScreenShot(c *cli.Context) error {
 
 	model := c.Args().Get(0)
 	caseName := c.Args().Get(1)
@@ -56,29 +56,29 @@ func Screenshot(c *cli.Context) error {
 		return errors.New("missing: description")
 	}
 
-	commonOptions := commands.ScreenshotOptions{
+	commonOptions := commands.ScreenShotOptions{
 		Model:       model,
 		Case:        caseName,
 		Description: description,
 		OutputDir:   ".",
 	}
 	if platform == "android" {
-		options := commands.ScreenshotAndroidOptions{
-			ScreenshotOptions: commonOptions,
+		options := commands.ScreenShotAndroidOptions{
+			ScreenShotOptions: commonOptions,
 			ADB:               adb,
 		}
-		_, err = commands.ScreenshotAndroid(options)
+		_, err = commands.ScreenShotAndroid(options)
 	} else if platform == "ios" {
-		options := commands.ScreenshotIOSOptions{
-			ScreenshotOptions: commonOptions,
+		options := commands.ScreenShotIOSOptions{
+			ScreenShotOptions: commonOptions,
 			Automator:         automator,
 		}
-		err := commands.ScreenshotIOSPrepare(options)
+		err := commands.ScreenShotIOSPrepare(options)
 		if err != nil {
 			return err
 		}
 		time.Sleep(2 * time.Second)
-		_, err = commands.ScreenshotIOS(options)
+		_, err = commands.ScreenShotIOS(options)
 	}
 	return err
 
