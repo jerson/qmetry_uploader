@@ -60,14 +60,14 @@ func main() {
 			},
 			Category:    "evidences",
 			Description: "merge images into one merged file",
-			Usage:       "qmetry-uploader merge-images",
+			Usage:       "merge-images",
 			UsageText: `
-qmetry-uploader merge-images
-qmetry-uploader merge-images -o ./output.png
-qmetry-uploader merge-images --input=./images
-qmetry-uploader merge-images -i ./images
-qmetry-uploader merge-images --input=./images --output=./output.png
-qmetry-uploader merge-images -i ./images -o ./output.png`,
+merge-images
+merge-images -o ./output.png
+merge-images --input=./images
+merge-images -i ./images
+merge-images --input=./images --output=./output.png
+merge-images -i ./images -o ./output.png`,
 			Action: actions.MergeImages,
 		},
 		{
@@ -87,14 +87,14 @@ qmetry-uploader merge-images -i ./images -o ./output.png`,
 			},
 			Category:    "evidences",
 			Description: "compress images grouped by device and case",
-			Usage:       "qmetry-uploader compress",
+			Usage:       "compress",
 			UsageText: `
-qmetry-uploader compress
-qmetry-uploader compress -o ./output
-qmetry-uploader compress --input=./images
-qmetry-uploader compress -i ./images
-qmetry-uploader compress --input=./images --output=./output
-qmetry-uploader compress -i ./images -o ./output`,
+compress
+compress -o ./output
+compress --input=./images
+compress -i ./images
+compress --input=./images --output=./output
+compress -i ./images -o ./output`,
 			Action: actions.Compress,
 		},
 		{
@@ -109,11 +109,11 @@ qmetry-uploader compress -i ./images -o ./output`,
 			},
 			Category:    "debug",
 			Description: "show report for debug purposes",
-			Usage:       "qmetry-uploader report",
+			Usage:       "report",
 			UsageText: `
-qmetry-uploader report
-qmetry-uploader report --input=./images
-qmetry-uploader report -i ./images`,
+report
+report --input=./images
+report -i ./images`,
 			Action: actions.Report,
 		},
 		{
@@ -138,10 +138,10 @@ qmetry-uploader report -i ./images`,
 			},
 			Category:    "screenshot",
 			Description: "start session for take many screenshots",
-			Usage:       "qmetry-uploader screenshot-session",
+			Usage:       "screenshot-session",
 			UsageText: `
-qmetry-uploader screenshot-session
-qmetry-uploader screenshot-session J2 AMM-12112`,
+screenshot-session
+screenshot-session J2 AMM-12112`,
 			Action: actions.ScreenShotSession,
 		},
 		{
@@ -166,12 +166,12 @@ qmetry-uploader screenshot-session J2 AMM-12112`,
 			},
 			Category:    "screenshot",
 			Description: "capture screenshot",
-			Usage:       "qmetry-uploader screenshot J2 AMM-12112 01",
+			Usage:       "screenshot J2 AMM-12112 01",
 			UsageText: `
-qmetry-uploader screenshot
-qmetry-uploader screenshot J2 AMM-12112 01
-qmetry-uploader screenshot J2 AMM-12112 02
-qmetry-uploader screenshot J2 AMM-12112 "sample case"`,
+screenshot
+screenshot J2 AMM-12112 01
+screenshot J2 AMM-12112 02
+screenshot J2 AMM-12112 "sample case"`,
 			Action: actions.ScreenShot,
 		},
 		{
@@ -206,11 +206,11 @@ qmetry-uploader screenshot J2 AMM-12112 "sample case"`,
 			},
 			Category:    "nexus",
 			Description: "upload android or ios binaries to nexus",
-			Usage:       "qmetry-uploader upload-nexus qa-10-10-2010.apk",
+			Usage:       "upload-nexus qa-10-10-2010.apk",
 			UsageText: `
-qmetry-uploader upload-nexus qa-10-10-2010.apk
-qmetry-uploader upload-nexus qa-10-10-2010.ipa
-qmetry-uploader upload-nexus qa-10-10-2010.zip`,
+upload-nexus qa-10-10-2010.apk
+upload-nexus qa-10-10-2010.ipa
+upload-nexus qa-10-10-2010.zip`,
 			Action: actions.UploadNexus,
 		},
 		{
@@ -219,7 +219,7 @@ qmetry-uploader upload-nexus qa-10-10-2010.zip`,
 			Flags:       []cli.Flag{},
 			Category:    "gui",
 			Description: "show GUI",
-			Usage:       "qmetry-uploader gui",
+			Usage:       "gui",
 			Action:      actions.GUI,
 		},
 	}
