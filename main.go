@@ -6,6 +6,7 @@ package main
 
 import (
 	"os"
+	"runtime"
 
 	"github.com/gobuffalo/packr/v2"
 	log "github.com/sirupsen/logrus"
@@ -26,7 +27,7 @@ func setup() {
 
 	box := packr.New("Assets", "./assets")
 	err = osx.LoadAssets(box)
-	if err != nil {
+	if err != nil && runtime.GOOS == "darwin" {
 		panic(err)
 	}
 
