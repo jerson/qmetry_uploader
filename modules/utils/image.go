@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"image"
 	"image/color"
 	"log"
@@ -19,6 +20,9 @@ type ImageFixed struct {
 // MergeImages ...
 func MergeImages(paths []string, output string) error {
 
+	if len(paths) < 1 {
+		return errors.New("empty paths")
+	}
 	resizeHeight := 600
 	x := 0
 	y := 0
