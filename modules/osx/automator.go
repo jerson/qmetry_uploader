@@ -46,7 +46,7 @@ func GetAutomatorFile(name string) (string, error) {
 
 // LoadAssets ...
 func LoadAssets(box *packr.Box) error {
-	bytes, err := box.Find("assets/automator.zip")
+	bytes, err := box.Find("automator.zip")
 	if err != nil {
 		return err
 	}

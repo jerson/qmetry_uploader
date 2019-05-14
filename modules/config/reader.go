@@ -11,7 +11,7 @@ import (
 
 // Dir ...
 type Dir struct {
-	Automator string `toml:"automator" default:".qmetry-automator"`
+	Automator string `toml:"automator" default:".qmetry_uploader"`
 	Input     string `toml:"input" default:""`
 	Output    string `toml:"output" default:"./output"`
 }

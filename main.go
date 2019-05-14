@@ -13,12 +13,13 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/gobuffalo/packr/v2"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
 	"qmetry_uploader/commands"
-	"qmetry_uploader/modules/assets"
 	"qmetry_uploader/modules/config"
+	"qmetry_uploader/modules/osx"
 	"qmetry_uploader/modules/prompt"
 	"qmetry_uploader/modules/terminal"
 	"qmetry_uploader/modules/utils"
@@ -26,7 +27,9 @@ import (
 
 func setup() {
 	log.SetLevel(log.DebugLevel)
-	err := assets.Load()
+
+	box := packr.New("Assets", "./assets")
+	err :=osx.LoadAssets(box)
 	if err != nil {
 		panic(err)
 	}
