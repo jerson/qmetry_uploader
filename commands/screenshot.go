@@ -96,11 +96,8 @@ func ScreenshotAndroid(options ScreenshotAndroidOptions) (string, error) {
 
 // ScreenshotIOSPrepare ...
 func ScreenshotIOSPrepare(options ScreenshotIOSOptions) error {
-	err := osx.LoadAssets()
-	if err != nil {
-		return err
-	}
-	err = osx.OpenApp("Xcode")
+
+	err := osx.OpenApp("Xcode")
 	if err != nil {
 		return err
 	}

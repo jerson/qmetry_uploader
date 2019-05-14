@@ -29,7 +29,7 @@ func setup() {
 	log.SetLevel(log.DebugLevel)
 
 	box := packr.New("Assets", "./assets")
-	err :=osx.LoadAssets(box)
+	err := osx.LoadAssets(box)
 	if err != nil {
 		panic(err)
 	}
