@@ -3,6 +3,7 @@ package actions
 import (
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/urfave/cli"
 
@@ -76,6 +77,7 @@ func Screenshot(c *cli.Context) error {
 		if err != nil {
 			return err
 		}
+		time.Sleep(2 * time.Second)
 		_, err = commands.ScreenshotIOS(options)
 	}
 	return err
