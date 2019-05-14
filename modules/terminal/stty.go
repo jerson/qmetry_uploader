@@ -5,6 +5,15 @@ import (
 	"runtime"
 )
 
+// RestoreInput ...
+func RestoreInput() error {
+		err := exec.Command("stty", "sane").Run()
+		if err != nil {
+			return err
+		}
+	return nil
+}
+
 // HideInput ...
 func HideInput() error {
 	if runtime.GOOS == "linux" {
@@ -21,6 +30,7 @@ func HideInput() error {
 	}
 	return nil
 }
+
 
 // InputWithoutBreakLine ...
 func InputWithoutBreakLine() error {

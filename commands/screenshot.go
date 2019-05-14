@@ -97,6 +97,7 @@ func ScreenshotAndroid(options ScreenshotAndroidOptions) (string, error) {
 // ScreenshotIOSPrepare ...
 func ScreenshotIOSPrepare(options ScreenshotIOSOptions) error {
 
+	log.Warn("preparing for screenshot, wait.... dont touch nothing please!!")
 	err := osx.OpenApp("Xcode")
 	if err != nil {
 		return err
@@ -115,6 +116,7 @@ func ScreenshotIOSPrepare(options ScreenshotIOSOptions) error {
 		return err
 	}
 
+	log.Info("Ready for screenshots")
 	return nil
 }
 
@@ -130,6 +132,7 @@ func ScreenshotIOS(options ScreenshotIOSOptions) (string, error) {
 
 	takeScreenShotScript, err := osx.GetAutomatorFile("take-screenshot.workflow")
 	if err != nil {
+		log.Warn("Please connect device")
 		return output, err
 	}
 
@@ -143,7 +146,7 @@ func ScreenshotIOS(options ScreenshotIOSOptions) (string, error) {
 		return output, err
 	}
 	log.Debug("looking for screenshot...")
-	time.Sleep(2 * time.Second)
+	time.Sleep(4 * time.Second)
 
 	cmd = exec.Command("bash", "-c", `ls -t ~/Desktop | grep ".png" | head -1`)
 	cmdOut, err := cmd.StdoutPipe()
@@ -162,8 +165,12 @@ func ScreenshotIOS(options ScreenshotIOSOptions) (string, error) {
 
 	stdOutput, _ := ioutil.ReadAll(cmdOut)
 	stdError, _ := ioutil.ReadAll(cmdErr)
+	name :=  strings.TrimSpace(strings.Trim(string(stdOutput), "\n"))
+	if name == "" {
+		return output, errors.New("file not found")
+	}
 
-	currentScreenshot := fmt.Sprintf("%s/Desktop/%s", usr.HomeDir, strings.TrimSpace(strings.Trim(string(stdOutput), "\n")))
+	currentScreenshot := fmt.Sprintf("%s/Desktop/%s", usr.HomeDir,name)
 	errorString := string(stdError)
 	if errorString != "" {
 		defer os.Remove(currentScreenshot)

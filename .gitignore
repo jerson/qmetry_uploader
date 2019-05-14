@@ -3,6 +3,5 @@ output/
 vendor/
 .idea/
 .vscode/
-automator.zip
 qmetry_uploader*
 .DS_Store

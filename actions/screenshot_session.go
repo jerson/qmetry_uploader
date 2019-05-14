@@ -63,12 +63,10 @@ func ScreenshotSession(c *cli.Context) error {
 			ScreenshotOptions: commonOptions,
 			Automator:         automator,
 		}
-		log.Warn("preparing for screenshot, wait.... dont touch nothing please!!")
 		err := commands.ScreenshotIOSPrepare(options)
 		if err != nil {
 			return err
 		}
-		log.Info("Ready for screenshots")
 	}
 
 	reader := bufio.NewReader(os.Stdin)
@@ -105,6 +103,7 @@ func ScreenshotSession(c *cli.Context) error {
 			}
 			steps = append(steps, file)
 			fmt.Println("Added file: " + file)
+
 			continue
 		case "M":
 			fmt.Println("Merged images:")
