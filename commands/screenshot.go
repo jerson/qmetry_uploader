@@ -102,11 +102,13 @@ func ScreenshotIOSPrepare(options ScreenshotIOSOptions) error {
 		return err
 	}
 	defer osx.OpenApp("Terminal")
-	prepareScreenShotScript, err := osx.GetAutomatorFile("assets/automator/prepare-screenshot.workflow")
+	prepareScreenShotScript, err := osx.GetAutomatorFile("prepare-screenshot.workflow")
 	if err != nil {
 		return err
 	}
 	cmd := exec.Command(options.Automator, prepareScreenShotScript)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 	err = cmd.Run()
 	if err != nil {
 		defer osx.OpenApp("System Preferences")
@@ -127,7 +129,7 @@ func ScreenshotIOS(options ScreenshotIOSOptions) (string, error) {
 		return output, err
 	}
 
-	takeScreenShotScript, err := osx.GetAutomatorFile("assets/automator/take-screenshot.workflow")
+	takeScreenShotScript, err := osx.GetAutomatorFile("take-screenshot.workflow")
 	if err != nil {
 		return output, err
 	}

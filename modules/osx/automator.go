@@ -40,7 +40,7 @@ func GetAutomatorFile(name string) (string, error) {
 	if err != nil {
 		return output, err
 	}
-	output = fmt.Sprintf("%s/%s", dir, name)
+	output = fmt.Sprintf("%s/assets/automator/%s", dir, name)
 	return output, nil
 }
 
