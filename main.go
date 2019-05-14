@@ -17,6 +17,7 @@ import (
 	"github.com/urfave/cli"
 
 	"qmetry_uploader/commands"
+	"qmetry_uploader/modules/assets"
 	"qmetry_uploader/modules/config"
 	"qmetry_uploader/modules/prompt"
 	"qmetry_uploader/modules/terminal"
@@ -25,7 +26,11 @@ import (
 
 func setup() {
 	log.SetLevel(log.DebugLevel)
-	err := config.ReadDefault()
+	err := assets.Load()
+	if err != nil {
+		panic(err)
+	}
+	err = config.ReadDefault()
 	if err != nil {
 		panic(err)
 	}
