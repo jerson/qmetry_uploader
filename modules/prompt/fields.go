@@ -2,6 +2,7 @@ package prompt
 
 import (
 	"errors"
+	"runtime"
 
 	ui "github.com/VladimirMarkelov/clui"
 	log "github.com/sirupsen/logrus"
@@ -20,9 +21,15 @@ func chooseDir(output chan string, title, input string) {
 			if selected && path == "" {
 				path = input
 			}
-			ui.WindowManager().DestroyWindow(dialog.View)
-			ui.WindowManager().BeginUpdate()
-			ui.WindowManager().EndUpdate()
+			defer func() {
+				if runtime.GOOS == "windows" {
+					ui.WindowManager().DestroyWindow(dialog.View)
+					ui.WindowManager().BeginUpdate()
+					ui.WindowManager().EndUpdate()
+				} else {
+					ui.DeinitLibrary()
+				}
+			}()
 
 			output <- path
 
@@ -43,9 +50,15 @@ func chooseFile(output chan string, title, input, fileMasks string) {
 			if selected && path == "" {
 				path = input
 			}
-			ui.WindowManager().DestroyWindow(dialog.View)
-			ui.WindowManager().BeginUpdate()
-			ui.WindowManager().EndUpdate()
+			defer func() {
+				if runtime.GOOS == "windows" {
+					ui.WindowManager().DestroyWindow(dialog.View)
+					ui.WindowManager().BeginUpdate()
+					ui.WindowManager().EndUpdate()
+				} else {
+					ui.DeinitLibrary()
+				}
+			}()
 			output <- path
 		})
 		ui.MainLoop()
