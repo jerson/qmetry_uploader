@@ -1,5 +1,5 @@
 APP_VERSION?=latest
-BUILD?=go build -ldflags="-w -s"
+BUILD?=packr2 build -ldflags="-w -s"
 
 default: build
 
@@ -19,10 +19,10 @@ generate:
 	go generate
 
 test:
-	go test $$(go list ./... | grep -v /vendor/)
+	go test ./...
 
 format:
-	go fmt $$(go list ./... | grep -v /vendor/)
+	go fmt ./...
 
 vet:
-	go vet $$(go list ./... | grep -v /vendor/)
+	go vet ./...
