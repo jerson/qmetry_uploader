@@ -124,11 +124,6 @@ func ScreenShotIOSPrepare(options ScreenShotIOSOptions) error {
 func GetLastFileFrom(dir, grep string) (string, error) {
 	output := ""
 
-	usr, err := user.Current()
-	if err != nil {
-		return output, err
-	}
-
 	cmd := exec.Command("bash", "-c", fmt.Sprintf(`ls -t %s | grep "%s" | head -1`, dir, grep))
 	cmdOut, err := cmd.StdoutPipe()
 	if err != nil {
@@ -151,7 +146,7 @@ func GetLastFileFrom(dir, grep string) (string, error) {
 		return output, errors.New("file not found")
 	}
 
-	output = fmt.Sprintf("%s/Desktop/%s", usr.HomeDir, name)
+	output = fmt.Sprintf("%s/%s", dir, name)
 	errorString := string(stdError)
 	if errorString != "" {
 		return output, errors.New(errorString)
@@ -163,8 +158,16 @@ func GetLastFileFrom(dir, grep string) (string, error) {
 // ScreenShotIOS ...
 func ScreenShotIOS(options ScreenShotIOSOptions) (string, error) {
 
-	currentLastFile, _ := GetLastFileFrom("~/Desktop", ".png")
 	output := GetNameByOptions(options.ScreenShotOptions)
+
+	usr, err := user.Current()
+	if err != nil {
+		return output, err
+	}
+	desktopDir := fmt.Sprintf("%s/%s", usr.HomeDir, "Desktop")
+	screenShotExtension := ".png"
+
+	currentLastFile, _ := GetLastFileFrom(desktopDir, screenShotExtension)
 
 	takeScreenShotScript, err := osx.GetAutomatorFile("take-screenshot.workflow")
 	if err != nil {
@@ -185,7 +188,7 @@ func ScreenShotIOS(options ScreenShotIOSOptions) (string, error) {
 	i := 0
 	currentScreenShot := ""
 	for {
-		lastFile, _ := GetLastFileFrom("~/Desktop", ".png")
+		lastFile, _ := GetLastFileFrom(desktopDir, screenShotExtension)
 		if lastFile != currentLastFile {
 			currentScreenShot = lastFile
 			break
