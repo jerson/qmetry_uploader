@@ -377,6 +377,15 @@ func screenshotSessionAction(c *cli.Context) error {
 		key := strings.ToUpper(string(k))
 
 		switch key {
+		case "A":
+			file := prompt.File("Choose screenshot file to add", "", "*.png", "")
+			if file == "" {
+				fmt.Println("Empty file")
+				continue
+			}
+			steps = append(steps, file)
+			fmt.Println("Added file: " + file)
+			continue
 		case "M":
 			fmt.Println("Merged images:")
 			output := fmt.Sprintf("%s_%s.png", model, caseName)
@@ -594,6 +603,7 @@ func printHelp() {
 	fmt.Println("\tD: delete last screenshot")
 	fmt.Println("\tL: list captured screenshots")
 	fmt.Println("\tR: reset all captured screenshots")
+	fmt.Println("\tA: add custom screenshot from filesystem")
 	fmt.Println("\tQ: quit")
 	fmt.Println("\tH: print help")
 	fmt.Println("")
