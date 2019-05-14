@@ -2,7 +2,6 @@ package main
 
 //go:generate rm -rf assets/automator.zip
 //go:generate zip -r assets/automator.zip assets/automator
-//go:generate packr2
 
 import (
 	"os"
