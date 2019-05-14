@@ -7,3 +7,4 @@ qmetry_uploader*
 .DS_Store
 *-packr.go
 packrd
+*.zip
