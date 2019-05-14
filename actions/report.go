@@ -16,7 +16,7 @@ import (
 func Report(c *cli.Context) error {
 
 	input := c.String("input")
-	input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input)
+	input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input, true)
 
 	options := commands.ReportOptions{
 		Input: input,

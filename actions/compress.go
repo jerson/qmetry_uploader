@@ -13,8 +13,8 @@ func Compress(c *cli.Context) error {
 	input := c.String("input")
 	output := c.String("output")
 
-	input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input)
-	output = prompt.Dir("Output Dir", output, config.Vars.Dir.Output)
+	input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input, true)
+	output = prompt.Dir("Output Dir", output, config.Vars.Dir.Output, true)
 
 	options := commands.CompressOptions{
 		Input:  input,

@@ -19,7 +19,7 @@ func MergeImages(c *cli.Context) error {
 	input := c.String("input")
 	output := c.String("output")
 
-	input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input)
+	input = prompt.Dir("Input Dir", input, config.Vars.Dir.Input, true)
 
 	suggestion, err := utils.GetEvidenceSuggestion(input)
 	if err != nil {

@@ -11,7 +11,7 @@ require (
 	github.com/gobuffalo/packr/v2 v2.2.0
 	github.com/huandu/xstrings v1.2.0 // indirect
 	github.com/jinzhu/configor v1.0.0
-	github.com/nsf/termbox-go v0.0.0-20190325093121-288510b9734e // indirect
+	github.com/nsf/termbox-go v0.0.0-20190325093121-288510b9734e
 	github.com/sirupsen/logrus v1.4.1
 	github.com/urfave/cli v1.20.0
 	golang.org/x/image v0.0.0-20190417020941-4e30a6eb7d9a // indirect

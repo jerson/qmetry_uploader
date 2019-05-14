@@ -96,7 +96,7 @@ func ScreenShotSession(c *cli.Context) error {
 
 		switch key {
 		case "A":
-			file := prompt.File("Choose screenshot file to add", "", "*.png", "")
+			file := prompt.File("Choose screenshot file to add", "", "*.png", "", false)
 			if file == "" {
 				fmt.Println("Empty file")
 				continue

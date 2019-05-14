@@ -9,7 +9,7 @@ import (
 	"gopkg.in/AlecAivazis/survey.v1"
 )
 
-func chooseDir(output chan string, title, input string) {
+func chooseDir(output chan string, title, input string, closeOnFinish bool) {
 
 	go func() {
 		ui.InitLibrary()
@@ -22,11 +22,10 @@ func chooseDir(output chan string, title, input string) {
 				path = input
 			}
 			defer func() {
-				if runtime.GOOS == "windows" {
-					ui.WindowManager().DestroyWindow(dialog.View)
-					ui.WindowManager().BeginUpdate()
-					ui.WindowManager().EndUpdate()
-				} else {
+				ui.WindowManager().DestroyWindow(dialog.View)
+				ui.WindowManager().BeginUpdate()
+				ui.WindowManager().EndUpdate()
+				if closeOnFinish && runtime.GOOS != "windows" {
 					ui.DeinitLibrary()
 				}
 			}()
@@ -38,7 +37,7 @@ func chooseDir(output chan string, title, input string) {
 	}()
 }
 
-func chooseFile(output chan string, title, input, fileMasks string) {
+func chooseFile(output chan string, title, input, fileMasks string, closeOnFinish bool) {
 
 	go func() {
 		ui.InitLibrary()
@@ -51,11 +50,10 @@ func chooseFile(output chan string, title, input, fileMasks string) {
 				path = input
 			}
 			defer func() {
-				if runtime.GOOS == "windows" {
-					ui.WindowManager().DestroyWindow(dialog.View)
-					ui.WindowManager().BeginUpdate()
-					ui.WindowManager().EndUpdate()
-				} else {
+				ui.WindowManager().DestroyWindow(dialog.View)
+				ui.WindowManager().BeginUpdate()
+				ui.WindowManager().EndUpdate()
+				if closeOnFinish && runtime.GOOS != "windows" {
 					ui.DeinitLibrary()
 				}
 			}()
@@ -64,19 +62,19 @@ func chooseFile(output chan string, title, input, fileMasks string) {
 		ui.MainLoop()
 	}()
 }
-func File(name, value, fileMasks, defaultValue string) string {
+func File(name, value, fileMasks, defaultValue string, closeOnFinish bool) string {
 	if value == "" {
 		output := make(chan string)
-		chooseFile(output, name, defaultValue, fileMasks)
+		chooseFile(output, name, defaultValue, fileMasks, closeOnFinish)
 		<-output
 		value = <-output
 	}
 	return value
 }
-func Dir(name, value, defaultValue string) string {
+func Dir(name, value, defaultValue string, closeOnFinish bool) string {
 	if value == "" {
 		output := make(chan string)
-		chooseDir(output, name, defaultValue)
+		chooseDir(output, name, defaultValue, closeOnFinish)
 		<-output
 		value = <-output
 	}

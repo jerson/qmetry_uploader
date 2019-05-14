@@ -24,7 +24,7 @@ func UploadNexus(c *cli.Context) error {
 	name := c.String("name")
 	file := c.Args().Get(0)
 
-	file = prompt.File("Choose file to upload", file, "*.apk,*.ipa,*.zip", "")
+	file = prompt.File("Choose file to upload", file, "*.apk,*.ipa,*.zip", "", true)
 	if file == "" {
 		return errors.New("missing file")
 	}
