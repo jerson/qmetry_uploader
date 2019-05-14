@@ -4,4 +4,4 @@
 // and any other packr generated files.
 package assets
 
-import _ "home/gerson/Desktop/qmetry_uploader/packrd"
+import _ "qmetry_uploader/packrd"
