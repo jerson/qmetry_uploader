@@ -107,7 +107,6 @@ func ScreenshotIOSPrepare(options ScreenshotIOSOptions) error {
 		return err
 	}
 	cmd := exec.Command(options.Automator, prepareScreenShotScript)
-	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
 	if err != nil {
