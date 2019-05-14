@@ -132,13 +132,14 @@ func ScreenshotIOS(options ScreenshotIOSOptions) (string, error) {
 
 	takeScreenShotScript, err := osx.GetAutomatorFile("take-screenshot.workflow")
 	if err != nil {
-		log.Warn("Please connect device")
 		return output, err
 	}
 
 	cmd := exec.Command(options.Automator, takeScreenShotScript)
+	cmd.Stderr = os.Stderr
 	err = cmd.Run()
 	if err != nil {
+		log.Error("Please connect device")
 		return output, err
 	}
 	err = osx.OpenApp("Terminal")
