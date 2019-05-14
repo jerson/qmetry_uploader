@@ -12,14 +12,17 @@ func chooseDir(output chan string, title, input string) {
 
 	go func() {
 		ui.InitLibrary()
+		defer ui.DeinitLibrary()
 		dialog := ui.CreateFileSelectDialog(title, "", input, true, true)
 		dialog.OnClose(func() {
 			selected := dialog.Selected
 			path := dialog.FilePath
-			defer ui.DeinitLibrary()
 			if selected && path == "" {
 				path = input
 			}
+			ui.WindowManager().DestroyWindow(dialog.View)
+			ui.WindowManager().BeginUpdate()
+			ui.WindowManager().EndUpdate()
 
 			output <- path
 
@@ -32,15 +35,17 @@ func chooseFile(output chan string, title, input, fileMasks string) {
 
 	go func() {
 		ui.InitLibrary()
+		defer ui.DeinitLibrary()
 		dialog := ui.CreateFileSelectDialog(title, fileMasks, input, false, true)
 		dialog.OnClose(func() {
 			selected := dialog.Selected
 			path := dialog.FilePath
-			defer ui.DeinitLibrary()
 			if selected && path == "" {
 				path = input
 			}
-
+			ui.WindowManager().DestroyWindow(dialog.View)
+			ui.WindowManager().BeginUpdate()
+			ui.WindowManager().EndUpdate()
 			output <- path
 		})
 		ui.MainLoop()
