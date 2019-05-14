@@ -28,15 +28,17 @@ import (
 func setup() {
 	log.SetLevel(log.DebugLevel)
 
+	err := config.ReadDefault()
+	if err != nil {
+		panic(err)
+	}
+
 	box := packr.New("Assets", "./assets")
-	err := osx.LoadAssets(box)
+	err = osx.LoadAssets(box)
 	if err != nil {
 		panic(err)
 	}
-	err = config.ReadDefault()
-	if err != nil {
-		panic(err)
-	}
+
 }
 func main() {
 

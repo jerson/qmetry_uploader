@@ -57,5 +57,5 @@ func LoadAssets(box *packr.Box) error {
 	}
 	_ = os.Mkdir(dir, 0777)
 	_, err = utils.Unzip(bytes, dir)
-	return nil
+	return err
 }
