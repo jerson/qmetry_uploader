@@ -7,8 +7,8 @@ import (
 	"github.com/gcla/gowid/widgets/vpadding"
 )
 
-// GUI ...
-func GUI() error {
+// UI ...
+func UI() error {
 
 	helloworld := text.NewFromContentExt(
 		text.NewContent([]text.ContentSegment{

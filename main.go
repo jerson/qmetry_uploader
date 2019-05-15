@@ -218,9 +218,9 @@ upload-nexus qa-10-10-2010.zip`,
 			Aliases:     []string{"g"},
 			Flags:       []cli.Flag{},
 			Category:    "gui",
-			Description: "show GUI",
+			Description: "show UI",
 			Usage:       "gui",
-			Action:      actions.GUI,
+			Action:      actions.UI,
 		},
 	}
 
