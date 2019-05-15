@@ -177,6 +177,8 @@ func ScreenShotIOS(options ScreenShotIOSOptions) (string, error) {
 	}
 	log.Debug("looking for screenshot...")
 	i := 0
+	step := 100
+	max := step * 10 * 10
 	currentScreenShot := ""
 	for {
 		lastFile, _ := GetLastFileFrom(desktopDir, screenShotExtension)
@@ -184,9 +186,9 @@ func ScreenShotIOS(options ScreenShotIOSOptions) (string, error) {
 			currentScreenShot = lastFile
 			break
 		}
-		time.Sleep(time.Duration(i) * time.Second)
-		i++
-		if i > 10 {
+		time.Sleep(time.Duration(i) * time.Millisecond)
+		i += step
+		if i > max {
 			return output, errors.New("screenshot not found")
 		}
 	}
