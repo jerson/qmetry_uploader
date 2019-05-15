@@ -52,21 +52,13 @@ func setupBody() *ui.Box {
 	body := ui.NewHorizontalBox()
 	body.SetPadded(true)
 
-	grid := ui.NewGrid()
-	grid.SetPadded(true)
+	mh := newModelHandler()
+	model := ui.NewTableModel(mh)
+	table := ui.NewTable(&ui.TableParams{
+		Model: model,
+	})
 
-
-	grid.Append(ui.NewLabel("sample"),
-		1, 1, 1, 1,
-		true, ui.AlignFill, false, ui.AlignEnd)
-	grid.Append(ui.NewLabel("sample"),
-		1, 2, 1, 1,
-		true, ui.AlignFill, false, ui.AlignEnd)
-	grid.Append(ui.NewLabel("sample"),
-		1, 3, 1, 1,
-		true, ui.AlignFill, false, ui.AlignEnd)
-
-	body.Append(grid, true)
+	body.Append(table, true)
 
 	return body
 }
@@ -99,4 +91,37 @@ func setupFooter() *ui.Box {
 	footer.Append(cancelButton, false)
 
 	return footer
+}
+
+// Table definition
+type modelHandler struct {
+	rowCount      []int
+	checkBoxValue []int
+}
+
+func newModelHandler() *modelHandler {
+	mh := new(modelHandler)
+	return mh
+}
+
+func (mh *modelHandler) NumRows(m *ui.TableModel) int {
+	return 100
+}
+
+func (mh *modelHandler) NumCols(m *ui.TableModel) int {
+	return 1
+}
+
+func (mh *modelHandler) ColumnTypes(m *ui.TableModel) []ui.TableValue {
+	tValue := make([]ui.TableValue, mh.NumCols(m))
+	tValue[0] = ui.TableString("title")
+	return tValue
+}
+
+func (mh *modelHandler) CellValue(m *ui.TableModel, row, column int) ui.TableValue {
+	return ui.TableString("test")
+}
+
+func (mh *modelHandler) SetCellValue(m *ui.TableModel, row, column int, value ui.TableValue) {
+	return
 }
