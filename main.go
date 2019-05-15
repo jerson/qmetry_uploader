@@ -18,6 +18,13 @@ import (
 
 func setup() {
 	log.SetLevel(log.DebugLevel)
+	if runtime.GOOS == "windows" {
+		log.SetFormatter(&log.TextFormatter{
+			DisableTimestamp: true,
+			ForceColors:      false,
+			QuoteEmptyFields: false,
+		})
+	}
 
 	err := config.ReadDefault()
 	if err != nil {

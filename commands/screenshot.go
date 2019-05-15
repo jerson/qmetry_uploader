@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"os/user"
+	"runtime"
 	"strings"
 	"time"
 
@@ -96,6 +97,9 @@ func ScreenShotAndroid(options ScreenShotAndroidOptions) (string, error) {
 
 // ScreenShotIOSPrepare ...
 func ScreenShotIOSPrepare(options ScreenShotIOSOptions) error {
+	if runtime.GOOS != "darwin" {
+		return errors.New("only available on macOS devices")
+	}
 
 	log.Warn("preparing for screenshot, wait.... dont touch nothing please!!")
 	prepareScreenShotScript, err := osx.GetAutomatorFile("prepare-screenshot.workflow")
@@ -152,8 +156,10 @@ func GetLastFileFrom(dir, grep string) (string, error) {
 
 // ScreenShotIOS ...
 func ScreenShotIOS(options ScreenShotIOSOptions) (string, error) {
-
 	output := GetNameByOptions(options.ScreenShotOptions)
+	if runtime.GOOS != "darwin" {
+		return output, errors.New("only available on macOS devices")
+	}
 
 	usr, err := user.Current()
 	if err != nil {
