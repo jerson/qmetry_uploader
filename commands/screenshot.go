@@ -123,7 +123,7 @@ func ScreenShotIOSPrepare(options ScreenShotIOSOptions) error {
 func GetLastFileFrom(dir, grep string) (string, error) {
 	output := ""
 
-	cmd := exec.Command("bash", "-c", fmt.Sprintf(`ls -t %s | grep "%s" | head -1`, dir, grep))
+	cmd := exec.Command("sh", "-c", fmt.Sprintf(`ls -t %s | grep "%s" | head -1`, dir, grep))
 	cmdOut, err := cmd.StdoutPipe()
 	if err != nil {
 		return output, err
