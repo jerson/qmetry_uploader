@@ -51,7 +51,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>on run {input, parameters}	tell application "Xcode"		activate	end tell	tell application "System Events"		keystroke 2 using {shift down, command down}	end tell	return inputend run</string>
+					<string>on run {input, parameters}	tell application "Xcode"		activate	end tell	tell application "System Events"		keystroke 2 using {shift down, command down}		keystroke "h" using command down	end tell	return inputend run</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>
@@ -102,8 +102,6 @@ end run</string>
 						<string>0</string>
 					</dict>
 				</dict>
-				<key>conversionLabel</key>
-				<integer>0</integer>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
