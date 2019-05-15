@@ -6,8 +6,8 @@ import (
 	"qmetry_uploader/commands"
 )
 
-// GUI ...
-func GUI(c *cli.Context) error {
+// UI ...
+func UI(c *cli.Context) error {
 
-	return commands.GUI()
+	return commands.UI()
 }
