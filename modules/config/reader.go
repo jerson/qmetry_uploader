@@ -34,11 +34,10 @@ type Binary struct {
 
 //Vars ...
 var Vars = struct {
-	Debug   bool   `toml:"debug" default:"false"`
-	Version string `toml:"version" default:"0.0.2"`
-	Dir     Dir    `toml:"dir"`
-	Nexus   Nexus  `toml:"nexus"`
-	Binary  Binary `toml:"Binary"`
+	Debug  bool   `toml:"debug" default:"false"`
+	Dir    Dir    `toml:"dir"`
+	Nexus  Nexus  `toml:"nexus"`
+	Binary Binary `toml:"Binary"`
 }{}
 
 //ReadDefault ...

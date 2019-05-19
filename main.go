@@ -44,12 +44,23 @@ func main() {
 
 	app := cli.NewApp()
 	app.Name = "Qmetry uploader"
-	app.Version = config.Vars.Version
+	app.Version = "0.0.2"
 	app.Usage = "Upload easily to Qmetry and more"
 
 	app.Flags = []cli.Flag{}
 
 	app.Commands = []cli.Command{
+		{
+			Name:        "dump-config",
+			Aliases:     []string{"dc"},
+			Flags:       []cli.Flag{},
+			Category:    "debug",
+			Description: "Dump sample config",
+			Usage:       "dump-config",
+			UsageText: `
+dump-config`,
+			Action: actions.DumpConfig,
+		},
 		{
 			Name:    "merge-images",
 			Aliases: []string{"m"},
