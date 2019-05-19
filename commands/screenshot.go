@@ -34,6 +34,7 @@ type ScreenShotAndroidOptions struct {
 // ScreenShotIOSOptions ...
 type ScreenShotIOSOptions struct {
 	ScreenShotOptions
+	Simulator bool
 	Automator string
 }
 
@@ -102,7 +103,13 @@ func ScreenShotIOSPrepare(options ScreenShotIOSOptions) error {
 	}
 
 	log.Warn("preparing for screenshot, wait.... dont touch nothing please!!")
-	prepareScreenShotScript, err := osx.GetAutomatorFile("prepare-screenshot.workflow")
+	var prepareScreenShotScript string
+	var err error
+	if options.Simulator {
+		prepareScreenShotScript, err = osx.GetAutomatorFile("simulator/prepare-screenshot.workflow")
+	} else {
+		prepareScreenShotScript, err = osx.GetAutomatorFile("prepare-screenshot.workflow")
+	}
 	if err != nil {
 		return err
 	}
@@ -170,11 +177,17 @@ func ScreenShotIOS(options ScreenShotIOSOptions) (string, error) {
 
 	currentLastFile, _ := GetLastFileFrom(desktopDir, screenShotExtension)
 
-	takeScreenShotScript, err := osx.GetAutomatorFile("take-screenshot.workflow")
+	var takeScreenShotScript string
+
+	if options.Simulator {
+		takeScreenShotScript, err = osx.GetAutomatorFile("simulator/take-screenshot.workflow")
+	} else {
+		takeScreenShotScript, err = osx.GetAutomatorFile("take-screenshot.workflow")
+
+	}
 	if err != nil {
 		return output, err
 	}
-
 	cmd := exec.Command(options.Automator, takeScreenShotScript)
 	err = cmd.Run()
 	if err != nil {

@@ -58,15 +58,17 @@ func ScreenShotSession(c *cli.Context) error {
 		Description: "",
 		OutputDir:   "",
 	}
-	if platform == "ios" {
+	if platform == "ios" || platform == "ios-simulator" {
 		options := commands.ScreenShotIOSOptions{
 			ScreenShotOptions: commonOptions,
 			Automator:         automator,
+			Simulator:         platform == "ios-simulator",
 		}
 		err := commands.ScreenShotIOSPrepare(options)
 		if err != nil {
 			return err
 		}
+
 	}
 
 	reader := bufio.NewReader(os.Stdin)
@@ -176,10 +178,11 @@ func ScreenShotSession(c *cli.Context) error {
 					ADB:               adb,
 				}
 				name, err = commands.ScreenShotAndroid(options)
-			} else if platform == "ios" {
+			} else if platform == "ios" || platform == "ios-simulator" {
 				options := commands.ScreenShotIOSOptions{
 					ScreenShotOptions: commonOptions,
 					Automator:         automator,
+					Simulator:         platform == "ios-simulator",
 				}
 				name, err = commands.ScreenShotIOS(options)
 			}

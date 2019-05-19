@@ -3,6 +3,8 @@ package actions
 import (
 	"errors"
 	"fmt"
+	"time"
+
 	"github.com/urfave/cli"
 
 	log "github.com/sirupsen/logrus"
@@ -66,11 +68,17 @@ func ScreenShot(c *cli.Context) error {
 			ADB:               adb,
 		}
 		_, err = commands.ScreenShotAndroid(options)
-	} else if platform == "ios" {
+	} else if platform == "ios" || platform == "ios-simulator" {
 		options := commands.ScreenShotIOSOptions{
 			ScreenShotOptions: commonOptions,
 			Automator:         automator,
+			Simulator:         platform == "ios-simulator",
 		}
+		err := commands.ScreenShotIOSPrepare(options)
+		if err != nil {
+			return err
+		}
+		time.Sleep(2 * time.Second)
 		_, err = commands.ScreenShotIOS(options)
 	}
 	return err
