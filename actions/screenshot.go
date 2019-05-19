@@ -25,7 +25,7 @@ func ScreenShot(c *cli.Context) error {
 	automator := c.String("automator")
 	platform := c.String("platform")
 
-	if !(platform == "android" || platform == "ios") {
+	if !(platform == "android" || platform == "ios"|| platform == "ios-simulator") {
 		return fmt.Errorf("not implemented for: %s", platform)
 	}
 
