@@ -14,6 +14,7 @@ require (
 	github.com/huandu/xstrings v1.2.0 // indirect
 	github.com/jinzhu/configor v1.0.0
 	github.com/kbinani/screenshot v0.0.0-20190719135742-f06580e30cdc
+	github.com/lxn/win v0.0.0-20190716185335-d1d36f0e4f48 // indirect
 	github.com/nsf/termbox-go v0.0.0-20190325093121-288510b9734e // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/sirupsen/logrus v1.4.1
