@@ -28,7 +28,7 @@ func ScreenShotSession(c *cli.Context) error {
 	platform := c.String("platform")
 	automator := c.String("automator")
 
-	if !(platform == "android" || platform == "ios" || platform == "ios-simulator") {
+	if !(platform == "android" || platform == "ios" || platform == "ios-simulator" || platform == "desktop") {
 		return fmt.Errorf("not implemented for: %s", platform)
 	}
 
@@ -157,7 +157,7 @@ func ScreenShotSession(c *cli.Context) error {
 			}
 			steps = []string{}
 			currentStep = 1
-			fmt.Println("Reseted data")
+			fmt.Println("Reset data")
 
 			continue
 		case "C":
@@ -185,7 +185,35 @@ func ScreenShotSession(c *cli.Context) error {
 					Simulator:         platform == "ios-simulator",
 				}
 				name, err = commands.ScreenShotIOS(options)
+			} else if platform == "desktop" {
+				options := commands.ScreenShotDesktopOptions{
+					ScreenShotOptions: commonOptions,
+				}
+				name, err = commands.ScreenShotDesktop(options)
 			}
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+			steps = append(steps, name)
+			currentStep++
+			continue
+		case "E":
+
+			output := fmt.Sprintf("%s_%s", model, caseName)
+			err = os.MkdirAll(output, 0777)
+			if err != nil {
+				log.Warn(err)
+			}
+
+			commonOptions.OutputDir = output
+			commonOptions.Description = fmt.Sprint(fmt.Sprintf("%02d", currentStep))
+
+			options := commands.ScreenShotDesktopOptions{
+				ScreenShotOptions: commonOptions,
+			}
+			name, err := commands.ScreenShotDesktop(options)
+
 			if err != nil {
 				fmt.Println(err)
 				continue

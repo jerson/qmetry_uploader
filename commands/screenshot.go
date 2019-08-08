@@ -3,6 +3,7 @@ package commands
 import (
 	"errors"
 	"fmt"
+	"image/png"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -11,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/kbinani/screenshot"
 	log "github.com/sirupsen/logrus"
 
 	"qmetry_uploader/modules/osx"
@@ -36,6 +38,11 @@ type ScreenShotIOSOptions struct {
 	ScreenShotOptions
 	Simulator bool
 	Automator string
+}
+
+// ScreenShotDesktopOptions ...
+type ScreenShotDesktopOptions struct {
+	ScreenShotOptions
 }
 
 // GetNameByOptions ...
@@ -215,6 +222,37 @@ func ScreenShotIOS(options ScreenShotIOSOptions) (string, error) {
 	err = os.Rename(currentScreenShot, output)
 	if err != nil {
 		defer os.Remove(currentScreenShot)
+		return output, err
+	}
+
+	log.Infof("new screenshot: %s", output)
+	return output, nil
+}
+
+// ScreenShotDesktop ...
+func ScreenShotDesktop(options ScreenShotDesktopOptions) (string, error) {
+
+	output := GetNameByOptions(options.ScreenShotOptions)
+
+	n := screenshot.NumActiveDisplays()
+	if n < 1 {
+		return output, errors.New("displays not found")
+	}
+
+	bounds := screenshot.GetDisplayBounds(0)
+	img, err := screenshot.CaptureRect(bounds)
+	if err != nil {
+		return output, err
+	}
+
+	file, err := os.Create(output)
+	if err != nil {
+		return output, err
+	}
+	defer file.Close()
+
+	err = png.Encode(file, img)
+	if err != nil {
 		return output, err
 	}
 

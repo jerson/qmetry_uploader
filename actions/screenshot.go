@@ -25,7 +25,7 @@ func ScreenShot(c *cli.Context) error {
 	automator := c.String("automator")
 	platform := c.String("platform")
 
-	if !(platform == "android" || platform == "ios" || platform == "ios-simulator") {
+	if !(platform == "android" || platform == "ios" || platform == "ios-simulator" || platform == "desktop") {
 		return fmt.Errorf("not implemented for: %s", platform)
 	}
 
@@ -80,6 +80,11 @@ func ScreenShot(c *cli.Context) error {
 		}
 		time.Sleep(2 * time.Second)
 		_, err = commands.ScreenShotIOS(options)
+	} else if platform == "desktop" {
+		options := commands.ScreenShotDesktopOptions{
+			ScreenShotOptions: commonOptions,
+		}
+		_, err = commands.ScreenShotDesktop(options)
 	}
 	return err
 
