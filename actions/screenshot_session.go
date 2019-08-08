@@ -235,6 +235,7 @@ func ScreenShotSession(c *cli.Context) error {
 func printHelp() {
 	fmt.Println(" help:")
 	fmt.Println("\tC: capture screenshot")
+	fmt.Println("\tE: capture desktop screenshot")
 	fmt.Println("\tM: merge screenshots and close")
 	fmt.Println("\tD: delete last screenshot")
 	fmt.Println("\tL: list captured screenshots")
