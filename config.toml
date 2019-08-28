@@ -12,3 +12,7 @@ automator="/usr/bin/automator"
 username=""
 password=""
 
+[resize]
+height=600
+columns=3
+

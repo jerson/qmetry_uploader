@@ -7,6 +7,7 @@ import (
 	"log"
 	"math"
 	"os"
+	"qmetry_uploader/modules/config"
 
 	"github.com/disintegration/imaging"
 )
@@ -23,7 +24,7 @@ func MergeImages(paths []string, output string) error {
 	if len(paths) < 1 {
 		return errors.New("empty paths")
 	}
-	resizeHeight := 600
+	resizeHeight := config.Vars.Resize.Height
 	x := 0
 	y := 0
 	width := 0
@@ -45,7 +46,7 @@ func MergeImages(paths []string, output string) error {
 		if x > width {
 			width = x
 		}
-		if math.Mod(float64(i+1), 3) == 0 {
+		if math.Mod(float64(i+1), float64(config.Vars.Resize.Columns)) == 0 {
 			x = 0
 			y += resizeHeight
 			if i < len(paths)-1 {

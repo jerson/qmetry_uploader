@@ -2,12 +2,17 @@
 package config
 
 import (
+	"os"
 	"path/filepath"
 
 	"github.com/jinzhu/configor"
-
-	"qmetry_uploader/modules/utils"
 )
+
+// Resize ...
+type Resize struct {
+	Height  int `toml:"height" default:"600"`
+	Columns int `toml:"columns" default:"3"`
+}
 
 // Dir ...
 type Dir struct {
@@ -37,7 +42,8 @@ var Vars = struct {
 	Debug  bool   `toml:"debug" default:"false"`
 	Dir    Dir    `toml:"dir"`
 	Nexus  Nexus  `toml:"nexus"`
-	Binary Binary `toml:"Binary"`
+	Binary Binary `toml:"binary"`
+	Resize Resize `toml:"resize"`
 }{}
 
 //ReadDefault ...
@@ -53,8 +59,16 @@ func ReadDefault() error {
 func Read(file string) error {
 
 	config := configor.New(&configor.Config{ENVPrefix: "APP", Debug: false, Verbose: false})
-	if utils.ExistsFile(file) {
+	if ExistsFile(file) {
 		return config.Load(&Vars, file)
 	}
 	return config.Load(&Vars)
+}
+
+// ExistsFile ...
+func ExistsFile(file string) bool {
+	if _, err := os.Stat(file); os.IsNotExist(err) {
+		return false
+	}
+	return true
 }
